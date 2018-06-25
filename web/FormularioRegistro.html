@@ -19,33 +19,34 @@
             Nombre:<br/> <input type="text" name="nombre" id="nombre"/>
             <br/><br/>
 
-            Apellidos: <br/> <input type="text" name="apellido1" id="apellido1"/>&nbsp;&nbsp; <input type="text" name="apellido2" id="apellido2"/>
+            Apellidos: <br/> <input type="text" name="apellido1" id="apellido1" required=""/>&nbsp;&nbsp;
+            <input type="text" name="apellido2" id="apellido2" required=""/>
+            <br/><br/>
+            
+            Fecha de nacimiento:<br/> <input type = "date" name = "fechanaci" required="">
             <br/><br/>
 
-            Fecha de nacimiento:<br/> <input type="date" name="fechanaci">
+            Email <br/><input type="text" name="email" id="usuario" required=""/>
             <br/><br/>
 
-            Email <br/><input type="text" name="email" id="usuario"/>
+            Usuario:<br/> <input type="text" name="usuario" id="usuario" required=""/>
             <br/><br/>
 
-            Usuario:<br/> <input type="text" name="usuario" id="usuario"/>
+            Contraseña:<br/> <input type="password" name="contrasena" id="contraseña" required=""/>
             <br/><br/>
 
-            Contraseña:<br/> <input type="password" name="contrasena" id="contraseña"/>
-            <br/><br/>
-
-            Genero: <br/>
-            <input type="radio" name="sexo" id="sexo_01"/>  Mujer
-            <input type="radio" name="sexo" id="sexo_02"/> Hombre
+            Género: <br/>
+            <input type="radio" name="sexo" id="sexo_01" value="Femenino"/>  Mujer
+            <input type="radio" name="sexo" id="sexo_02" value="Masculino"/> Hombre
             <br/><br/>
 
 
             País de nacimiento <br/> :<select name="pais" id="pais" >
                 <option>Costa Rica</option>
-                <option>Mexico</option>
+                <option>México</option>
                 <option>Colombia</option>
                 <option>Chile</option>
-                <option>Peru</option>
+                <option>Perú</option>
                 <option>Argentina</option>
                 <option>España</option>
             </select>
@@ -53,13 +54,13 @@
             <br/><br/>
 
             Tipo de cuenta: <br/>
-            <input type="radio" name="tipoUsuario" id="artista"/> Artista
-            <input type="radio" name="tipoUsuario" id="experto"/> Experto
-            <input type="radio" name="tipoUsuario" id="admi"/> Administrador
+            <input type="radio" name="tipoUsuario" id="artista" value="Artista"/> Artista
+            <input type="radio" name="tipoUsuario" id="experto" value="Experto"/> Experto
+            <input type="radio" name="tipoUsuario" id="admi" value="Administrador"/> Administrador
 
             <br/><br/>
 
-            <input type="submit" name = "button" id="button" value="Enviar"/>
+            <input type="submit" name = "btnEnviar" id="button" value="Enviar"/>
 
 
         </form>

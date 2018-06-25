@@ -4,6 +4,11 @@
     Author     : darian
 --%>
 
+
+<%@page import="Logica.LRegistro"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%//<%@page import="Conexion"%>%>
+<%@page import="java.sql.Date"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,7 +19,11 @@
     <body>
 
         <%
-
+            Date now = new Date(System.currentTimeMillis());
+            SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+            
+            
+            
             String nombre = request.getParameter("nombre");
             String ape1 = request.getParameter("apellido1");
             String ape2 = request.getParameter("apellido2");
@@ -25,22 +34,27 @@
             String genero = request.getParameter("sexo");
             String pais = request.getParameter("pais");
             String tipo = request.getParameter("tipoUsuario");
-            String fecha_creacion = "2018-06-22";
+            String fecha_creacion = date.format(now);
             
-            Class.forName("com.mysql.jdbc.Driver");
+            LRegistro l= new LRegistro();
+            
+            out.print(l.InsertarRegistro(nombre, ape1, ape2, fechanaci, usuario, email, contrasena,
+                    fecha_creacion, genero, pais, tipo));
+            
+            /*Class.forName("com.mysql.jdbc.Driver");
 
             java.sql.Connection con = java.sql.DriverManager.getConnection("jdbc:mysql://localhost:3306/redsocialbd", "root", "");
 
             java.sql.Statement miState = con.createStatement();
 
             String ins = "INSERT INTO USUARIO(Nombre,Ape1,Ape2,Fecha_naci,Nombre_usuario,Email,Contrasena,Fecha_creacion,Sexo,PaisOrigen,TipoUsuario) "
-                    + "VALUES('" + nombre + "','" + ape1 + "', '" + ape2 + "', '" + fechanaci + "', '" + usuario + "', '" + email + "', '" + contrasena + "', '" + fecha_creacion + "', '" + genero + "', '" + pais + "', '" + tipo + "')";
+                    + "VALUES('" + nombre + "','" + ape1 + "', '" + ape2 + "', '" + fechanaci + "', '" + usuario + "', '" 
+                    + email + "', '" + contrasena + "', '" + fecha_creacion + "', '" + genero + "', '" + pais + "', '" 
+                    + tipo + "')";
 
-            miState.executeUpdate(ins);
+            miState.executeUpdate(ins);*/
 
-            out.print("Registro exitoso");
-
-
+            
         %>
 
 
