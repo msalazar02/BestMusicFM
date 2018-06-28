@@ -1,7 +1,8 @@
 package Datos;
 
-public class DRegistro {
+public class DUsuario {
     //-----------------------Declaración de variables---------------------------
+    private int _idUsuario;
     private String _Nombre;
     private String _Ape1;
     private String _Ape2;
@@ -17,8 +18,8 @@ public class DRegistro {
     
     
     //-----------------------Contructores-------------------------------------------------------
-    public DRegistro(String _Nombre, String _Ape1, String _Ape2, String _fechaNacimiento, String _User, String _Email, 
-            String _Pass, String _FechaCreacion, String _Genero, String _PaisOrigen, String _TipoUsuario) {
+    public DUsuario(String _Nombre, String _Ape1, String _Ape2, String _fechaNacimiento, String _User, String _Email, 
+            String _Pass, String _FechaCreacion, String _Genero, String _PaisOrigen, String _TipoUsuario, int _idUsuario) {
         this._Nombre = _Nombre;
         this._Ape1 = _Ape1;
         this._Ape2 = _Ape2;
@@ -30,14 +31,24 @@ public class DRegistro {
         this._Genero = _Genero;
         this._PaisOrigen = _PaisOrigen;
         this._TipoUsuario = _TipoUsuario;
+        this._idUsuario = _idUsuario;
     }
 
-    public DRegistro() {
+    public DUsuario() {
+    }
+
+    
+   
+
+    //-----------------------------Getter y setter------------------------------
+    
+     public int getIdUsuario() {
+        return _idUsuario;
     }
     
-    
-    
-    //-----------------------------Getter y setter------------------------------
+    public void setIdUsuario(int _idUsuario) {
+        this._idUsuario = _idUsuario;
+    }
 
     public String getNombre() {
         return _Nombre;
