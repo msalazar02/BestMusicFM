@@ -1,29 +1,35 @@
+<%-- 
+    Document   : PaginaPrincipal
+    Created on : 28-jun-2018, 13:48:15
+    Author     : Rodrigo Moreno S
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
     </head>
     <body>
         <h1>Página principal</h1>
         <form action = "LUsuarios" method="post">
+            <input type="hidden" name="idUsuario" value="${id}">
             <input type="hidden" name="Accion" value="CapturarDatos">
+            
             <input type="submit" value="Actualizar perfil">
             
         </form>
         <br>
         <br>
         <form action = "LUsuarios" method="post">
+            <input type="hidden" name="idUsuario" value="${id}">
             <input type="hidden" name="Accion" value="Eliminar">
             <input type="submit" value="Eliminar cuenta">
+           
+            
             
         </form>
-        
+         
     </body>
 </html>
