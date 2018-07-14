@@ -12,32 +12,44 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         
         <title>Login</title>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet"  href="css/PaginaInicio.css">
+        <title>Login</title>
     </head>
     <body>
-        <h1>Login</h1>
+        <div>
+            <h1>Login</h1>
+        </div>
 
-        <form action="LUsuarios" method="post">
+        <div id="formulario">
+            <form action="LUsuarios" method="post">
             
-            <input type="hidden" name="Accion" value="Verificar">
-            <input type="hidden" name="idUsuario" value="0">
+                <input type="hidden" name="Accion" value="Verificar">
+                <input type="hidden" name="idUsuario" value="0">
             
-            <label for="txtUsuario">Usuario:  </label>
-            <input type="text" name="txtUsuario" placeholder="Ingrese su usuario" required>
-            <br>
-            <br>
-            <label for="txtPass">Contraseña: </label>
-            <input type="text" name="txtPass" placeholder="Ingrese su contraseña" required>
-            <br>
-            
-            <br>
-            <input type="submit" name="btnTipo" value="Ingresar">       
-            <br>
-            <br>
-            <input type="text" value="${Er}" readonly="">
+                <label>Usuario:  </label><br>
+                <input type="text" class="campo" name="txtUsuario" placeholder="Ingrese su usuario" required>
+                <br>
+                <br>
+                <label>Contraseña: </label><br>
+                <input type="text" class="campo" name="txtPass" placeholder="Ingrese su contraseña" required>
+                <br>
+                <div id="sub">
+                
+                <input type="submit" class="boton" name="btnTipo" value="Ingresar">  
+                </div>
+                <br>
+                <br>
+                <input type="text" class="error" value="${Er}" readonly="" disabled="">
 
-        </form>
-        <br>
-        <br>
-        No posees una cuenta? <a href= "FormularioRegistro.html" onclick="">Registrate aquí</a>
+            </form>
+        </div><!-- fomulario -->
+        
+       
+        <div id="Registro">
+            No posees una cuenta? <a href= "FormularioRegistro.jsp" onclick="">Registrate aquí</a>
+        </div>
+        
     </body>
 </html>

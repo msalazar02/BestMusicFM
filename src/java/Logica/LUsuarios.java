@@ -5,6 +5,7 @@
  */
 package Logica;
 
+import Datos.DGeneros;
 import Datos.DUsuario;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,6 +17,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,9 +38,6 @@ public class LUsuarios extends HttpServlet {
     private Connection con = mysql.Conectar();
     private String consulta = "";
 
-    
-    
-    
     ///-----------------Insertar---------------------listo-------------
     public String InsertarUsuario(String nombre, String ape1, String ape2, String fechanaci, String usuario,
             String email, String contrasena, String fecha_creacion, String genero, String pais, String tipo) {
@@ -64,9 +65,6 @@ public class LUsuarios extends HttpServlet {
         return result;
     }
 
-    
-    
-    
     ///-----------------Eliminar-----------------------listo-----------
     public String EliminarUsuario(DUsuario user) {
         String result = "";
@@ -89,9 +87,6 @@ public class LUsuarios extends HttpServlet {
         return result;
     }
 
-    
-    
-    
     ///-----------------Actualizar usuario-------------------------listo---------
     public String ActualizarUsuario(DUsuario user) {
         String result = "";
@@ -128,9 +123,6 @@ public class LUsuarios extends HttpServlet {
         return result;
     }
 
-    
-    
-    
     ///-----------------Id del último registrado-------------------listo---------------
     public String idUltimoRegistrado() {
         String result = "";
@@ -153,36 +145,32 @@ public class LUsuarios extends HttpServlet {
         return result;
     }
 
-    
-    
-    
     ///-----------------Si el nombre de usuario ya existe----------------------------------
-    public int ExisteUsuario(DUsuario user) {
-        int result = 0;
-        consulta = "SELECT * FROM `usuario` where Nombre_usuario = ?";
+    public String ExisteUsuario(DUsuario user) {
+        String result = "";
+        consulta = "SELECT idUsuario FROM `usuario` where Nombre_usuario = ?";
 
         try {
             PreparedStatement st = con.prepareStatement(consulta);
             st.setString(1, user.getUser());
-            ResultSet rs = st.executeQuery();
-
-            
-            if (rs.next()) {                
-                result = rs.getInt("idUsuario") ;
+            ResultSet r = st.executeQuery();
+            /*while (r.next()) {
+                result = "" + r.getInt("idUsuario");
+            }*/
+            if (r.next()) {
+                result = "" + r.getInt("idUsuario");
+            } else {
+                result = "" + 0;
             }
-            
-            
 
         } catch (Exception e) {
-            result =0;
+            result = e.getMessage();
         }
 
         return result;
     }
-    
-    
-    
-    ///-----------------Si el nombre de usuario ya existe----------------------------------
+
+    ///-----------------Si el nombre de usuario ya existe------------listo----------------------
     public int ExisteUsuarioYContra(DUsuario user) {
         int result = 0;
         consulta = "SELECT * FROM `usuario` where Nombre_usuario = ? and Contrasena =?";
@@ -193,20 +181,17 @@ public class LUsuarios extends HttpServlet {
             st.setString(2, user.getPass());
             ResultSet rs = st.executeQuery();
 
-            
-            while (rs.next()) {                
-                result = rs.getInt("idUsuario") ;
+            while (rs.next()) {
+                result = rs.getInt("idUsuario");
             }
-            
-            
 
         } catch (Exception e) {
-            result =0;
+            result = 0;
         }
 
         return result;
     }
-    
+
     ///-----------------Captura los datos del usuario----------------listo------------------
     public String[] CapturarDatos(DUsuario user) {
         String datos[] = new String[12];
@@ -216,27 +201,24 @@ public class LUsuarios extends HttpServlet {
         try {
             PreparedStatement st = con.prepareStatement(consulta);
             st.setInt(1, user.getIdUsuario());
-            
+
             ResultSet rs = st.executeQuery();
-            while (rs.next()) {                
-                
-            
-            datos[0] = rs.getString("idUsuario");
-            datos[1] = rs.getString("Nombre");
-            datos[2] = rs.getString("Ape1");
-            datos[3] = rs.getString("Ape2");
-            datos[4] = rs.getString("Fecha_naci");
-            datos[5] = rs.getString("Nombre_usuario");
-            datos[6] = rs.getString("Email");
-            datos[7] = rs.getString("Contrasena");
-            datos[8] = rs.getString("Fecha_creacion");
-            datos[9] = rs.getString("Sexo");
-            datos[10] = rs.getString("PaisOrigen");
-            datos[11] = rs.getString("TipoUsuario");
+            while (rs.next()) {
+
+                datos[0] = rs.getString("idUsuario");
+                datos[1] = rs.getString("Nombre");
+                datos[2] = rs.getString("Ape1");
+                datos[3] = rs.getString("Ape2");
+                datos[4] = rs.getString("Fecha_naci");
+                datos[5] = rs.getString("Nombre_usuario");
+                datos[6] = rs.getString("Email");
+                datos[7] = rs.getString("Contrasena");
+                datos[8] = rs.getString("Fecha_creacion");
+                datos[9] = rs.getString("Sexo");
+                datos[10] = rs.getString("PaisOrigen");
+                datos[11] = rs.getString("TipoUsuario");
             }
-            
-            
-            
+
         } catch (Exception e) {
             datos = null;
         }
@@ -258,33 +240,64 @@ public class LUsuarios extends HttpServlet {
 
         //----------------Ingresar un nuevo registro------------listo-------------------
         if (accion.equals("Ingresar")) {
-
-            Date now = new Date(System.currentTimeMillis());
-
-            SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-            String nombre = request.getParameter("nombre");
-            String ape1 = request.getParameter("apellido1");
-            String ape2 = request.getParameter("apellido2");
-            String fechanaci = request.getParameter("fechanaci");
-            String email = request.getParameter("email");
             String usuario = request.getParameter("usuario");
-            String contrasena = request.getParameter("contrasena");
-            String genero = request.getParameter("sexo");
-            String pais = request.getParameter("pais");
-            String tipo = request.getParameter("tipoUsuario");
-            String fecha_creacion = date.format(now);
+            DUsuario user = new DUsuario();
+            user.setUser(usuario);
 
-            int num = Integer.parseInt(InsertarUsuario(nombre, ape1, ape2, fechanaci, usuario, email, contrasena, fecha_creacion,
-                    genero, pais, tipo));
-            request.setAttribute("id", num);
-            
-            
-            request.getRequestDispatcher("/TipoUsuario.jsp").forward(request, response);
+           /* if (Integer.parseInt(ExisteUsuario(user)) == 0) {
 
-            /*try (PrintWriter out = response.getWriter()) {
-                out.println("Estoy Ingresando " + num);
-            } catch (Exception e) {
+                Date now = new Date(System.currentTimeMillis());
 
+                SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+                String nombre = request.getParameter("nombre");
+                String ape1 = request.getParameter("apellido1");
+                String ape2 = request.getParameter("apellido2");
+                String fechanaci = request.getParameter("fechanaci");
+                String email = request.getParameter("email");
+
+                String contrasena = request.getParameter("contrasena");
+                String genero = request.getParameter("sexo");
+                String pais = request.getParameter("pais");*/
+                String tipo = request.getParameter("tipoUsuario");
+                /*String fecha_creacion = date.format(now);
+
+                int num = Integer.parseInt(InsertarUsuario(nombre, ape1, ape2, fechanaci, usuario, email, contrasena, fecha_creacion,
+                        genero, pais, tipo));
+                request.setAttribute("id", num);
+*/
+                if (tipo.equals("Artista")) {
+                    try {
+                        LGeneros d = new LGeneros();
+                        List<String> listaGenero;
+                        listaGenero = d.VerNombreGenero();
+                        request.setAttribute("lista", listaGenero);
+                        request.getRequestDispatcher("/RegistroArtista.jsp").forward(request, response);
+                    } catch (Exception ex) {
+
+                    }
+                }/*
+                if (tipo.equals("Administrador")) {
+                    request.getRequestDispatcher("/RegistroAdmin.jsp").forward(request, response);
+                }
+                if (tipo.equals("Experto")) {
+                    request.getRequestDispatcher("/RegistroExperto.jsp").forward(request, response);
+                }
+
+            } else {
+                String e = "El nombre de usuario ya existe";
+                request.setAttribute("error", e);
+                request.getRequestDispatcher("/FormularioRegistro.jsp").forward(request, response);
+
+                /*try (PrintWriter out = response.getWriter()) {
+                    out.println("Estoy Ingresando " + nombre + " " + ape1 + " " + ape2 + " " + fechanaci + " " + usuario + " " + email + " " + contrasena + " " + fecha_creacion + " "
+                            + genero + " " + pais + " " + tipo);
+                } catch (Exception e) {
+                }
+            } else {
+                try (PrintWriter out = response.getWriter()) {
+                    out.println("No entró");
+                } catch (Exception e) {
+                }
             }*/
         }
 
@@ -304,7 +317,7 @@ public class LUsuarios extends HttpServlet {
             String pais = request.getParameter("pais");
             String tipo = request.getParameter("tipoUsuario");
             //int id = Integer.parseInt(request.getParameter("id"));
-            
+
             user.setIdUsuario(id);
             user.setNombre(nombre);
             user.setApe1(ape1);
@@ -319,6 +332,7 @@ public class LUsuarios extends HttpServlet {
 
             ActualizarUsuario(user);
 
+            request.getRequestDispatcher("/PaginaPrincipal.jsp").forward(request, response);
             /*try (PrintWriter out = response.getWriter()) {
                 out.println( "Estoy actualizando");
             } catch (Exception e) {
@@ -330,11 +344,12 @@ public class LUsuarios extends HttpServlet {
         if (accion.equals("CapturarDatos")) {
 
             DUsuario user = new DUsuario();
-            
+
             user.setIdUsuario(id);
-            
+
             String datos[] = CapturarDatos(user);
-            
+
+            request.setAttribute("datos", datos);
             request.setAttribute("id", datos[0]);
             request.setAttribute("Nombre", datos[1]);
             request.setAttribute("Ape1", datos[2]);
@@ -347,60 +362,55 @@ public class LUsuarios extends HttpServlet {
             request.setAttribute("Sexo", datos[9]);
             request.setAttribute("PaisOrigen", datos[10]);
             request.setAttribute("TipoUsuario", datos[11]);
-            
+
             /*try (PrintWriter out = response.getWriter()) {
                 out.println("Estoy capturando los datos ");
                 out.println("Datos capturados " + dato );
             } catch (Exception e) {
-                out.println(e.getMessage());
+                out.println(e.getMessage()); 
             }*/
             request.getRequestDispatcher("/ActualizarUsuario.jsp").forward(request, response);
         }
-        
-        
-        
+
         if (accion.equals("Eliminar")) {
-            
-            
-        DUsuario user = new DUsuario();
-       
-        user.setIdUsuario(id);
+
+            DUsuario user = new DUsuario();
+
+            user.setIdUsuario(id);
             EliminarUsuario(user);
-        request.getRequestDispatcher("/PaginaInicio.jsp").forward(request, response);
-        /* try (PrintWriter out = response.getWriter()) {
+            request.getRequestDispatcher("/PaginaInicio.jsp").forward(request, response);
+            /* try (PrintWriter out = response.getWriter()) {
                 out.println("Id: " + id);
                 out.println("Datos eliminandos" );
             } catch (Exception e) {
                 out.println(e.getMessage());
             }*/
         }
-        
-        
+
         if (accion.equals("Verificar")) {
-            
-           String us= request.getParameter("txtUsuario");
-           String pass= request.getParameter("txtPass");
-        DUsuario user = new DUsuario();
-         
-        user.setUser(us);
-        user.setPass(pass);
-        
-        int ids = ExisteUsuarioYContra(user);
-        
-        request.setAttribute("Er", "Usuario y/o contraseña incorrecta");
-        request.setAttribute("id", ids);
-            if (ids!=0) {
-                
+
+            String us = request.getParameter("txtUsuario");
+            String pass = request.getParameter("txtPass");
+            DUsuario user = new DUsuario();
+
+            user.setUser(us);
+            user.setPass(pass);
+
+            int ids = ExisteUsuarioYContra(user);
+
+            request.setAttribute("Er", "Usuario y/o contraseña incorrecta");
+            request.setAttribute("id", ids);
+            if (ids != 0) {
+
                 request.getRequestDispatcher("/PaginaPrincipal.jsp").forward(request, response);
-                
-            }else{
-                
+
+            } else {
+
                 request.getRequestDispatcher("/PaginaInicio.jsp").forward(request, response);
-                
+
             }
-        
-        
-         /*try (PrintWriter out = response.getWriter()) {
+
+            /*try (PrintWriter out = response.getWriter()) {
                 
                 out.println("verificado "+id +" "+ us +" "+ pass);
             } catch (Exception e) {
@@ -408,6 +418,5 @@ public class LUsuarios extends HttpServlet {
             }*/
         }
     }
-    
 
 }
