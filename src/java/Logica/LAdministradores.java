@@ -94,7 +94,7 @@ public class LAdministradores extends HttpServlet {
             ad.setPkIdUsuario(id);
 
             IngresarNuevoAdmin(ad);
-
+            request.setAttribute("saludo", "RegistroCompletado");
             request.getRequestDispatcher("/PaginaInicio.jsp").forward(request, response);
         }
 

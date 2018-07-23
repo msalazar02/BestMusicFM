@@ -16,6 +16,7 @@ import java.nio.file.*;
 import java.nio.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -40,25 +41,29 @@ public class LArtistas extends HttpServlet {
     private Conexion mysql = new Conexion();
     private Connection con = mysql.Conectar();
     private String consulta = "";
-    File fichero;
-    String ruta;
+   
 
+    //---------------------Ingresar nuevo artista-------------------------------
     public String IngresarNuevoArtista(DArtista ar) {
         String result = "";
-        consulta = "INSERT INTO `artista`(`Tipo_artista`, `Fecha_Inicio`, `fk_generMusical`,`Biografia`, `Nombre_BandaArtistico`)"
-                + " VALUES (?, ?, ?, ?, ?)";
+        consulta = "INSERT INTO `artista`(`fk_usuario`, `Tipo_artista`, `Fecha_Inicio`, `fk_generMusical`, `Fotografia`, `Biografia`, `Nombre_BandaArtistico`)"
+                + " VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement st = con.prepareStatement(consulta);
-            st.setString(1, ar.getTipoArtista());
-            st.setString(2, ar.getFechaIncio());
-            st.setInt(3, ar.getGenero());
-            st.setString(4, ar.getBiografia());
-            st.setString(5, ar.getNombreBanda());
+            st.setInt(1, ar.getFkUsuario());
+            st.setString(2, ar.getTipoArtista());
+            st.setString(3, ar.getFechaIncio());
+            st.setInt(4, ar.getGenero());
+            st.setInt(5, ar.getImagen());
+            st.setString(6, ar.getBiografia());
+            st.setString(7, ar.getNombreBanda());
 
             int num = st.executeUpdate();
             if (num != 0) {
                 result = "Registro ingresado correctamente";
             }
+            st.close();
+            con.close();
         } catch (Exception e) {
             result = "Hemos encontrado un error:\n" + e.getMessage();
         }
@@ -66,6 +71,58 @@ public class LArtistas extends HttpServlet {
         return result;
     }
 
+    //---------------------Actualizar Artista-------------------------------
+    public String ActualizarArtista(DArtista ar) {
+        String result = "";
+        consulta = "UPDATE `artista` SET `Tipo_artista`= ?,`Fecha_Inicio`= ?,`fk_generMusical`= ?,"
+                + "`Fotografia`= ?,`Biografia`= ?,`Nombre_BandaArtistico`= ? WHERE `fk_usuario`= ?";
+        try {
+            PreparedStatement st = con.prepareStatement(consulta);
+
+            st.setString(1, ar.getTipoArtista());
+            st.setString(2, ar.getFechaIncio());
+            st.setInt(3, ar.getGenero());
+            st.setInt(4, ar.getImagen());
+            st.setString(5, ar.getBiografia());
+            st.setString(6, ar.getNombreBanda());
+            st.setInt(7, ar.getFkUsuario());
+
+            int num = st.executeUpdate();
+            if (num != 0) {
+                result = "Registro ingresado correctamente";
+            }
+            st.close();
+            con.close();
+        } catch (Exception e) {
+            result = "Hemos encontrado un error:\n" + e.getMessage();
+        }
+
+        return result;
+    }
+
+    //---------------------Actualizar Artista-------------------------------
+    public String EliminarArtista(DArtista ar) {
+        String result = "";
+        consulta = "DELETE FROM `artista` WHERE `fk_usuario`= ?";
+        try {
+            PreparedStatement st = con.prepareStatement(consulta);
+
+            st.setInt(1, ar.getFkUsuario());
+
+            int num = st.executeUpdate();
+            if (num != 0) {
+                result = "Registro ingresado correctamente";
+            }
+            st.close();
+            con.close();
+        } catch (Exception e) {
+            result = "Hemos encontrado un error:\n" + e.getMessage();
+        }
+
+        return result;
+    }
+    
+   
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -79,24 +136,66 @@ public class LArtistas extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        int id = Integer.parseInt(request.getParameter("idUsuario"));
         String accion = request.getParameter("Accion");
 
         if (accion.equals("IngresarArtista")) {
+
             DArtista d = new DArtista();
+            d.setFkUsuario(id);
             d.setBiografia(request.getParameter("biografia"));
             d.setFechaIncio(request.getParameter("fecha"));
+            d.setImagen(1);
             d.setGenero(Integer.parseInt(request.getParameter("generoM")));
             d.setTipoArtista(request.getParameter("TipoArtista"));
             d.setBiografia(request.getParameter("biografia"));
 
-            //IngresarNuevoArtista(d);
-            //request.getRequestDispatcher("/PaginaInicio.jsp").forward(request, response);
-            try (PrintWriter out = response.getWriter()) {
-                out.println("value  " +  IngresarNuevoArtista(d));
+            IngresarNuevoArtista(d);
+            request.setAttribute("saludo", "RegistroCompletado");
+            request.getRequestDispatcher("/PaginaInicio.jsp").forward(request, response);
+
+            /*try (PrintWriter out = response.getWriter()) {
+                out.println("value  " + IngresarNuevoArtista(d));
             } catch (Exception e) {
-            }
+            }*/
         }//Fin ingresar
 
+        if (accion.equals("ActualizarArtista")) {
+
+            DArtista d = new DArtista();
+            d.setFkUsuario(id);
+            d.setBiografia(request.getParameter("biografia"));
+            d.setFechaIncio(request.getParameter("fecha"));
+            d.setImagen(1);
+            d.setGenero(Integer.parseInt(request.getParameter("generoM")));
+            d.setTipoArtista(request.getParameter("TipoArtista"));
+            d.setBiografia(request.getParameter("biografia"));
+
+            ActualizarArtista(d);
+            request.setAttribute("id", id);
+            request.getRequestDispatcher("/???.jsp").forward(request, response);
+
+            /*try (PrintWriter out = response.getWriter()) {
+                out.println("value  " + IngresarNuevoArtista(d));
+            } catch (Exception e) {
+            }*/
+        }//Fin Actualizar EliminarArtista
+
+        if (accion.equals("EliminarArtista")) {
+
+            DArtista d = new DArtista();
+            d.setFkUsuario(id);
+
+            EliminarArtista(d);
+            request.setAttribute("id", id);
+            request.setAttribute("saludo", "Eliminado");
+            request.getRequestDispatcher("/PaginaInicio.jsp").forward(request, response);
+
+            /*try (PrintWriter out = response.getWriter()) {
+                out.println("value  " + IngresarNuevoArtista(d));
+            } catch (Exception e) {
+            }*/
+        }//Fin EliminarArtista
     }//Fin doPost
 
 }//Fin LArtistas

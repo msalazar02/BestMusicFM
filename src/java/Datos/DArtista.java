@@ -6,14 +6,14 @@ public class DArtista {
     //--------------Declaración de variables------------------------
     private int _fkUsuario;
     private int _genero;
+     private int _imagen;
     private String _tipoArtista;
     private String _fechaIncio;
-    private String _imagen;
     private String _biografia;
     private String _nombreBanda;
 
     //----------------Contructores----------------------------------------
-    public DArtista(int _fkUsuario, int _genero, String _tipoArtista, String _fechaIncio, String _imagen, String _biografia, String _nombreBanda) {
+    public DArtista(int _fkUsuario, int _genero, String _tipoArtista, String _fechaIncio, int _imagen, String _biografia, String _nombreBanda) {
         this._fkUsuario = _fkUsuario;
         this._genero = _genero;
         this._tipoArtista = _tipoArtista;
@@ -61,11 +61,11 @@ public class DArtista {
         this._fechaIncio = _fechaIncio;
     }
 
-    public String getImagen() {
+    public int getImagen() {
         return _imagen;
     }
 
-    public void setImagen(String _imagen) {
+    public void setImagen(int _imagen) {
         this._imagen = _imagen;
     }
 

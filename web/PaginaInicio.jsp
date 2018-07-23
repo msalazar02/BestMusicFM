@@ -10,34 +10,65 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        
+
         <title>Login</title>
-    <head>
+
+        <!--<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1 ">-->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet"  href="css/PaginaInicio.css">
-        <title>Login</title>
+         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="js/main.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     </head>
-    <body>
-        <div>
-            <h1>Login</h1>
-        </div>
+    <body class="bodys">
+
+
+        <h1 class="h1s">Login</h1>
+
+        <h3 id="registroCompleto" hidden>${saludo}</h3>
+
+        
+
+
+        <div class="container">
+            <div id="Registro" class="alert alert-success alert-dismissible" role="alert">
+                Registro Completo!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="Error" class="alert alert-danger alert-dismissible" role="alert">
+                 Usuario y/o contraseña incorrecta. Intentelo nuevamente!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="Eliminado" class="alert alert-success alert-dismissible" role="alert">
+               Usuario eliminado conrrectamente!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+         </div>
 
         <div id="formulario">
             <form action="LUsuarios" method="post">
-            
+
                 <input type="hidden" name="Accion" value="Verificar">
                 <input type="hidden" name="idUsuario" value="0">
-            
+
                 <label>Usuario:  </label><br>
                 <input type="text" class="campo" name="txtUsuario" placeholder="Ingrese su usuario" required>
                 <br>
                 <br>
                 <label>Contraseña: </label><br>
-                <input type="text" class="campo" name="txtPass" placeholder="Ingrese su contraseña" required>
+                <input type="password" class="campo" name="txtPass" placeholder="Ingrese su contraseña" required>
                 <br>
                 <div id="sub">
-                
-                <input type="submit" class="boton" name="btnTipo" value="Ingresar">  
+
+                    <input type="submit" class="boton" name="btnTipo" value="Ingresar">  
                 </div>
                 <br>
                 <br>
@@ -45,11 +76,11 @@
 
             </form>
         </div><!-- fomulario -->
-        
-       
-        <div id="Registro">
+
+
+        <div id="RegistroNuevo">
             No posees una cuenta? <a href= "FormularioRegistro.jsp" onclick="">Registrate aquí</a>
         </div>
-        
+
     </body>
 </html>
