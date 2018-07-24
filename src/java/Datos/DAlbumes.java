@@ -23,20 +23,21 @@ public class DAlbumes {
     public DAlbumes() {
     }
 
-    public DAlbumes(int _idAlbum, String _Nombre, String _Descripcion, int _fk_artista, String _fechaLancimiento) {
-        this._idAlbum = _idAlbum;
-        this._Nombre = _Nombre;
-        this._Descripcion = _Descripcion;
-        this._fk_artista = _fk_artista;
-        this._fechaLancimiento = _fechaLancimiento;
-    }
-
+//Obtener todos los albumes
     public DAlbumes(int _idAlbum, String _Nombre, String _Descripcion, String _fechaLancimiento, String _nombreArtista) {
         this._idAlbum = _idAlbum;
         this._Nombre = _Nombre;
         this._Descripcion = _Descripcion;
         this._fechaLancimiento = _fechaLancimiento;
         this._nombreArtista = _nombreArtista;
+    }
+//Obtener un album----actualizar
+
+    public DAlbumes(int _idAlbum, String _Nombre, String _Descripcion, String _fechaLancimiento) {
+        this._idAlbum = _idAlbum;
+        this._Nombre = _Nombre;
+        this._Descripcion = _Descripcion;
+        this._fechaLancimiento = _fechaLancimiento;
     }
 
     public String getNombreArtista() {

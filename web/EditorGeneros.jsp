@@ -1,8 +1,5 @@
 
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.PreparedStatement"%>
-<%@page import="java.sql.Connection"%>
-<%@page import="Logica.Conexion"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -10,22 +7,24 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="js/ActivarDesactivarBotones.js" type="text/javascript"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
         <title>EditorGeneros</title>
 
-        <link rel="stylesheet"  href="css/EditarGenero.css">
+
 
     </head>
 
     <body>
 
         <h1> Bienvenido al editor de generos </h1> 
-
+        <h3 id="botones" hidden>${botones}</h3>
         <h3>Lista de generos actuales</h3> 
 
-        <div class="col-md-9">
+        <div class="col-md-8">
             <table class="table table-hover ">
 
 
@@ -44,10 +43,8 @@
 
                     <%-- Link actualizador para cada genero utilizando el campo clave --%>
                     <c:url var="linkCargar" value="LGenero">
-
                         <c:param name="Accion" value="Cargar"></c:param>
                         <c:param name="idUsuario" value="${id}"></c:param>
-
                         <c:param name="Codigo" value="${tempGeneros.getIdGenero_musical()}"></c:param>
 
                     </c:url>
@@ -57,7 +54,6 @@
                     <c:url var="linkEliminar" value="LGenero">
                         <c:param name="idUsuario" value="${id}"></c:param>
                         <c:param name="Accion" value="Eliminar"></c:param>
-
                         <c:param name="Codigo" value="${tempGeneros.getIdGenero_musical()}"></c:param>
 
                     </c:url>
@@ -78,34 +74,59 @@
             </table>
         </div>
 
+        <div class="container" class ="col-md-3">
+            <div id="Registrar" class ="col-md-3">
+
+                <form action = "LGenero" method="post" >
+                    <input type="hidden" name="idUsuario" value="${id}">
+                    <input type="hidden" name="Accion" value="Insertar">
 
 
-        <div id ="col-md-9">
-
-            <form action = "LGenero" method="post">
-                <input type="hidden" name="idUsuario" value="${id}">
-                <input type="hidden" name="Accion" value="Insertar">
-
-                Nombre:
-                <br> 
-                <input type="text" name="nombre" id = "nombre" required="">
-                <br>
-                <br>
-
-                Descripción:
-
-                <br> 
-                <textarea name="descripcion" rows="4" cols="20" id="descripcion" required="">
-                </textarea>
-                <br>
-                <br>
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" name="nombre" required="">
+                    </div> 
 
 
-                <input type="submit" class=" btn btn-success" value="Insertar" >
+                    <div class="form-group">
+                        <label for="nombre">Descripción</label>
+                        <input type="text" class="form-control" name="descripcion" required="">
+                    </div> 
 
 
-            </form>
+                    <input type="submit" class=" btn btn-success" value="Insertar" >
 
+
+
+                </form>
+            </div>
+            <div id="Actualizar" class ="col-md-3">
+
+                <form action = "LGenero" method="post" >
+                    <input type="hidden" name="idUsuario" value="${id}">
+                    <input type="hidden" name="CodigoGenero" value="${GeneroActualizar.getIdGenero_musical()}">
+                    <input type="hidden" name="Accion" value="Actualizar">
+
+
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" value="${GeneroActualizar.getNombre()}" name="nombre" required="">
+                    </div> 
+
+
+                    <div class="form-group">
+                        <label for="nombre">Descripción</label>
+                        <input type="text" class="form-control" value="${GeneroActualizar.getDescripcion()}" name="descripcion" required="">
+                    </div> 
+
+
+
+                    <input type="submit" class=" btn btn-success" value="Actualizar" >
+
+
+                </form>
+
+            </div>
         </div>
 
     </body>

@@ -13,6 +13,7 @@ import static java.lang.System.out;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -34,6 +35,50 @@ public class LAlbum extends HttpServlet {
     private Connection con = mysql.Conectar();
     private String consulta = "";
 
+    //----------------Mostrar Albumes------listo------
+    public List<DAlbumes> MostrarDatos(int id) throws Exception {
+        List<DAlbumes> albumes = new ArrayList<>();
+
+        consulta = "SELECT album.idAlbum, album.Nombre, album.Descripcion, album.fecha_lanzamiento, artista.Nombre_BandaArtistico "
+                + "FROM album, artista "
+                + "where album.fk_artista = artista.fk_usuario and album.fk_artista =?";
+
+        PreparedStatement st = con.prepareStatement(consulta);
+        st.setInt(1, id);
+        ResultSet rs = st.executeQuery();
+
+        while (rs.next()) {
+
+            int codigo = rs.getInt("idAlbum");
+            String nombre = rs.getString("Nombre");
+            String descripcion = rs.getString("Descripcion");
+            String fecha = rs.getString("fecha_lanzamiento");
+            String artista = rs.getString("Nombre_BandaArtistico");
+
+            DAlbumes generoTemporal = new DAlbumes(codigo, nombre, descripcion, fecha, artista);
+            albumes.add(generoTemporal);
+        }
+
+        return albumes;
+    }
+
+    //----------------EliminarAlbum------listo------
+    public int EliminarAlbum(int id) throws Exception {
+        int result = 0;
+        consulta = "DELETE FROM `album` WHERE `idAlbum`= ?";
+        PreparedStatement pst = con.prepareStatement(consulta);
+        try {
+
+            pst.setInt(1, id);
+
+            result = pst.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
     public void IngresarNuevoAlbum(DAlbumes a) {
 
         consulta = "INSERT INTO `album`(`Nombre`, `Descripcion`, `fk_artista`, `fecha_lanzamiento`) "
@@ -54,59 +99,172 @@ public class LAlbum extends HttpServlet {
         } catch (Exception e) {
 
         }
-
-    }
-
-    public String EliminarAlbum(DAlbumes ar) {
-        String result = "";
-        consulta = "DELETE FROM `album` WHERE `idAlbum`= ?";
-        try {
-            PreparedStatement st = con.prepareStatement(consulta);
-
-            st.setInt(1, ar.getIdAlbum());
-            //EliminarCanciones(ar.getIdAlbum());
-            int num = st.executeUpdate();
-            if (num != 0) {
-                result = "Registro Eliminado correctamente";
-            }
-            st.close();
-            con.close();
-        } catch (Exception e) {
-            result = "Hemos encontrado un error:\n" + e.getMessage();
-        }
-
-        return result;
     }
 
     //-----------------Mostrar album---------------------//
-    public List<DAlbumes> MostrarDatos(int id) throws Exception {
+    public DAlbumes ObtenerAlbum(int idAlbum) throws Exception {
+        DAlbumes obj = null;
 
-        List<DAlbumes> album = new ArrayList<>();
+        consulta = "SELECT * FROM album WHERE idAlbum=?";
 
-        //Consulta para que muestre del album el codigo, nombre y descripcion y del artista la banda o nombre artistico
-        consulta = "SELECT album.idAlbum, album.Nombre, album.Descripcion, album.fecha_lanzamiento, artista.Nombre_BandaArtistico "
-                + "FROM album, artista "
-                + "where album.fk_artista = artista.fk_usuario and album.fk_artista =?";
+        try {
+            PreparedStatement st = con.prepareStatement(consulta);
 
-        PreparedStatement st = con.prepareStatement(consulta);
-        st.setInt(1, id);
-        ResultSet rs = st.executeQuery();
+            st.setInt(1, idAlbum);
 
-        while (rs.next()) {
+            ResultSet rs = st.executeQuery();
 
-            int codigo = rs.getInt("idAlbum");
-            String nombre = rs.getString("Nombre");
-            String descripcion = rs.getString("Descripcion");
-            String fecha = rs.getString("fecha_lanzamiento");
-            String artista = rs.getString("Nombre_BandaArtistico");
-            DAlbumes AlbumTemporal = new DAlbumes(codigo, nombre, descripcion, fecha, artista);
-            album.add(AlbumTemporal);
+            if (rs.next()) {
+
+                int idAbum = rs.getInt("idAlbum");
+                String nombre = rs.getString("Nombre");
+                String descripcion = rs.getString("Descripcion");
+                String fecha = rs.getString("fecha_lanzamiento");
+
+                obj = new DAlbumes(idAbum, nombre, descripcion, fecha);
+
+            } else {
+                throw new Exception("No hay datos");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return obj;
 
-        return album;
     }
 
-    private void ObtenerAlbum(HttpServletRequest request, HttpServletResponse response) {
+    public void ActualizarGenero(DAlbumes AlbumActualizado) throws Exception {
+
+        consulta = "UPDATE `album` SET `Nombre`=?,`Descripcion`=?,"
+                + "`fecha_lanzamiento`=? WHERE idAlbum = ?";
+
+        try {
+            PreparedStatement st = con.prepareStatement(consulta);
+
+            st.setString(1, AlbumActualizado.getNombre());
+            st.setString(2, AlbumActualizado.getDescripcion());
+            st.setString(3, AlbumActualizado.getFechaLancimiento());
+            st.setInt(4, AlbumActualizado.getIdAlbum());
+
+            st.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String accion = request.getParameter("Accion");
+
+        if (accion.equals(null)) {
+            accion = "Mostrar";
+        }
+        switch (accion) {
+
+            case "Cargar":
+                CargarAlbum(request, response);
+                break;
+
+            case "Eliminar":
+                EliminarAlbum(request, response);
+                break;
+
+            case "Mostrar":
+                MostrarAlbumes(request, response);
+                break;
+        }
+
+    }
+
+    private void EliminarAlbum(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("idUsuario"));
+        int idAlbum = Integer.parseInt(request.getParameter("Codigo"));
+
+        try {
+            if (EliminarAlbum(idAlbum) == 0) {
+                String e = "La petición no fue exitosa:  \n"
+                        + "El género selecionado se encuentra relacionado con almenos una cuenta";
+                request.setAttribute("error", e);
+                MostrarAlbumes(request, response);
+
+            } else {
+                request.setAttribute("insertar", "true");
+                MostrarAlbumes(request, response);
+            }
+        } catch (Exception ex) {
+
+        }
+    }//Fin Eliminar album
+
+    private void CargarAlbum(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int id = Integer.parseInt(request.getParameter("idUsuario"));
+            int idAlbum = Integer.parseInt(request.getParameter("Codigo"));
+
+            DAlbumes CodigoAlbum = ObtenerAlbum(idAlbum);
+
+            request.setAttribute("AlbumActualizar", CodigoAlbum);
+            request.setAttribute("id", id);
+            request.setAttribute("botones", "Actualizar");
+
+            MostrarAlbumes(request, response);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }//Fin Cargar Género
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String accion = request.getParameter("Accion");
+
+        if (accion.equals(null)) {
+            accion = "Mostrar";
+        }
+        switch (accion) {
+
+            case "Insertar":
+                IngresarAlbum(request, response);
+                break;
+
+            case "Mostrar":
+                MostrarAlbumes(request, response);
+                break;
+
+            case "Actualizar":
+                ActualizarAlbum(request, response);
+                break;
+
+        }
+
+    }
+
+    private void IngresarAlbum(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("idUsuario"));
+        try {
+            DAlbumes a = new DAlbumes();
+            a.setFk_artista(id);
+            a.setDescripcion(request.getParameter("desc"));
+            a.setFechaLancimiento(request.getParameter("fecha"));
+            a.setNombre(request.getParameter("nombre"));
+            IngresarNuevoAlbum(a);
+            request.setAttribute("id", id);
+
+            MostrarAlbumes(request, response);
+        } catch (Exception e) {
+
+        }//Fin Catch
+
+    }//Fin Insertar Generos
+
+    private void MostrarAlbumes(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("idUsuario"));
         try {
 
@@ -117,7 +275,6 @@ public class LAlbum extends HttpServlet {
             request.setAttribute("Album", TablaAlbumes);
 
             request.setAttribute("id", id);
-            //request.setAttribute("rep", rep);
 
             request.getRequestDispatcher("/EditarAlbumes.jsp").forward(request, response);
 
@@ -127,140 +284,29 @@ public class LAlbum extends HttpServlet {
         }
     }
 
-    private void IngresarAlbum(HttpServletRequest request, HttpServletResponse response) {
+    private void ActualizarAlbum(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("idUsuario"));
         try {
+            int idG = Integer.parseInt(request.getParameter("CodigoAlbum"));
+            String nombre = request.getParameter("nombre");
+            String descripcion = request.getParameter("descripcion");
+            String fecha = request.getParameter("fecha");
 
-            DAlbumes a = new DAlbumes();
-            a.setFk_artista(id);
-            a.setDescripcion(request.getParameter("desc"));
-            a.setFechaLancimiento(request.getParameter("fecha"));
-            a.setNombre(request.getParameter("nombre"));
-            IngresarNuevoAlbum(a);
+            DAlbumes GeneroActualizado = new DAlbumes(idG, nombre, descripcion, fecha);
 
+            ActualizarGenero(GeneroActualizado);
             request.setAttribute("id", id);
-            ObtenerAlbum(request, response);
-            //request.setAttribute("saludo", "RegistroCompletado");
-            //request.getRequestDispatcher("/IngresarAlbum.jsp").forward(request, response);
-            // ObtenerAlbum(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
+            MostrarAlbumes(request, response);
+
+            //request.getRequestDispatcher("/PaginaPrincipalAdministrador.jsp").forward(request, response);
+        } catch (Exception ex) {
 
         }
     }
-
-    private void EliminarAlbum(HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("idUsuario"));
-        int codigo = Integer.parseInt(request.getParameter("Codigo"));
-        try {
-            DAlbumes d = new DAlbumes();
-            d.setIdAlbum(codigo);
-            EliminarAlbum(d);
-
+    /*if (accion.equals ( 
+        "Regresar")) {
             request.setAttribute("id", id);
-            request.setAttribute("saludo", "RegistroCompletado");
-            //ObtenerAlbum(request, response);
-            request.getRequestDispatcher("/IngresarAlbum.jsp").forward(request, response);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String accion = request.getParameter("Accion");
-        //int id = Integer.parseInt(request.getParameter("idUsuario"));
-        //int codigo = Integer.parseInt(request.getParameter("Codigo"));
-
-        if (accion.equals(null)) {
-            accion = "Mostrar";
-        }
-        switch (accion) {
-
-            case "IngresarAlbum":
-                IngresarAlbum(request, response);
-                break;
-
-            case "Mostrar":
-                ObtenerAlbum(request, response);
-                break;
-
-            case "Eliminar":
-                EliminarAlbum(request, response);
-                break;
-        }
-
-    }
-
-    /* try (PrintWriter out = response.getWriter()) {
-                    out.println("Mostrar" + accion);
-                } catch (Exception e) {
-                }*/
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String accion = request.getParameter("Accion");
-        int id = Integer.parseInt(request.getParameter("idUsuario"));
-
-        if (accion.equals("Regresar")) {
-            request.setAttribute("id", id);
-            request.getRequestDispatcher("/PaginaPrincipalArtista.jsp").forward(request, response);
-        }
-        if (accion.equals("IrIngresar")) {
-            request.setAttribute("id", id);
-            request.getRequestDispatcher("/IngresarAlbum.jsp").forward(request, response);
-        }
-        /* String rep = null;
-        if (accion.equals("IngresarAlbum")) {
-
-            try {
-                DAlbumes a = new DAlbumes();
-                a.setFk_artista(id);
-                a.setDescripcion(request.getParameter("desc"));
-                a.setFechaLancimiento(request.getParameter("fecha"));
-                a.setNombre(request.getParameter("nombre"));
-                IngresarNuevoAlbum(a);
-
-                List<DAlbumes> TablaAlbumes;
-
-                TablaAlbumes = MostrarDatos(id);
-
-                request.setAttribute("Album", TablaAlbumes);
-                request.setAttribute("id", id);
-                request.setAttribute("saludo", "RegistroCompletado");
-                request.getRequestDispatcher("/IngresarAlbum.jsp").forward(request, response);
-                //accion = "Mostrar";
-
-            } //Fin ingresar
-            catch (Exception ex) {
-                out.print(ex.getMessage());
-            }
-        }
-
-        if (accion.equals("Mostrar")) {
-            try {
-
-                List<DAlbumes> TablaAlbumes;
-
-                TablaAlbumes = MostrarDatos(id);
-
-                request.setAttribute("Album", TablaAlbumes);
-
-                request.setAttribute("id", id);
-                //request.setAttribute("rep", rep);
-
-                request.getRequestDispatcher("/IngresarAlbum.jsp").forward(request, response);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-
-            }
-        }*/
-    }
+        request.getRequestDispatcher("/PaginaPrincipalArtista.jsp").forward(request, response);
+    }*/
 
 }

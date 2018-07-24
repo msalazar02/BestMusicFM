@@ -32,7 +32,7 @@
         <form action = "LAlbum" method="get">
             <input type="hidden" name="idUsuario" value="${id}">
             <input type="hidden" name="Accion" value="Mostrar">
-            <input type="submit" value="Ingresar Album Nuevo">
+            <input type="submit" value="Editar Albumes">
         </form>
     </body>
 </html>

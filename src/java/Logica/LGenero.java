@@ -55,33 +55,35 @@ public class LGenero extends HttpServlet {
     }
 
     //-----------------Eliminar datos IGNORAR---------------------//
-    public void EliminarGenero(int id) throws Exception {
-
+    public int EliminarGenero(int id) throws Exception {
+        int result = 0;
         consulta = "DELETE FROM GENERO_MUSICAL WHERE idGenero_musical=?";
         PreparedStatement pst = con.prepareStatement(consulta);
         try {
 
             pst.setInt(1, id);
 
-            pst.execute();
+            result = pst.executeUpdate();
 
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-
+        return result;
     }
 
     //-----------------Insertar genero---------------------//
-    public String InsertarGenero(String nombre, String descripcion) {
+    public String InsertarGenero(DGenero g) {
         String result = "";
 
         //Se agregan los valores a la consulta
         consulta = "INSERT INTO genero_musical(Nombre,Descripcion)"
-                + "VALUES('" + nombre + "','" + descripcion + "')";
+                + "VALUES(?,?)";
 
         try {
-            Statement st = con.createStatement();
-            int n = st.executeUpdate(consulta);
+            PreparedStatement st = con.prepareStatement(consulta);
+            st.setString(1, g.getNombre());
+            st.setString(2, g.getDescripcion());
+            int n = st.executeUpdate();
 
             if (n != 0) {
                 result = "El registro se ha ingresado correctamente";
@@ -93,17 +95,17 @@ public class LGenero extends HttpServlet {
 
         return result;
     }
+    //-----------------Optener géneros generos---------------------//
 
-    public DGenero ObtenerDatos(String idGenero) throws Exception {
+    public DGenero ObtenerDatos(int idGenero) throws Exception {
         DGenero obj = null;
-        int codigo = Integer.parseInt(idGenero);
 
         consulta = "SELECT * FROM GENERO_MUSICAL WHERE IDGENERO_MUSICAL=?";
 
         try {
             PreparedStatement st = con.prepareStatement(consulta);
 
-            st.setInt(1, codigo);
+            st.setInt(1, idGenero);
 
             ResultSet rs = st.executeQuery();
 
@@ -125,6 +127,7 @@ public class LGenero extends HttpServlet {
         return obj;
 
     }
+    //-----------------Actualizar genero---------------------//
 
     public void ActualizarGenero(DGenero GeneroActualizado) throws Exception {
 
@@ -145,8 +148,8 @@ public class LGenero extends HttpServlet {
         }
 
     }
-//--------------------------Método doGet-------------------------------------
 
+//--------------------------Método doGet-------------------------------------
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -176,13 +179,14 @@ public class LGenero extends HttpServlet {
     private void CargarGenero(HttpServletRequest request, HttpServletResponse response) {
         try {
             int id = Integer.parseInt(request.getParameter("idUsuario"));
-            String idGenero = request.getParameter("Codigo");
+            int idGenero = Integer.parseInt(request.getParameter("Codigo"));
 
             DGenero CodigoGenero = ObtenerDatos(idGenero);
 
             request.setAttribute("GeneroActualizar", CodigoGenero);
             request.setAttribute("id", id);
-            request.getRequestDispatcher("/ActualizarGeneros.jsp").forward(request, response);
+            request.setAttribute("botones", "Actualizar");
+            MostrarGeneros(request, response);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -194,14 +198,16 @@ public class LGenero extends HttpServlet {
         int idGenero = Integer.parseInt(request.getParameter("Codigo"));
 
         try {
-            EliminarGenero(idGenero);
-            List<DGenero> TablaGeneros;
+            if (EliminarGenero(idGenero) == 0) {
+                String e = "La petición no fue exitosa:  \n"
+                        + "El género selecionado se encuentra relacionado con almenos una cuenta";
+                request.setAttribute("error", e);
+                MostrarGeneros(request, response);
 
-            TablaGeneros = MostrarDatos();
+            } else {
 
-            request.setAttribute("Generos", TablaGeneros);
-            request.setAttribute("id", id);
-            request.getRequestDispatcher("/EditorGeneros.jsp").forward(request, response);
+                MostrarGeneros(request, response);
+            }
         } catch (Exception ex) {
 
         }
@@ -231,14 +237,6 @@ public class LGenero extends HttpServlet {
                 ActualizarGenero(request, response);
                 break;
 
-            case "IrInsertar":
-                IrInsertar(request, response);
-                break;
-
-            case "IrGeneros":
-                IrGeneros(request, response);
-                break;
-
         }
 
     }
@@ -246,14 +244,14 @@ public class LGenero extends HttpServlet {
     private void InsertarGenero(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("idUsuario"));
 
-        String encabezado = request.getParameter("nombre");
-        String noticia = request.getParameter("descripcion");
-
         try {
-            InsertarGenero(encabezado, noticia);
+            DGenero g = new DGenero();
+            g.setNombre(request.getParameter("nombre"));
+            g.setDescripcion(request.getParameter("descripcion"));
+            InsertarGenero(g);
             request.setAttribute("id", id);
+
             MostrarGeneros(request, response);
-            //request.getRequestDispatcher("/InsertarGeneros.jsp").forward(request, response);
         } catch (Exception e) {
 
         }//Fin Catch
@@ -270,6 +268,7 @@ public class LGenero extends HttpServlet {
 
             request.setAttribute("Generos", TablaGeneros);
             request.setAttribute("id", id);
+
             request.getRequestDispatcher("/EditorGeneros.jsp").forward(request, response);
 
         } catch (Exception e) {
@@ -289,32 +288,13 @@ public class LGenero extends HttpServlet {
 
             ActualizarGenero(GeneroActualizado);
             request.setAttribute("id", id);
-            request.getRequestDispatcher("/PaginaPrincipalAdministrador.jsp").forward(request, response);
-        } catch (Exception ex) {
-
-        }
-
-    }
-
-    private void IrInsertar(HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("idUsuario"));
-        try {
-            request.setAttribute("id", id);
-            request.getRequestDispatcher("/InsertarGeneros.jsp").forward(request, response);
-        } catch (Exception ex) {
-
-        }
-
-    }
-
-    private void IrGeneros(HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("idUsuario"));
-        try {
-            request.setAttribute("id", id);
             MostrarGeneros(request, response);
+
+            
         } catch (Exception ex) {
 
         }
+
     }
 
 }
