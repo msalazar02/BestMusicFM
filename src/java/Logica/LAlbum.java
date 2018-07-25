@@ -192,9 +192,8 @@ public class LAlbum extends HttpServlet {
 
         try {
             if (EliminarAlbum(idAlbum) == 0) {
-                String e = "La petición no fue exitosa:  \n"
-                        + "El género selecionado se encuentra relacionado con almenos una cuenta";
-                request.setAttribute("error", e);
+
+                request.setAttribute("botones", "error");
                 MostrarAlbumes(request, response);
 
             } else {

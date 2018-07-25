@@ -16,10 +16,9 @@
         <!--<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1 ">-->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet"  href="css/PaginaInicio.css">
-         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="js/main.js" type="text/javascript"></script>
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     </head>
     <body class="bodys">
@@ -29,7 +28,7 @@
 
         <h3 id="registroCompleto" hidden>${saludo}</h3>
 
-        
+
 
 
         <div class="container">
@@ -40,18 +39,18 @@
                 </button>
             </div>
             <div id="Error" class="alert alert-danger alert-dismissible" role="alert">
-                 Usuario y/o contraseña incorrecta. Intentelo nuevamente!
+                Usuario y/o contraseña incorrecta. Intentelo nuevamente!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div id="Eliminado" class="alert alert-success alert-dismissible" role="alert">
-               Usuario eliminado conrrectamente!
+                Usuario eliminado conrrectamente!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-         </div>
+        </div>
 
         <div id="formulario">
             <form action="LUsuarios" method="post">

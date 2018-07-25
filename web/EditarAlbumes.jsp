@@ -20,8 +20,16 @@
 
         <h1> Bienvenido al editor de Albumes </h1> 
         <h3 id="botones" hidden>${botones}</h3>
-        <h3>Lista de generos actuales</h3> 
+        <h3>Lista de albumes actuales</h3> 
 
+        <div id="Error" class="alert alert-danger alert-dismissible" role="alert">
+            La petición no fue completada con exito:
+            El género selecionado se encuentra relacionado con almenos una cuenta existente
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                
+            </button>
+        </div>
         <div class="col-md-8">
             <table class="table table-hover ">
 

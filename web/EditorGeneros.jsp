@@ -12,6 +12,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
         <title>EditorGeneros</title>
 
 
@@ -23,6 +24,14 @@
         <h1> Bienvenido al editor de generos </h1> 
         <h3 id="botones" hidden>${botones}</h3>
         <h3>Lista de generos actuales</h3> 
+
+        <div id="Error" class="col-md-11 alert alert-danger alert-dismissible" role="alert">
+            La petición no fue completada con exito:
+            El género selecionado se encuentra relacionado con almenos una cuenta existente
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
 
         <div class="col-md-8">
             <table class="table table-hover ">

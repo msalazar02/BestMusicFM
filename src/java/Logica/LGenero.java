@@ -199,9 +199,8 @@ public class LGenero extends HttpServlet {
 
         try {
             if (EliminarGenero(idGenero) == 0) {
-                String e = "La petición no fue exitosa:  \n"
-                        + "El género selecionado se encuentra relacionado con almenos una cuenta";
-                request.setAttribute("error", e);
+
+                request.setAttribute("botones", "error");
                 MostrarGeneros(request, response);
 
             } else {
@@ -290,7 +289,6 @@ public class LGenero extends HttpServlet {
             request.setAttribute("id", id);
             MostrarGeneros(request, response);
 
-            
         } catch (Exception ex) {
 
         }
