@@ -172,6 +172,9 @@ public class LGenero extends HttpServlet {
             case "Mostrar":
                 MostrarGeneros(request, response);
                 break;
+            case "irPrincipal":
+                Regresar(request, response);
+                break;
         }
 
     }
@@ -293,6 +296,16 @@ public class LGenero extends HttpServlet {
 
         }
 
+    }
+
+    private void Regresar(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String id = request.getParameter("idUsuario");
+            request.setAttribute("id", id);
+            request.getRequestDispatcher("/PaginaPrincipalAdministrador.jsp").forward(request, response);
+        } catch (Exception ex) {
+
+        }
     }
 
 }

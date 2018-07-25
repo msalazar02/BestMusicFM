@@ -122,7 +122,6 @@ public class LAlbumes extends HttpServlet {
                 String descripcion = rs.getString("Descripcion");
                 String fecha = rs.getString("fecha_lanzamiento");
                 String sello = rs.getString("SelloDiscografico");
-                
 
                 obj = new DAlbumes(idAbum, nombre, descripcion, fecha);
 
@@ -234,9 +233,9 @@ public class LAlbumes extends HttpServlet {
         int idAlbum = Integer.parseInt(request.getParameter("Codigo"));
         int id = Integer.parseInt(request.getParameter("idUsuario"));
         try {
-            request.setAttribute("idAlbum", idAlbum);
+            request.setAttribute("idA", idAlbum);
             request.setAttribute("id", id);
-            request.getRequestDispatcher("/nombre.jsp").forward(request, response);
+            request.getRequestDispatcher("/EditarCanciones.jsp").forward(request, response);
         } catch (Exception e) {
         }
 

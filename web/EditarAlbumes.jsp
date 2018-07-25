@@ -44,7 +44,7 @@
 
                 <c:forEach var="tempAlbumes" items="${Album}">
 
-                    <%-- Link actualizador para cada genero utilizando el campo clave --%>
+                    <%-- Link actualizador para cada álbum utilizando el campo clave --%>
                     <c:url var="linkCargar" value="LAlbum">
                         <c:param name="Accion" value="Cargar"></c:param>
                         <c:param name="idUsuario" value="${id}"></c:param>
@@ -52,7 +52,7 @@
 
                     </c:url>
 
-                    <%-- Link para eliminar cada genero utilizando el campo clave --%>
+                    <%-- Link para eliminar cada álbum utilizando el campo clave --%>
 
                     <c:url var="linkEliminar" value="LAlbum">
                         <c:param name="idUsuario" value="${id}"></c:param>
@@ -60,9 +60,9 @@
                         <c:param name="Codigo" value="${tempAlbumes.getIdAlbum()}"></c:param>
 
                     </c:url>
-                    <c:url var="linkVerCanciones" value="LAlbum">
+                    <c:url var="linkVerCanciones" value="LCanciones">
                         <c:param name="idUsuario" value="${id}"></c:param>
-                        <c:param name="Accion" value="verCanciones"></c:param>
+                        <c:param name="Accion" value="Mostrar"></c:param>
                         <c:param name="Codigo" value="${tempAlbumes.getIdAlbum()}"></c:param>
 
                     </c:url>
