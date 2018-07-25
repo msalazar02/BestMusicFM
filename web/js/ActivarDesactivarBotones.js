@@ -13,17 +13,11 @@ $(document).ready(function () {
     if (botones == "Actualizar") {
         $("#Registrar").remove();
         $("#Actualizar").show();
-        $("#Error").hide();
-    }
-    if (botones == "error") {
-        $("#Error").show();
-        $("#Registrar").show();
-        $("#Actualizar").remove();
+
 
     } else {
         $("#Registrar").show();
         $("#Actualizar").remove();
-        $("#Error").hide();
 
     }
 

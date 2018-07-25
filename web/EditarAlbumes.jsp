@@ -7,6 +7,7 @@
     <head>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="js/ActivarDesactivarBotones.js" type="text/javascript"></script>
+        <script src="js/Aviso.js" type="text/javascript"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -22,14 +23,6 @@
         <h3 id="botones" hidden>${botones}</h3>
         <h3>Lista de albumes actuales</h3> 
 
-        <div id="Error" class="alert alert-danger alert-dismissible" role="alert">
-            La petición no fue completada con exito:
-            El género selecionado se encuentra relacionado con almenos una cuenta existente
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                
-            </button>
-        </div>
         <div class="col-md-8">
             <table class="table table-hover ">
 
@@ -42,6 +35,7 @@
                         <th class="cabecera">Descripción</th>
                         <th class="cabecera">Fecha de lanzamiento</th>
                         <th class="cabecera">Artista</th>
+                        <th class="cabecera">Acciones</th>
 
                     </tr>
                 </thead>
@@ -76,6 +70,7 @@
                         <td class="filas"> ${tempAlbumes.getNombre() } </td>
                         <td class="filas"> ${tempAlbumes.getDescripcion() } </td>
                         <td class="filas"> ${tempAlbumes.getFechaLancimiento() } </td>
+                        <td class="filas"> ${tempAlbumes.getNombreArtista() } </td> 
                         <td class="filas">  
                             <a href="${linkCargar}"><img src="Imagenes/icons8-actualizar-15.png" width="15" height="15" alt="icons8-actualizar-15"/></a>
                             &nbsp;

@@ -303,12 +303,12 @@ public class LAlbum extends HttpServlet {
     private void ActualizarAlbum(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("idUsuario"));
         try {
-            int idG = Integer.parseInt(request.getParameter("CodigoAlbum"));
+            int idA = Integer.parseInt(request.getParameter("CodigoAlbum"));
             String nombre = request.getParameter("nombre");
             String descripcion = request.getParameter("descripcion");
             String fecha = request.getParameter("fecha");
 
-            DAlbumes AlbumActualizado = new DAlbumes(idG, nombre, descripcion, fecha);
+            DAlbumes AlbumActualizado = new DAlbumes(idA, nombre, descripcion, fecha);
 
             ActualizarAlbum(AlbumActualizado);
             request.setAttribute("id", id);

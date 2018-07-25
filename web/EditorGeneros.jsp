@@ -9,9 +9,9 @@
     <head>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="js/ActivarDesactivarBotones.js" type="text/javascript"></script>
+        <script src="js/Aviso.js" type="text/javascript"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
         <title>EditorGeneros</title>
 
