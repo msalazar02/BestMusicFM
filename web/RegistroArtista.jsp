@@ -27,7 +27,7 @@
             <br/> 
             <select name="TipoArtista" id="tipoArtista" required >
                 <option value="Solista">Solista</option>
-                <option value="Banda">Integran de de una Banda</option>
+                <option value="Banda">Integrante de una Banda</option>
             </select>
             <br/>
             <br/>
@@ -43,12 +43,7 @@
             <select name="generoM" id="generoM" required>
                 <%int a = 0;%>
                 <c:forEach var="tempGeneros" items="${Generos }">
-                    <c:url var="linkCargar" value="LGenero">
-
-                        <c:param name="Accion" value="Mostrar"></c:param>
-                        
-                    </c:url>
-                    <option value="<%a++;%>">
+                    <option value="${tempGeneros.getIdGenero_musical()}">
                         ${tempGeneros.getNombre()}
                     </option>
                 </c:forEach>

@@ -35,6 +35,8 @@
                         <th class="cabecera">Descripción</th>
                         <th class="cabecera">Fecha de lanzamiento</th>
                         <th class="cabecera">Artista</th>
+                        <th class="cabecera">Sello Discográfico</th>
+                        <th class="cabecera">Género</th>
                         <th class="cabecera">Acciones</th>
 
                     </tr>
@@ -71,6 +73,8 @@
                         <td class="filas"> ${tempAlbumes.getDescripcion() } </td>
                         <td class="filas"> ${tempAlbumes.getFechaLancimiento() } </td>
                         <td class="filas"> ${tempAlbumes.getNombreArtista() } </td> 
+                        <td class="filas"> ${tempAlbumes.getSello() } </td> 
+                        <td class="filas"> ${tempAlbumes.getNombreGenero() } </td> 
                         <td class="filas">  
                             <a href="${linkCargar}"><img src="Imagenes/icons8-actualizar-15.png" width="15" height="15" alt="icons8-actualizar-15"/></a>
                             &nbsp;
@@ -100,19 +104,31 @@
 
 
                     <div class="form-group">
-                        <label for="nombre">Descripción</label>
+                        <label for="desc">Descripción</label>
                         <input type="text" class="form-control" name="desc" required="">
                     </div> 
 
                     <div class="form-group">
-                        <label for="nombre">Fecha de lanzamiento</label>
+                        <label for="fecha">Fecha de lanzamiento</label>
                         <input type="date" class="form-control" name="fecha" required="">
                     </div> 
+                    <div class="form-group">
+                        <label for="sello">Sello Discográfico</label>
+                        <input type="text" class="form-control" name="sello" required="">
+                    </div>
+                    <label for="genero">Género musical</label>
+                    <select name="genero">
+
+                        <c:forEach var="tempGeneros" items="${Generos }">
+                            <option value="${tempGeneros.getIdGenero_musical()}">
+                                ${tempGeneros.getNombre()}
+                            </option>
+                        </c:forEach>
+
+                    </select>
 
 
                     <input type="submit" class=" btn btn-success" value="Insertar" >
-
-
 
                 </form>
             </div><!--Fin registrar -->
@@ -121,7 +137,7 @@
 
                 <form action = "LAlbum" method="post" >
                     <input type="hidden" name="idUsuario" value="${id}">
-                    <input type="text" name="CodigoAlbum" value="${AlbumActualizar.getIdAlbum()}">
+                    <input type="hidden" name="CodigoAlbum" value="${AlbumActualizar.getIdAlbum()}">
                     <input type="hidden" name="Accion" value="Actualizar">
 
 
@@ -132,15 +148,29 @@
 
 
                     <div class="form-group">
-                        <label for="nombre">Descripción</label>
+                        <label for="descripcion">Descripción</label>
                         <input type="text" class="form-control" value="${AlbumActualizar.getDescripcion()}" name="descripcion" required="">
                     </div> 
 
                     <div class="form-group">
-                        <label for="nombre">Fecha de lanzamiento</label>
+                        <label for="fecha">Fecha de lanzamiento</label>
                         <input type="date" class="form-control" value="${AlbumActualizar.getFechaLancimiento}" name="fecha" required="">
                     </div> 
 
+                    <div class="form-group">
+                        <label for="sello">Sello Discográfico</label>
+                        <input type="text" class="form-control" value="${AlbumActualizar.getSello()}" name="sello" required="">
+                    </div>
+                    <label for="genero">Género musical</label>
+                    <select name="genero">
+                        <option >
+                            <c:forEach var="tempGeneros" items="${Generos }">
+                            <option value="${tempGeneros.getIdGenero_musical()}">
+                                ${tempGeneros.getNombre()}
+                            </option>
+                        </c:forEach>
+                        </option>
+                    </select>
                     <input type="submit" class=" btn btn-success" value="Actualizar" >
 
 

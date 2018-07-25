@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Logica;
 
 import Datos.DAlbumes;
+import Datos.DGenero;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -28,8 +24,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Rodrigo Moreno S
  */
-@WebServlet(name = "LAlbum", urlPatterns = {"/LAlbum"})
-public class LAlbum extends HttpServlet {
+@WebServlet(name = "LAlbumes", urlPatterns = {"/LAlbum"})
+public class LAlbumes extends HttpServlet {
 
     private Conexion mysql = new Conexion();
     private Connection con = mysql.Conectar();
@@ -40,9 +36,7 @@ public class LAlbum extends HttpServlet {
 
         List<DAlbumes> albumes = new ArrayList<>();
 
-        consulta = "SELECT album.idAlbum, album.Nombre, album.Descripcion, album.fecha_lanzamiento, artista.Nombre_BandaArtistico "
-                + "FROM album, artista "
-                + "where album.fk_artista = artista.fk_usuario and album.fk_artista =?";
+        consulta = "SELECT album.idAlbum,Album.Nombre, genero_musical.Nombre as NombreGenero, album.Descripcion, album.fecha_lanzamiento, artista.Nombre_BandaArtistico, album.SelloDiscografico FROM album, artista, genero_musical where album.fk_artista = artista.fk_usuario and genero_musical.idGenero_musical=album.Fk_genero and album.fk_artista =?";
 
         PreparedStatement st = con.prepareStatement(consulta);
         st.setInt(1, id);
@@ -55,8 +49,10 @@ public class LAlbum extends HttpServlet {
             String descripcion = rs.getString("Descripcion");
             String fecha = rs.getString("fecha_lanzamiento");
             String artista = rs.getString("Nombre_BandaArtistico");
+            String sello = rs.getString("SelloDiscografico");
+            String genero = rs.getString("NombreGenero");
 
-            DAlbumes generoTemporal = new DAlbumes(codigo, nombre, descripcion, fecha, artista);
+            DAlbumes generoTemporal = new DAlbumes(codigo, nombre, descripcion, fecha, artista, sello, genero);
             albumes.add(generoTemporal);
         }
 
@@ -80,25 +76,30 @@ public class LAlbum extends HttpServlet {
         return result;
     }
 
-    public void IngresarNuevoAlbum(DAlbumes a) {
-
-        consulta = "INSERT INTO `album`(`Nombre`, `Descripcion`, `fk_artista`, `fecha_lanzamiento`) "
-                + "VALUES (?,?,?,?)";
+    public String IngresarNuevoAlbum(DAlbumes a) {
+        String result = null;
+        consulta = "INSERT INTO `album`(`Nombre`, `Descripcion`, `fk_artista`, `fecha_lanzamiento`, `SelloDiscografico`, `Fk_genero`) VALUES  (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement st = con.prepareStatement(consulta);
             st.setString(1, a.getNombre());
             st.setString(2, a.getDescripcion());
             st.setInt(3, a.getFk_artista());
             st.setString(4, a.getFechaLancimiento());
+            st.setString(5, a.getSello());
+            st.setInt(6, a.getIdGenero());
+            int n = st.executeUpdate();
 
-            int num = st.executeUpdate();
-            if (num != 0) {
-
+            if (n != 0) {
+                result = "El registro se ha ingresado correctamente";
+            } else {
+                result = "El registro no se ha ingresado correctamente";
             }
 
         } catch (Exception e) {
-
+            result = "Ha ocurrido un problema: \n " + e.getMessage();
         }
+
+        return result;
     }
 
     //-----------------Mostrar album---------------------//
@@ -120,6 +121,8 @@ public class LAlbum extends HttpServlet {
                 String nombre = rs.getString("Nombre");
                 String descripcion = rs.getString("Descripcion");
                 String fecha = rs.getString("fecha_lanzamiento");
+                String sello = rs.getString("SelloDiscografico");
+                
 
                 obj = new DAlbumes(idAbum, nombre, descripcion, fecha);
 
@@ -210,9 +213,13 @@ public class LAlbum extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("idUsuario"));
             int idAlbum = Integer.parseInt(request.getParameter("Codigo"));
 
-            DAlbumes CodigoAlbum = ObtenerAlbum(idAlbum);
+            /*try (PrintWriter out = response.getWriter()) {
+                out.println("value  " + id + idAlbum);
+            } catch (Exception e) {
+            }*/
+            DAlbumes Album = ObtenerAlbum(idAlbum);
 
-            request.setAttribute("AlbumActualizar", CodigoAlbum);
+            request.setAttribute("AlbumActualizar", Album);
             request.setAttribute("id", id);
             request.setAttribute("botones", "Actualizar");
 
@@ -261,6 +268,7 @@ public class LAlbum extends HttpServlet {
         }
 
     }
+//---------------------------------------listo-------------
 
     private void IngresarAlbum(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("idUsuario"));
@@ -270,9 +278,15 @@ public class LAlbum extends HttpServlet {
             a.setDescripcion(request.getParameter("desc"));
             a.setFechaLancimiento(request.getParameter("fecha"));
             a.setNombre(request.getParameter("nombre"));
+            a.setSello(request.getParameter("sello"));
+            a.setIdGenero(Integer.parseInt(request.getParameter("genero")));
+
+            /*try (PrintWriter out = response.getWriter()) {
+                out.println("value  ");
+            } catch (Exception e) {
+            }*/
             IngresarNuevoAlbum(a);
             request.setAttribute("id", id);
-
             MostrarAlbumes(request, response);
         } catch (Exception e) {
 
@@ -280,14 +294,18 @@ public class LAlbum extends HttpServlet {
 
     }//Fin Insertar Generos
 
+//---------------------------------------listo-------------
     private void MostrarAlbumes(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("idUsuario"));
         try {
 
+            LGenero g = new LGenero();
+            List<DGenero> TablaGeneros;
+            TablaGeneros = g.MostrarDatos();
+            request.setAttribute("Generos", TablaGeneros);
+
             List<DAlbumes> TablaAlbumes;
-
             TablaAlbumes = MostrarDatos(id);
-
             request.setAttribute("Album", TablaAlbumes);
 
             request.setAttribute("id", id);

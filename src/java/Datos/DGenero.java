@@ -48,5 +48,6 @@ public class DGenero {
     public void setDescripcion(String _Descripcion) {
         this._Descripcion = _Descripcion;
     }
+    
 
 }

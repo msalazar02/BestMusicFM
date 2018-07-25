@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Datos;
 
 /**
@@ -18,26 +13,55 @@ public class DAlbumes {
     private int _fk_artista;
     private String _fechaLancimiento;
     private String _nombreArtista;
+    private String _sello;
+    private String _nombreGenero;
+    private int _idGenero;
 
     //-----------------------Declaración de constructores---------------------------//
     public DAlbumes() {
     }
 
 //Obtener todos los albumes
-    public DAlbumes(int _idAlbum, String _Nombre, String _Descripcion, String _fechaLancimiento, String _nombreArtista) {
+    public DAlbumes(int _idAlbum, String _Nombre, String _Descripcion, String _fechaLancimiento, String _nombreArtista, String _sello, String _nombreGenero) {
         this._idAlbum = _idAlbum;
         this._Nombre = _Nombre;
         this._Descripcion = _Descripcion;
         this._fechaLancimiento = _fechaLancimiento;
         this._nombreArtista = _nombreArtista;
+        this._sello = _sello;
+        this._nombreGenero = _nombreGenero;
     }
-//Obtener un album----actualizar
 
+//Obtener un album----actualizar
     public DAlbumes(int _idAlbum, String _Nombre, String _Descripcion, String _fechaLancimiento) {
         this._idAlbum = _idAlbum;
         this._Nombre = _Nombre;
         this._Descripcion = _Descripcion;
         this._fechaLancimiento = _fechaLancimiento;
+    }
+
+    public String getSello() {
+        return _sello;
+    }
+
+    public void setSello(String _sello) {
+        this._sello = _sello;
+    }
+
+    public String getNombreGenero() {
+        return _nombreGenero;
+    }
+
+    public void setNombreGenero(String _nombreGenero) {
+        this._nombreGenero = _nombreGenero;
+    }
+
+    public int getIdGenero() {
+        return _idGenero;
+    }
+
+    public void setIdGenero(int _idGenero) {
+        this._idGenero = _idGenero;
     }
 
     public String getNombreArtista() {
