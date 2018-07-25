@@ -37,6 +37,7 @@ public class LAlbum extends HttpServlet {
 
     //----------------Mostrar Albumes------listo------
     public List<DAlbumes> MostrarDatos(int id) throws Exception {
+
         List<DAlbumes> albumes = new ArrayList<>();
 
         consulta = "SELECT album.idAlbum, album.Nombre, album.Descripcion, album.fecha_lanzamiento, artista.Nombre_BandaArtistico "
@@ -94,8 +95,7 @@ public class LAlbum extends HttpServlet {
             if (num != 0) {
 
             }
-            st.close();
-            con.close();
+
         } catch (Exception e) {
 
         }
@@ -126,7 +126,8 @@ public class LAlbum extends HttpServlet {
             } else {
                 throw new Exception("No hay datos");
             }
-
+            con.close();
+            st.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -134,7 +135,7 @@ public class LAlbum extends HttpServlet {
 
     }
 
-    public void ActualizarGenero(DAlbumes AlbumActualizado) throws Exception {
+    public void ActualizarAlbum(DAlbumes AlbumActualizado) throws Exception {
 
         consulta = "UPDATE `album` SET `Nombre`=?,`Descripcion`=?,"
                 + "`fecha_lanzamiento`=? WHERE idAlbum = ?";
@@ -177,6 +178,10 @@ public class LAlbum extends HttpServlet {
             case "Mostrar":
                 MostrarAlbumes(request, response);
                 break;
+
+            case "VerCanciones":
+                VerCanciones(request, response);
+                break;
         }
 
     }
@@ -218,6 +223,18 @@ public class LAlbum extends HttpServlet {
             ex.printStackTrace();
         }
     }//Fin Cargar Género
+
+    private void VerCanciones(HttpServletRequest request, HttpServletResponse response) {
+        int idAlbum = Integer.parseInt(request.getParameter("Codigo"));
+        int id = Integer.parseInt(request.getParameter("idUsuario"));
+        try {
+            request.setAttribute("idAlbum", idAlbum);
+            request.setAttribute("id", id);
+            request.getRequestDispatcher("/nombre.jsp").forward(request, response);
+        } catch (Exception e) {
+        }
+
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -292,9 +309,9 @@ public class LAlbum extends HttpServlet {
             String descripcion = request.getParameter("descripcion");
             String fecha = request.getParameter("fecha");
 
-            DAlbumes GeneroActualizado = new DAlbumes(idG, nombre, descripcion, fecha);
+            DAlbumes AlbumActualizado = new DAlbumes(idG, nombre, descripcion, fecha);
 
-            ActualizarGenero(GeneroActualizado);
+            ActualizarAlbum(AlbumActualizado);
             request.setAttribute("id", id);
             MostrarAlbumes(request, response);
 

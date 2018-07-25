@@ -56,6 +56,12 @@
                         <c:param name="Codigo" value="${tempAlbumes.getIdAlbum()}"></c:param>
 
                     </c:url>
+                    <c:url var="linkVerCanciones" value="LAlbum">
+                        <c:param name="idUsuario" value="${id}"></c:param>
+                        <c:param name="Accion" value="verCanciones"></c:param>
+                        <c:param name="Codigo" value="${tempAlbumes.getIdAlbum()}"></c:param>
+
+                    </c:url>
 
                     <tr>
                         <td class="filas"> ${tempAlbumes.getIdAlbum() } </td>
@@ -66,6 +72,8 @@
                             <a href="${linkCargar}"><img src="Imagenes/icons8-actualizar-15.png" width="15" height="15" alt="icons8-actualizar-15"/></a>
                             &nbsp;
                             <a href="${linkEliminar}"><img src="Imagenes/icons8-basura-32.png" width="20" height="20" alt="icons8-basura-32"/></a>
+                            &nbsp;
+                            <a href="${linkVerCanciones}"><img src="Imagenes/icons8-detalles-15.png" width="20" height="20" alt="icons8-basura-32"/></a>
                         </td>
                     </tr>
 
@@ -73,7 +81,7 @@
 
             </table>
         </div>
-        
+
         <div class="container" class ="col-md-3">
             <div id="Registrar" class ="col-md-3">
 
@@ -90,7 +98,7 @@
 
                     <div class="form-group">
                         <label for="nombre">Descripción</label>
-                        <input type="text" class="form-control" name="descripcion" required="">
+                        <input type="text" class="form-control" name="desc" required="">
                     </div> 
 
                     <div class="form-group">
@@ -106,37 +114,37 @@
                 </form>
             </div><!--Fin registrar -->
 
-        <div id="Actualizar" class ="col-md-3">
+            <div id="Actualizar" class ="col-md-3">
 
-            <form action = "LAlbum" method="post" >
-                <input type="hidden" name="idUsuario" value="${id}">
-                <input type="hidden" name="CodigoAlbum" value="${AlbumActualizar.getIdAlbum()}">
-                <input type="hidden" name="Accion" value="Actualizar">
-
-
-                <div class="form-group">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" class="form-control" value="${AlbumActualizar.getNombre()}" name="nombre" required="">
-                </div> 
+                <form action = "LAlbum" method="post" >
+                    <input type="hidden" name="idUsuario" value="${id}">
+                    <input type="text" name="CodigoAlbum" value="${AlbumActualizar.getIdAlbum()}">
+                    <input type="hidden" name="Accion" value="Actualizar">
 
 
-                <div class="form-group">
-                    <label for="nombre">Descripción</label>
-                    <input type="text" class="form-control" value="${AlbumActualizar.getDescripcion()}" name="descripcion" required="">
-                </div> 
-
-                <div class="form-group">
-                    <label for="nombre">Fecha de lanzamiento</label>
-                    <input type="date" class="form-control" value="${AlbumActualizar.getFechaLancimiento}" name="fecha" required="">
-                </div> 
-
-                <input type="submit" class=" btn btn-success" value="Actualizar" >
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" value="${AlbumActualizar.getNombre()}" name="nombre" required="">
+                    </div> 
 
 
-            </form>
+                    <div class="form-group">
+                        <label for="nombre">Descripción</label>
+                        <input type="text" class="form-control" value="${AlbumActualizar.getDescripcion()}" name="descripcion" required="">
+                    </div> 
 
-        </div><!--Fin actualizar -->
-    </div>
+                    <div class="form-group">
+                        <label for="nombre">Fecha de lanzamiento</label>
+                        <input type="date" class="form-control" value="${AlbumActualizar.getFechaLancimiento}" name="fecha" required="">
+                    </div> 
 
-</body>
+                    <input type="submit" class=" btn btn-success" value="Actualizar" >
+
+
+                </form>
+
+            </div><!--Fin actualizar -->
+        </div>
+
+    </body>
 </html>
