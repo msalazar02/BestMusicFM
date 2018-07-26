@@ -11,22 +11,46 @@ public class DResegnas {
     private String _Fecha;
     private String _NombreArtista;
     private String _NombreAlbum;
+    private int _Experto;
+    private String _NombreExperto;
 
     //-----------------------Declaración de constructores---------------------------//
-    public DResegnas(int _idResegna, String _NombreArtista, String _NombreAlbum, String _Descripcion, Double _Calificacion, String _Fecha) {
+    public DResegnas(int _idResegna, String _NombreArtista, String _NombreAlbum, String _Descripcion, Double _Calificacion, String _Fecha, String nombreExperto) {
         this._idResegna = _idResegna;
         this._NombreArtista = _NombreArtista;
         this._NombreAlbum = _NombreAlbum;
         this._Descripcion = _Descripcion;
         this._Calificacion = _Calificacion;
         this._Fecha = _Fecha;
+        this._NombreExperto = nombreExperto;
+    }
 
+    public DResegnas(int _idResegna, String _Descripcion, Double _Calificacion) {
+        this._idResegna = _idResegna;
+        this._Descripcion = _Descripcion;
+        this._Calificacion = _Calificacion;
     }
 
     public DResegnas() {
     }
 
     //-----------------------Declaración getters y setters---------------------------//
+    public int getExperto() {
+        return _Experto;
+    }
+
+    public void setExperto(int _Experto) {
+        this._Experto = _Experto;
+    }
+
+    public String getNombreExperto() {
+        return _NombreExperto;
+    }
+
+    public void setNombreExperto(String _NombreExperto) {
+        this._NombreExperto = _NombreExperto;
+    }
+
     public int getIdResegna() {
         return _idResegna;
     }

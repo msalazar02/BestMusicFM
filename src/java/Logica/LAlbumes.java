@@ -127,6 +127,7 @@ public class LAlbumes extends HttpServlet {
 
     }
 
+    //-----------------Actualizar album---------------------//
     public void ActualizarAlbum(DAlbumes AlbumActualizado) throws Exception {
 
         consulta = "UPDATE `album` SET `Nombre`=?,`Descripcion`=?,"
@@ -175,7 +176,7 @@ public class LAlbumes extends HttpServlet {
             case "VerCanciones":
                 VerCanciones(request, response);
                 break;
-                
+
             case "irArtista":
                 Regresar(request, response);
                 break;

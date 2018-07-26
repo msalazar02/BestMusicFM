@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
 
 
@@ -8,11 +7,19 @@ $(document).ready(function () {
     if (botones == "Actualizar") {
         $("#Registrar").remove();
         $("#Actualizar").show();
+        $("#Elegir").remove();
+
+    }
+    if (botones == "Registrar") {
+        $("#Registrar").show();
+        $("#Actualizar").remove();
+        $("#Elegir").remove();
 
 
     } else {
-        $("#Registrar").show();
+        $("#Registrar").remove();
         $("#Actualizar").remove();
+        $("#Elegir").show();
 
     }
 
