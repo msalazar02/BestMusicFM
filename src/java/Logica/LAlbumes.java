@@ -184,8 +184,23 @@ public class LAlbumes extends HttpServlet {
             case "VerCanciones":
                 VerCanciones(request, response);
                 break;
+            case "irArtista":
+                Regresar(request, response);
+                break;
         }
 
+    }
+
+    private void Regresar(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int id = Integer.parseInt(request.getParameter("idUsuario"));
+            request.setAttribute("id", id);
+            request.getRequestDispatcher("/PaginaPrincipalArtista.jsp").forward(request, response);
+        } catch (ServletException ex) {
+
+        } catch (IOException ex) {
+
+        }
     }
 
     private void EliminarAlbum(HttpServletRequest request, HttpServletResponse response) {
@@ -193,15 +208,9 @@ public class LAlbumes extends HttpServlet {
         int idAlbum = Integer.parseInt(request.getParameter("Codigo"));
 
         try {
-            if (EliminarAlbum(idAlbum) == 0) {
-
-                request.setAttribute("botones", "error");
-                MostrarAlbumes(request, response);
-
-            } else {
-                request.setAttribute("insertar", "true");
-                MostrarAlbumes(request, response);
-            }
+            EliminarAlbum(idAlbum);
+            request.setAttribute("id", id);
+            MostrarAlbumes(request, response);
         } catch (Exception ex) {
 
         }
@@ -211,11 +220,6 @@ public class LAlbumes extends HttpServlet {
         try {
             int id = Integer.parseInt(request.getParameter("idUsuario"));
             int idAlbum = Integer.parseInt(request.getParameter("Codigo"));
-
-            /*try (PrintWriter out = response.getWriter()) {
-                out.println("value  " + id + idAlbum);
-            } catch (Exception e) {
-            }*/
             DAlbumes Album = ObtenerAlbum(idAlbum);
 
             request.setAttribute("AlbumActualizar", Album);
@@ -234,7 +238,7 @@ public class LAlbumes extends HttpServlet {
         try {
             request.setAttribute("idA", idAlbum);
             request.setAttribute("id", id);
-            request.getRequestDispatcher("/EditarCanciones.jsp").forward(request, response);
+            request.getRequestDispatcher("/EditarCancione.jsp").forward(request, response);
         } catch (Exception e) {
         }
 
@@ -306,6 +310,9 @@ public class LAlbumes extends HttpServlet {
             TablaAlbumes = MostrarDatos(id);
             request.setAttribute("Album", TablaAlbumes);
 
+            if (TablaAlbumes.isEmpty()) {
+                request.setAttribute("aviso", "error");
+            }
             request.setAttribute("id", id);
 
             request.getRequestDispatcher("/EditarAlbumes.jsp").forward(request, response);
@@ -331,7 +338,7 @@ public class LAlbumes extends HttpServlet {
             ActualizarAlbum(AlbumActualizado);
             request.setAttribute("id", id);
             MostrarAlbumes(request, response);
- 
+
         } catch (Exception ex) {
 
         }

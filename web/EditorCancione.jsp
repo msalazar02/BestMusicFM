@@ -21,11 +21,11 @@
 
         <h1> Bienvenido al editor de generos </h1> 
         <h3 id="botones" hidden>${botones}</h3>
+        <h3 id="aviso" hidden>${aviso}</h3>
         <h3>Lista de generos actuales</h3> 
 
         <div id="Error" class="col-md-11 alert alert-danger alert-dismissible" role="alert">
-            La petición no fue completada con exito:
-            El género selecionado se encuentra relacionado con almenos una cuenta existente
+            En este momento no hay canciones registradas para este álbum
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -40,7 +40,7 @@
                     <tr class="thead-dark success">
                         <th class="cabecera"> Código</th>
                         <th class="cabecera">Nombre</th>
-                        <th class="cabecera">Descripción</th>
+                        <th class="cabecera">Duración</th>
                         <th class="cabecera">Acciones</th>
 
                     </tr>
@@ -52,7 +52,8 @@
                     <c:url var="linkCargar" value="LCanciones">
                         <c:param name="Accion" value="Cargar"></c:param>
                         <c:param name="idUsuario" value="${id}"></c:param>
-                        <c:param name="idAlbum" value="${tempCanciones.getIdCancion()}"></c:param>
+                        <c:param name="idAlbum" value="${idA}"></c:param>
+                        <c:param name="idCancion" value="${tempCanciones.getIdCancion()}"></c:param>
 
                     </c:url>
 
@@ -60,8 +61,9 @@
 
                     <c:url var="linkEliminar" value="LCanciones">
                         <c:param name="idUsuario" value="${id}"></c:param>
+                        <c:param name="idAlbum" value="${idA}"></c:param>
                         <c:param name="Accion" value="Eliminar"></c:param>
-                        <c:param name="idAlbum" value="${tempCanciones.getIdCancion()}"></c:param>
+                        <c:param name="idCancion" value="${tempCanciones.getIdCancion()}"></c:param>
 
                     </c:url>
 
@@ -97,49 +99,60 @@
 
 
                     <div class="form-group">
-                        <label for="duracion">Duración</label>
-                        <input type="text" class="form-control" name="duracion" required="">
+
+                        <div class="form-group col-xs-6">
+                            <label for="duracionm">Duración</label>
+                            <input type="text" maxlength="2" placeholder="Minutos" class="form-control" name="duracionm" required="">
+
+                        </div>
+
+                        <div class=" form-group col-xs-6">
+                            <label for="duracions">:</label>
+                            <input type="text" maxlength="2" placeholder="Segundos" class="form-control" name="duracions" required="">
+                        </div>
+
                     </div> 
 
-
-                    <input type="submit" class=" btn btn-success" value="Insertar" >
-
+                    <div class="form-group">
+                        <input type="submit" class=" btn btn-success" value="Insertar" >
+                    </div> 
 
 
                 </form>
             </div>
             <div id="Actualizar" class ="col-md-3">
 
-                <form action = "LGenero" method="post" >
+                <form action = "LCanciones" method="post" >
                     <input type="hidden" name="idUsuario" value="${id}">
-                    <input type="hidden" name="CodigoGenero" value="${GeneroActualizar.getIdGenero_musical()}">
+                    <input type="hidden" name="idAlbum" value="${idA}">
+                    <input type="hidden" name="idCancion" value="${cancionActualizar.getIdCancion()}">
                     <input type="hidden" name="Accion" value="Actualizar">
 
 
                     <div class="form-group">
                         <label for="nombre">Nombre</label>
-                        <input type="text" class="form-control" value="${GeneroActualizar.getNombre()}" name="nombre" required="">
+                        <input type="text" class="form-control" value="${cancionActualizar.getNombre()}" name="nombre" required="">
                     </div> 
 
 
                     <div class="form-group">
-                        <label for="nombre">Descripción</label>
-                        <input type="text" class="form-control" value="${GeneroActualizar.getDescripcion()}" name="descripcion" required="">
+                        <label for="duracion">Duración</label>
+                        <input type="text" class="form-control" value="${cancionActualizar.getDuracion()}" name="duracion" required="">
                     </div> 
 
 
-
-                    <input type="submit" class=" btn btn-success" value="Actualizar" >
-
+                    <div class="form-group">
+                        <input type="submit" class=" btn btn-success" value="Actualizar" >
+                    </div> 
 
                 </form>
 
             </div>
         </div>
         <div class="col-md-12">
-            <c:url var="linkRegresar" value="LGenero">
+            <c:url var="linkRegresar" value="LAlbum">
                 <c:param name="idUsuario" value="${id}"></c:param>
-                <c:param name="Accion" value="irPrincipal"></c:param>
+                <c:param name="Accion" value="Mostrar"></c:param>
             </c:url>
 
             <a href="${linkRegresar}" class="btn btn-primary btn-block" ><img src="Imagenes/icons8-izquierda-2-30.png" width="20" height="20"/></a>

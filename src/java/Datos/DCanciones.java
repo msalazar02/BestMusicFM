@@ -24,6 +24,12 @@ public class DCanciones {
         this._NombreAlbum = _NombreAlbum;
     }
 
+    public DCanciones(int _idCancion, String _Nombre, String _duracion) {
+        this._idCancion = _idCancion;
+        this._Nombre = _Nombre;
+        this._duracion = _duracion;
+    }
+
     public DCanciones() {
     }
 //-------------------------Getters y Setters------------------------------------

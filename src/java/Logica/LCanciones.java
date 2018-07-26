@@ -72,6 +72,20 @@ public class LCanciones extends HttpServlet {
         }
     }
 
+    //-------------------Elimina las todas canciones de un álbum--------------------
+    public void ActualizarCancion(DCanciones obj) {
+
+        consulta = "UPDATE `cancion` SET `Nombre`=?,`duracion`=? WHERE idCancion= ?";
+        try {
+            PreparedStatement st = con.prepareStatement(consulta);
+            st.setString(1, obj.getNombre());
+            st.setString(2, obj.getDuracion());
+            st.setInt(3, obj.getIdCancion());
+            st.executeUpdate();
+        } catch (Exception e) {
+        }
+    }
+
 //------------------------Muestra todas las canciones-------------------------
     public List<DCanciones> MostrarCanciones(int id) throws Exception {
         List<DCanciones> canciones = new ArrayList<>();
@@ -99,7 +113,7 @@ public class LCanciones extends HttpServlet {
     public DCanciones ObtenerCancion(int idCancion) throws Exception {
         DCanciones obj = null;
 
-        consulta = "SELECT * FROM GENERO_MUSICAL WHERE IDGENERO_MUSICAL=?";
+        consulta = "SELECT * FROM cancion where idCancion=?";
 
         try {
             PreparedStatement st = con.prepareStatement(consulta);
@@ -110,12 +124,12 @@ public class LCanciones extends HttpServlet {
 
             if (rs.next()) {
 
-                int id = rs.getInt("idGenero_musical");
+                int id = rs.getInt("idCancion");
                 String nombre = rs.getString("Nombre");
-                String duracion = rs.getString("Descripcion");
+                String duracion = rs.getString("Duracion");
                 // String album = rs.getString("Nopmbre")
 
-                //obj = new DCanciones(id, nombre, duracion, album);
+                obj = new DCanciones(id, nombre, duracion);
             } else {
                 throw new Exception("No hay datos");
             }
@@ -153,13 +167,29 @@ public class LCanciones extends HttpServlet {
 
     private void CargarCancion(HttpServletRequest request, HttpServletResponse response) {
 
+        try {
+            int id = Integer.parseInt(request.getParameter("idUsuario"));
+            int idA = Integer.parseInt(request.getParameter("idAlbum"));
+            int idCancion = Integer.parseInt(request.getParameter("idCancion"));
+            DCanciones cancion = ObtenerCancion(idCancion);
+
+            request.setAttribute("cancionActualizar", cancion);
+            request.setAttribute("id", id);
+            request.setAttribute("idA", idA);
+            request.setAttribute("botones", "Actualizar");
+
+            MostrarCanciones(request, response);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void EliminarCancion(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("idUsuario"));
         int idA = Integer.parseInt(request.getParameter("idAlbum"));
-        EliminarCancion(idA);
-        /*try (PrintWriter out = response.getWriter()) {
+        int idCancion = Integer.parseInt(request.getParameter("idCancion"));
+        EliminarCancion(idCancion);
+        /* try (PrintWriter out = response.getWriter()) {
             out.println(id + " Eliminando  " + idA);
         } catch (Exception e) {
         }*/
@@ -199,17 +229,16 @@ public class LCanciones extends HttpServlet {
         try {
             DCanciones g = new DCanciones();
             g.setNombre(request.getParameter("nombre"));
-            g.setDuracion(request.getParameter("duracion"));
+            g.setDuracion(request.getParameter("duracionm") + ":" + request.getParameter("duracions"));
             g.setAlbum(idA);
 
             IngresarNuevaCancion(g);
-
-
-            /*try (PrintWriter out = response.getWriter()) {
-                out.println(IngresarNuevaCancion(g) + " " + id + " " + idA);
+            MostrarCanciones(request, response);
+            /* try (PrintWriter out = response.getWriter()) {
+                out.println(request.getParameter("duracionm") + ":" + request.getParameter("duracions"));
             } catch (Exception e) {
             }*/
-            MostrarCanciones(request, response);
+
         } catch (Exception e) {
 
         }//Fin Catch
@@ -227,20 +256,34 @@ public class LCanciones extends HttpServlet {
             request.setAttribute("Canciones", TablaCanciones);
             request.setAttribute("id", id);
             request.setAttribute("idA", idA);
+            if (TablaCanciones.isEmpty()) {
+                request.setAttribute("aviso", "error");
+            }
 
             request.getRequestDispatcher("/EditorCancione.jsp").forward(request, response);
         } catch (Exception ex) {
-            /* try (PrintWriter out = response.getWriter()) {
-                out.println("estoy dentro" + ex.getMessage());
-            } catch (Exception e) {
-            }*/
+
         }
-        // request.getRequestDispatcher("/EditarCanciones.jsp").forward(request, response);
 
     }
 
     private void ActualizarCancion(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("idUsuario"));
+        int idA = Integer.parseInt(request.getParameter("idAlbum"));
+        try {
+            int idCancion = Integer.parseInt(request.getParameter("idCancion"));
+            String nombre = request.getParameter("nombre");
+            String descripcion = request.getParameter("duracion");
 
+            DCanciones cancionActualizar = new DCanciones(idCancion, nombre, descripcion);
+            ActualizarCancion(cancionActualizar);
+            request.setAttribute("id", id);
+            request.setAttribute("id", idA);
+            MostrarCanciones(request, response);
+
+        } catch (Exception ex) {
+
+        }
     }
 
 }

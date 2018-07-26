@@ -21,8 +21,15 @@
 
         <h1> Bienvenido al editor de Albumes </h1> 
         <h3 id="botones" hidden>${botones}</h3>
+        <h3 id="aviso" hidden>${aviso}</h3>
         <h3>Lista de albumes actuales</h3> 
 
+        <div id="Error" class="col-md-11 alert alert-danger alert-dismissible" role="alert">
+            En este momento no hay albumes registrados para este usuario
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
         <div class="col-md-8">
             <table class="table table-hover ">
 
@@ -178,6 +185,13 @@
 
             </div><!--Fin actualizar -->
         </div>
+        <div class="col-md-12">
+            <c:url var="linkRegresar" value="LAlbum">
+                <c:param name="idUsuario" value="${id}"></c:param>
+                <c:param name="Accion" value="irArtista"></c:param>
+            </c:url>
 
+            <a href="${linkRegresar}" class="btn btn-primary btn-block" ><img src="Imagenes/icons8-izquierda-2-30.png" width="20" height="20"/></a>
+        </div>
     </body>
 </html>

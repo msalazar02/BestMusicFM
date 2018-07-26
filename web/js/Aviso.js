@@ -8,7 +8,7 @@
 $(document).ready(function () {
 
 
-    var botones = $("#botones").text();
+    var botones = $("#aviso").text();
     console.log(botones)
 
     if (botones == "error") {
