@@ -9,10 +9,10 @@ $(document).ready(function () {
         $("#Registrar").remove();
         $("#Actualizar").show();
 
-
     } else {
-        $("#Registrar").show();
+        $("#Registrar").remove();
         $("#Actualizar").remove();
+
 
     }
 

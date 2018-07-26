@@ -9,8 +9,7 @@ $(document).ready(function () {
         $("#Actualizar").show();
         $("#Elegir").remove();
 
-    }
-    if (botones == "Registrar") {
+    } else if (botones == "Registrar") {
         $("#Registrar").show();
         $("#Actualizar").remove();
         $("#Elegir").remove();

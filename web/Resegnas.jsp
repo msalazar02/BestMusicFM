@@ -50,7 +50,7 @@
                     <c:url var="linkCargar" value="LResegnas">
                         <c:param name="Accion" value="Cargar"></c:param>
                         <c:param name="idUsuario" value="${id}"></c:param>
-                        <c:param name="idRegna" value="${tempResegnas.getIdResegna() }"></c:param>
+                        <c:param name="idResegna" value="${tempResegnas.getIdResegna() }"></c:param>
 
                     </c:url>
 
@@ -155,7 +155,7 @@
             <%-- -----------------------------------ACTUALIZAR---------------------------------------- --%>            
             <div id="Actualizar" class ="col-md-3">
 
-                <form action = "LResegmas" method="post" >
+                <form action = "LResegnas" method="post" >
                     <input type="hidden" name="idUsuario" value="${id}">
                     <input type="hidden" name="CodigoGenero" value="${ResegnasA.getIdResegna()}">
                     <input type="hidden" name="Accion" value="Actualizar">

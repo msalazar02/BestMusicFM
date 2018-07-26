@@ -137,13 +137,15 @@ public class LResegnas extends HttpServlet {
     //-----------------Actualizar reseña---------------------//
     public void ActualizarResegna(DResegnas a) throws Exception {
 
-        consulta = "UPDATE `reseña` SET `Descripcion`=?,`Calificacion`=? WHERE idReseña = ? ?";
+        consulta = "UPDATE `reseña` SET `Descripcion`=?,`Calificacion`=? WHERE idReseña = ?";
 
         try {
             PreparedStatement st = con.prepareStatement(consulta);
 
             st.setString(1, a.getDescripcion());
             st.setDouble(2, a.getCalificacion());
+            st.setDouble(2, a.getIdResegna());
+
             st.execute();
 
         } catch (Exception e) {
@@ -203,16 +205,12 @@ public class LResegnas extends HttpServlet {
     private void CargarResegna(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         try {
-            int idResegna = Integer.parseInt(request.getParameter("idRegna"));
+            int idResegna = Integer.parseInt(request.getParameter("idResegna"));
+            int id = Integer.parseInt(request.getParameter("idUsuario"));
             DResegnas resegnas = ObtenerResegna(idResegna);
-            try (PrintWriter out = response.getWriter()) {
-
-                out.println(resegnas.getIdResegna() + " <--> " + resegnas.getCalificacion() + " <--> " + resegnas.getDescripcion());
-            } catch (Exception e) {
-
-            }
 
             request.setAttribute("ResegnasA", resegnas);
+            request.setAttribute("id", id);
             request.setAttribute("botones", "Actualizar");
             MostrarResegnas(request, response);
         } catch (Exception ex) {
@@ -221,6 +219,7 @@ public class LResegnas extends HttpServlet {
 
     private void EliminarResegna(HttpServletRequest request, HttpServletResponse response) {
         int idResegna = Integer.parseInt(request.getParameter("Codigo"));
+
         try {
             EliminarResegnas(idResegna);
             MostrarResegnas(request, response);
@@ -252,7 +251,7 @@ public class LResegnas extends HttpServlet {
                 break;
 
             case "Actualizar":
-                EliminarResegna(request, response);
+                ActualizarResegna(request, response);
                 break;
 
             case "Cancelar":
@@ -265,7 +264,6 @@ public class LResegnas extends HttpServlet {
 
     private void MostrarResegnas(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("idUsuario"));
-
         try {
 
             List<DArtista> ComboArtistas;
@@ -275,6 +273,9 @@ public class LResegnas extends HttpServlet {
             List<DResegnas> TablaResegnas;
             TablaResegnas = ObtenerResegnas(id);
             request.setAttribute("Resegna", TablaResegnas);
+            if (TablaResegnas.isEmpty()) {
+                request.setAttribute("aviso", "error");
+            }
 
             request.setAttribute("id", id);
 
@@ -329,6 +330,21 @@ public class LResegnas extends HttpServlet {
         request.setAttribute("id", id);
         MostrarResegnas(request, response);
 
+    }
+
+    private void ActualizarResegna(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("idUsuario"));
+        try {
+            DResegnas a = new DResegnas();
+            a.setDescripcion(request.getParameter("desc"));
+            a.setCalificacion(Double.parseDouble(request.getParameter("calificacion")));
+            a.setIdResegna(Integer.parseInt(request.getParameter("CodigoGenero")));
+            ActualizarResegna(a);
+            request.setAttribute("id", id);
+            MostrarResegnas(request, response);
+        } catch (Exception ex) {
+
+        }
     }
 
 }
