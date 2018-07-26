@@ -63,7 +63,7 @@
                     <c:url var="linkVerCanciones" value="LCanciones">
                         <c:param name="idUsuario" value="${id}"></c:param>
                         <c:param name="Accion" value="Mostrar"></c:param>
-                        <c:param name="Codigo" value="${tempAlbumes.getIdAlbum()}"></c:param>
+                        <c:param name="idAlbum" value="${tempAlbumes.getIdAlbum()}"></c:param>
 
                     </c:url>
 
@@ -154,7 +154,7 @@
 
                     <div class="form-group">
                         <label for="fecha">Fecha de lanzamiento</label>
-                        <input type="date" class="form-control" value="${AlbumActualizar.getFechaLancimiento}" name="fecha" required="">
+                        <input type="date" class="form-control" value="${AlbumActualizar.getFechaLancimiento()}" name="fecha" required="">
                     </div> 
 
                     <div class="form-group">
@@ -163,13 +163,13 @@
                     </div>
                     <label for="genero">Género musical</label>
                     <select name="genero">
-                        <option >
-                            <c:forEach var="tempGeneros" items="${Generos }">
+
+                        <c:forEach var="tempGeneros" items="${Generos }">
                             <option value="${tempGeneros.getIdGenero_musical()}">
                                 ${tempGeneros.getNombre()}
                             </option>
                         </c:forEach>
-                        </option>
+
                     </select>
                     <input type="submit" class=" btn btn-success" value="Actualizar" >
 

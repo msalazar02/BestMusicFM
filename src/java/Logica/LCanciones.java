@@ -29,13 +29,14 @@ import javax.servlet.http.HttpServletResponse;
 public class LCanciones extends HttpServlet {
 
 //------------------------Conecciópn a la base de datos-------------------------
-    private Conexion mysql = new Conexion();
-    private Connection con = mysql.Conectar();
+    private Conexion c = new Conexion();
+    private Connection con = c.Conectar();
     private String consulta = "";
 
 //--------------------------Ingresa un nuevo registro---------------------------
     public void IngresarNuevaCancion(DCanciones a) {
-        consulta = "INSERT INTO `cancion`('`Nombre`,`duracion`, FK_album) VALUES (?, ?, ?)";
+
+        consulta = "INSERT INTO `cancion`(`Nombre`,`duracion`, FK_album) VALUES (?, ?, ?)";
         try {
             PreparedStatement st = con.prepareStatement(consulta);
             st.setString(1, a.getNombre());
@@ -43,15 +44,17 @@ public class LCanciones extends HttpServlet {
             st.setInt(3, a.getAlbum());
             st.executeUpdate();
         } catch (Exception e) {
+
         }
+
     }
 
 //-------------------------Eliminar canción por el id---------------------------
-    public void EliminarCancion(DCanciones obj) {
+    public void EliminarCancion(int id) {
         consulta = "DELETE FROM `cancion` WHERE `idCancion`= ?";
         try {
             PreparedStatement st = con.prepareStatement(consulta);
-            st.setInt(1, obj.getIdCancion());
+            st.setInt(1, id);
             st.executeUpdate();
         } catch (Exception e) {
         }
@@ -70,18 +73,18 @@ public class LCanciones extends HttpServlet {
     }
 
 //------------------------Muestra todas las canciones-------------------------
-    public List<DCanciones> MostrarCanciones() throws Exception {
+    public List<DCanciones> MostrarCanciones(int id) throws Exception {
         List<DCanciones> canciones = new ArrayList<>();
 
-        consulta = "SELECT cancion.Nombre, album.Nombre as NombreAlbum, cancion.duracion, cancion.idCancion FROM cancion, album where album.idAlbum = cancion.FK_album and cancion.idCancion = ?";
+        consulta = "SELECT cancion.Nombre, album.Nombre as NombreAlbum, cancion.duracion, cancion.idCancion FROM cancion, album where album.idAlbum = cancion.FK_album and cancion.FK_album = ?";
 
         PreparedStatement st = con.prepareStatement(consulta);
-
+        st.setInt(1, id);
         ResultSet rs = st.executeQuery();
 
         while (rs.next()) {
 
-            int codigo = rs.getInt("idGenero_musical");
+            int codigo = rs.getInt("idCancion");
             String nombre = rs.getString("Nombre");
             String duracion = rs.getString("duracion");
             String album = rs.getString("NombreAlbum");
@@ -93,7 +96,7 @@ public class LCanciones extends HttpServlet {
     }
 
 //------------------------Muestra una canción por el id-------------------------
-    public DCanciones ObtenerCanciones(int idCancion) throws Exception {
+    public DCanciones ObtenerCancion(int idCancion) throws Exception {
         DCanciones obj = null;
 
         consulta = "SELECT * FROM GENERO_MUSICAL WHERE IDGENERO_MUSICAL=?";
@@ -149,11 +152,20 @@ public class LCanciones extends HttpServlet {
     }
 
     private void CargarCancion(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 
     private void EliminarCancion(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int id = Integer.parseInt(request.getParameter("idUsuario"));
+        int idA = Integer.parseInt(request.getParameter("idAlbum"));
+        EliminarCancion(idA);
+        /*try (PrintWriter out = response.getWriter()) {
+            out.println(id + " Eliminando  " + idA);
+        } catch (Exception e) {
+        }*/
+        request.setAttribute("id", id);
+        request.setAttribute("idA", idA);
+        MostrarCanciones(request, response);
     }
 
     @Override
@@ -181,26 +193,50 @@ public class LCanciones extends HttpServlet {
     }
 
     private void InsertarCancion(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("idUsuario"));
+        int idA = Integer.parseInt(request.getParameter("idAlbum"));
 
-    }
+        try {
+            DCanciones g = new DCanciones();
+            g.setNombre(request.getParameter("nombre"));
+            g.setDuracion(request.getParameter("duracion"));
+            g.setAlbum(idA);
+
+            IngresarNuevaCancion(g);
+
+
+            /*try (PrintWriter out = response.getWriter()) {
+                out.println(IngresarNuevaCancion(g) + " " + id + " " + idA);
+            } catch (Exception e) {
+            }*/
+            MostrarCanciones(request, response);
+        } catch (Exception e) {
+
+        }//Fin Catch
+
+    }//Fin Insertar Generos
 
     private void MostrarCanciones(HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("idUsuario"));
         try {
+            int id = Integer.parseInt(request.getParameter("idUsuario"));
+            int idA = Integer.parseInt(request.getParameter("idAlbum"));
 
-            List<DCanciones> TablaGeneros;
+            List<DCanciones> TablaCanciones;
 
-            TablaGeneros = MostrarCanciones();
-
-            request.setAttribute("Canciones", TablaGeneros);
+            TablaCanciones = MostrarCanciones(idA);
+            request.setAttribute("Canciones", TablaCanciones);
             request.setAttribute("id", id);
+            request.setAttribute("idA", idA);
 
-            request.getRequestDispatcher("/EditarCanciones.jsp").forward(request, response);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
+            request.getRequestDispatcher("/EditorCancione.jsp").forward(request, response);
+        } catch (Exception ex) {
+            /* try (PrintWriter out = response.getWriter()) {
+                out.println("estoy dentro" + ex.getMessage());
+            } catch (Exception e) {
+            }*/
         }
+        // request.getRequestDispatcher("/EditarCanciones.jsp").forward(request, response);
+
     }
 
     private void ActualizarCancion(HttpServletRequest request, HttpServletResponse response) {

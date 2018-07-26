@@ -123,13 +123,12 @@ public class LAlbumes extends HttpServlet {
                 String fecha = rs.getString("fecha_lanzamiento");
                 String sello = rs.getString("SelloDiscografico");
 
-                obj = new DAlbumes(idAbum, nombre, descripcion, fecha);
+                obj = new DAlbumes(idAbum, nombre, descripcion, fecha, sello);
 
             } else {
                 throw new Exception("No hay datos");
             }
-            con.close();
-            st.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -140,7 +139,7 @@ public class LAlbumes extends HttpServlet {
     public void ActualizarAlbum(DAlbumes AlbumActualizado) throws Exception {
 
         consulta = "UPDATE `album` SET `Nombre`=?,`Descripcion`=?,"
-                + "`fecha_lanzamiento`=? WHERE idAlbum = ?";
+                + "`fecha_lanzamiento`=?, `Fk_genero`=? WHERE idAlbum = ?";
 
         try {
             PreparedStatement st = con.prepareStatement(consulta);
@@ -148,7 +147,8 @@ public class LAlbumes extends HttpServlet {
             st.setString(1, AlbumActualizado.getNombre());
             st.setString(2, AlbumActualizado.getDescripcion());
             st.setString(3, AlbumActualizado.getFechaLancimiento());
-            st.setInt(4, AlbumActualizado.getIdAlbum());
+            st.setInt(4, AlbumActualizado.getIdGenero());
+            st.setInt(5, AlbumActualizado.getIdAlbum());
 
             st.execute();
 
@@ -223,7 +223,6 @@ public class LAlbumes extends HttpServlet {
             request.setAttribute("botones", "Actualizar");
 
             MostrarAlbumes(request, response);
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -324,14 +323,15 @@ public class LAlbumes extends HttpServlet {
             String nombre = request.getParameter("nombre");
             String descripcion = request.getParameter("descripcion");
             String fecha = request.getParameter("fecha");
+            String sello = request.getParameter("sello");
+            int idgenero = Integer.parseInt(request.getParameter("genero"));
 
-            DAlbumes AlbumActualizado = new DAlbumes(idA, nombre, descripcion, fecha);
+            DAlbumes AlbumActualizado = new DAlbumes(idA, nombre, descripcion, fecha, sello, idgenero);
 
             ActualizarAlbum(AlbumActualizado);
             request.setAttribute("id", id);
             MostrarAlbumes(request, response);
-
-            //request.getRequestDispatcher("/PaginaPrincipalAdministrador.jsp").forward(request, response);
+ 
         } catch (Exception ex) {
 
         }

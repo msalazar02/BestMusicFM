@@ -32,12 +32,22 @@ public class DAlbumes {
         this._nombreGenero = _nombreGenero;
     }
 
-//Obtener un album----actualizar
-    public DAlbumes(int _idAlbum, String _Nombre, String _Descripcion, String _fechaLancimiento) {
+//Obtener un album
+    public DAlbumes(int _idAlbum, String _Nombre, String _Descripcion, String _fechaLancimiento, String sello) {
         this._idAlbum = _idAlbum;
         this._Nombre = _Nombre;
         this._Descripcion = _Descripcion;
         this._fechaLancimiento = _fechaLancimiento;
+        this._sello = sello;
+    }
+
+    public DAlbumes(int _idAlbum, String _Nombre, String _Descripcion, String _fechaLancimiento, String _sello, int _idGenero) {
+        this._idAlbum = _idAlbum;
+        this._Nombre = _Nombre;
+        this._Descripcion = _Descripcion;
+        this._fechaLancimiento = _fechaLancimiento;
+        this._sello = _sello;
+        this._idGenero = _idGenero;
     }
 
     public String getSello() {

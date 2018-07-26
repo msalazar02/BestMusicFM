@@ -46,31 +46,29 @@
                     </tr>
                 </thead>
 
-                <c:forEach var="tempGeneros" items="${Generos }">
+                <c:forEach var="tempCanciones" items="${Canciones }">
 
                     <%-- Link actualizador para cada genero utilizando el campo clave --%>
-                    <c:url var="linkCargar" value="LGenero">
+                    <c:url var="linkCargar" value="LCanciones">
                         <c:param name="Accion" value="Cargar"></c:param>
                         <c:param name="idUsuario" value="${id}"></c:param>
-                        
-                        <c:param name="Codigo" value="${tempGeneros.getIdGenero_musical()}"></c:param>
+                        <c:param name="idAlbum" value="${tempCanciones.getIdCancion()}"></c:param>
 
                     </c:url>
 
                     <%-- Link para eliminar cada genero utilizando el campo clave --%>
 
-                    <c:url var="linkEliminar" value="LGenero">
+                    <c:url var="linkEliminar" value="LCanciones">
                         <c:param name="idUsuario" value="${id}"></c:param>
-                        
                         <c:param name="Accion" value="Eliminar"></c:param>
-                        <c:param name="Codigo" value="${tempGeneros.getIdGenero_musical()}"></c:param>
+                        <c:param name="idAlbum" value="${tempCanciones.getIdCancion()}"></c:param>
 
                     </c:url>
 
                     <tr>
-                        <td class="filas"> ${tempGeneros.getIdGenero_musical() } </td>
-                        <td class="filas"> ${tempGeneros.getNombre() } </td>
-                        <td class="filas"> ${tempGeneros.getDescripcion() } </td>
+                        <td class="filas"> ${tempCanciones.getIdCancion() } </td>
+                        <td class="filas"> ${tempCanciones.getNombre() } </td>
+                        <td class="filas"> ${tempCanciones.getDuracion() } </td>
                         <td class="filas">  
                             <a href="${linkCargar}"><img src="Imagenes/icons8-actualizar-15.png" width="15" height="15" alt="icons8-actualizar-15"/></a>
                             &nbsp;
@@ -86,8 +84,9 @@
         <div class="container" class ="col-md-3">
             <div id="Registrar" class ="col-md-3">
 
-                <form action = "LGenero" method="post" >
+                <form action = "LCanciones" method="post" >
                     <input type="hidden" name="idUsuario" value="${id}">
+                    <input type="hidden" name="idAlbum" value="${idA}">
                     <input type="hidden" name="Accion" value="Insertar">
 
 
@@ -98,8 +97,8 @@
 
 
                     <div class="form-group">
-                        <label for="nombre">Descripción</label>
-                        <input type="text" class="form-control" name="descripcion" required="">
+                        <label for="duracion">Duración</label>
+                        <input type="text" class="form-control" name="duracion" required="">
                     </div> 
 
 
@@ -145,13 +144,6 @@
 
             <a href="${linkRegresar}" class="btn btn-primary btn-block" ><img src="Imagenes/icons8-izquierda-2-30.png" width="20" height="20"/></a>
         </div>
-        <div class="col-md-12">
-            <form action="LCanciones" method="post">
-                <input type="hidden" name="idUsuario" value="${id}">
-                <input type="hidden" name="idAlbum" value="5">
-                <input type="hidden" name="Accion" value="Mostrar">
-                <input type="submit" class="bnt btn-primary" >
-            </form>
-        </div>
+
     </body>
 </html>

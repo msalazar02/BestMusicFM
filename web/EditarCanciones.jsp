@@ -4,8 +4,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script src="js/ActivarDesactivarBotones.js" type="text/javascript"></script>
-        <script src="js/Aviso.js" type="text/javascript"></script>
+
+
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
         <title>Editor de canciones</title>
@@ -38,14 +38,12 @@
                 </thead>
 
                 <c:forEach var="tempCanciones" items="${Canciones}">
-
                     <%-- Link actualizador para cada canción utilizando el campo clave --%>
                     <c:url var="linkCargar" value="LCanciones">
                         <c:param name="Accion" value="Cargar"></c:param>
                         <c:param name="idUsuario" value="${id}"></c:param>
                         <c:param name="idAlbum" value="${idA}"></c:param>
                         <c:param name="Codigo" value="${tempCanciones.getIdCancion()}"></c:param>
-
                     </c:url>
 
                     <%-- Link para eliminar cada canción utilizando el campo clave --%>
@@ -74,8 +72,8 @@
             </table>
         </div>
 
-        <div class="container" class ="col-md-3">
-            <div id="Registrar" class ="col-md-3">
+        <%-- <div class="container" class ="col-md-3">
+             <div id="Registrar" class ="col-md-3">
 
                 <form action = "LCanciones" method="post" >
                     <input type="hidden" name="idUsuario" value="${id}">
@@ -131,12 +129,12 @@
             </div>
         </div>
         <div class="col-md-12">
-            <c:url var="linkRegresar" value="LGenero">
-                <c:param name="idUsuario" value="14"></c:param>
+            <c:url var="linkRegresar" value="LAlbum">
+                <c:param name="idUsuario" value="${id}"></c:param>
                 <c:param name="Accion" value="Mostrar"></c:param>
             </c:url>
 
             <a href="${linkRegresar}" class="btn btn-primary btn-block" ><img src="Imagenes/icons8-izquierda-2-30.png" width="20" height="20"/></a>
-        </div>
+        </div>--%>
     </body>
 </html>
