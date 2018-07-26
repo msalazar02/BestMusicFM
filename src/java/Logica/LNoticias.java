@@ -198,47 +198,61 @@ public class LNoticias extends HttpServlet {
         }
 
         if (accion.equals("Cargar")) {
-            try {
 
-                String idNoticia = request.getParameter("Codigo");
-
-                DNoticias CodigoNoticia = ObtenerDatos(idNoticia);
-
-                request.setAttribute("PublicacionActualizar", CodigoNoticia);
-                request.setAttribute("id", id);
-
-                request.getRequestDispatcher("/ActualizarPublicacion.jsp").forward(request, response);
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        if (accion.equals("Eliminar")) {
-
-            int idNoticia = Integer.parseInt(request.getParameter("Codigo"));
-
-            try {
-                EliminarPublicacion(idNoticia);
-                request.setAttribute("id", id);
-                request.getRequestDispatcher("/PaginaPrincipalArtita.jsp").forward(request, response);
-            } catch (Exception ex) {
-                Logger.getLogger(LGenero.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
 
     }
-    
-     private void CargarNoticia(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+    private void CargarNoticia(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("idUsuario"));
+        try {
+
+            String idNoticia = request.getParameter("idNoticia");
+
+            DNoticias CodigoNoticia = ObtenerDatos(idNoticia);
+
+            request.setAttribute("PublicacionActualizar", CodigoNoticia);
+            request.setAttribute("id", id);
+
+            request.getRequestDispatcher("/ActualizarPublicacion.jsp").forward(request, response);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void Visualizar(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("idUsuario"));
+        try {
 
+            List<DNoticias> TablaGeneros;
+
+            TablaGeneros = MostrarDatos(id);
+
+            request.setAttribute("Publicaciones", TablaGeneros);
+
+            request.setAttribute("id", id);
+
+            request.getRequestDispatcher("/VisualizarNoticia.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
     }
 
     private void EliminarNoticia(HttpServletRequest request, HttpServletResponse response) {
+        int idNoticia = Integer.parseInt(request.getParameter("idNoticia"));
+        int id = Integer.parseInt(request.getParameter("idUsuario"));
 
+        try {
+            EliminarPublicacion(idNoticia);
+            request.setAttribute("id", id);
+            //request.getRequestDispatcher("/PaginaPrincipalArtita.jsp").forward(request, response);
+            Visualizar(request, response);
+        } catch (Exception ex) {
+
+        }
     }
 
     @Override
@@ -320,7 +334,5 @@ public class LNoticias extends HttpServlet {
             Logger.getLogger(LGenero.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-   
 
 }
