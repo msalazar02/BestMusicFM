@@ -9,7 +9,7 @@
     font-size: 50px;
 }
 .bodys{
-    background-color:#24607f;
+    background: url(../Imagenes/sddfs.PNG) ;
     padding : 0;
     margin : 0;   
 }
@@ -78,11 +78,11 @@
     margin: 5px;
     width: 125px;
     color: #ffff; 
-   cursor: progress;
+    cursor: progress;
 }
 .boton:hover{
     background: #003333;
-     
+
 }
 .error{
     background: #d2d2d2;

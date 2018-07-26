@@ -72,14 +72,14 @@
                 <br>
                 <br>
                 <input type="text" class="error" value="${Er}" readonly="" disabled="">
-
+                <div id="">
+                    No posees una cuenta? <a href= "FormularioRegistro.jsp" onclick="">Registrate aquí</a>
+                </div>
             </form>
         </div><!-- fomulario -->
 
 
-        <div id="RegistroNuevo">
-            No posees una cuenta? <a href= "FormularioRegistro.jsp" onclick="">Registrate aquí</a>
-        </div>
+
 
     </body>
 </html>
