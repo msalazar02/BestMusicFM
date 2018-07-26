@@ -1,12 +1,12 @@
 package Datos;
 
 //@author BestMusicFM Inc
- 
 public class DArtista {
+
     //--------------Declaración de variables------------------------
     private int _fkUsuario;
     private int _genero;
-     private int _imagen;
+    private int _imagen;
     private String _tipoArtista;
     private String _fechaIncio;
     private String _biografia;
@@ -23,12 +23,15 @@ public class DArtista {
         this._nombreBanda = _nombreBanda;
     }
 
+    public DArtista(int _fkUsuario, String _nombreBanda) {
+        this._fkUsuario = _fkUsuario;
+        this._nombreBanda = _nombreBanda;
+    }
+
     public DArtista() {
     }
-    
-    
-    //---------------Getter y setter------------------------------------
 
+    //---------------Getter y setter------------------------------------
     public int getFkUsuario() {
         return _fkUsuario;
     }
@@ -84,8 +87,5 @@ public class DArtista {
     public void setNombreBanda(String _nombreBanda) {
         this._nombreBanda = _nombreBanda;
     }
-    
-    
-    
-    
+
 }

@@ -76,8 +76,8 @@ public class LAlbumes extends HttpServlet {
         return result;
     }
 
-    public String IngresarNuevoAlbum(DAlbumes a) {
-        String result = null;
+    public void IngresarNuevoAlbum(DAlbumes a) {
+
         consulta = "INSERT INTO `album`(`Nombre`, `Descripcion`, `fk_artista`, `fecha_lanzamiento`, `SelloDiscografico`, `Fk_genero`) VALUES  (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement st = con.prepareStatement(consulta);
@@ -87,19 +87,10 @@ public class LAlbumes extends HttpServlet {
             st.setString(4, a.getFechaLancimiento());
             st.setString(5, a.getSello());
             st.setInt(6, a.getIdGenero());
-            int n = st.executeUpdate();
-
-            if (n != 0) {
-                result = "El registro se ha ingresado correctamente";
-            } else {
-                result = "El registro no se ha ingresado correctamente";
-            }
+            st.executeUpdate();
 
         } catch (Exception e) {
-            result = "Ha ocurrido un problema: \n " + e.getMessage();
         }
-
-        return result;
     }
 
     //-----------------Mostrar album---------------------//
@@ -184,6 +175,7 @@ public class LAlbumes extends HttpServlet {
             case "VerCanciones":
                 VerCanciones(request, response);
                 break;
+                
             case "irArtista":
                 Regresar(request, response);
                 break;
@@ -238,7 +230,7 @@ public class LAlbumes extends HttpServlet {
         try {
             request.setAttribute("idA", idAlbum);
             request.setAttribute("id", id);
-            request.getRequestDispatcher("/EditarCancione.jsp").forward(request, response);
+            request.getRequestDispatcher("/EditarCanciones.jsp").forward(request, response);
         } catch (Exception e) {
         }
 

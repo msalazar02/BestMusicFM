@@ -12,7 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Eres un experto</h1>
+
         <h1>Página principal de expertos</h1>
         <form action = "LUsuarios" method="post">
             <input type="hidden" name="idUsuario" value="${id}">
@@ -23,13 +23,18 @@
         </form>
         <br>
         <br>
-        <form action = "LUsuarios" method="post">
+        <form action = "LExpertos" method="post">
             <input type="hidden" name="idUsuario" value="${id}">
-            <input type="hidden" name="Accion" value="EliminarArtista">
+            <input type="hidden" name="Accion" value="EliminarExperto">
             <input type="submit" value="Eliminar cuenta">
         </form>
         <br>
         <br>
-        
+        <form action = "LResegnas" method="post">
+            <input type="hidden" name="idUsuario" value="${id}">
+            <input type="hidden" name="Accion" value="Mostrar">
+            <input type="submit" value="Reseñas">
+        </form>
+
     </body>
 </html>

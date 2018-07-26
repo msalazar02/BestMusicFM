@@ -201,9 +201,10 @@ public class LGenero extends HttpServlet {
         int idGenero = Integer.parseInt(request.getParameter("Codigo"));
 
         try {
+            
             if (EliminarGenero(idGenero) == 0) {
 
-                request.setAttribute("botones", "error");
+                request.setAttribute("aviso", "error");
                 MostrarGeneros(request, response);
 
             } else {

@@ -22,7 +22,7 @@
         </form>
         <br>
         <br>
-        <form action = "LUsuarios" method="post">
+        <form action = "LArtistas" method="post">
             <input type="hidden" name="idUsuario" value="${id}">
             <input type="hidden" name="Accion" value="EliminarArtista">
             <input type="submit" value="Eliminar cuenta">

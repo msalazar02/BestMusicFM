@@ -6,30 +6,23 @@
 package Logica;
 
 import Datos.DArtista;
+import Datos.DUsuario;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.*;
 import java.sql.ResultSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 
 /**
  *
@@ -41,11 +34,9 @@ public class LArtistas extends HttpServlet {
     private Conexion mysql = new Conexion();
     private Connection con = mysql.Conectar();
     private String consulta = "";
-   
 
-    //---------------------Ingresar nuevo artista-------------------------------
-    public String IngresarNuevoArtista(DArtista ar) {
-        String result = "";
+//--------------------------Ingresar nuevo Artista------------------------------------
+    public void IngresarNuevoArtista(DArtista ar) {
         consulta = "INSERT INTO `artista`(`fk_usuario`, `Tipo_artista`, `Fecha_Inicio`, `fk_generMusical`, `Fotografia`, `Biografia`, `Nombre_BandaArtistico`)"
                 + " VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
@@ -58,22 +49,14 @@ public class LArtistas extends HttpServlet {
             st.setString(6, ar.getBiografia());
             st.setString(7, ar.getNombreBanda());
 
-            int num = st.executeUpdate();
-            if (num != 0) {
-                result = "Registro ingresado correctamente";
-            }
-            st.close();
-            con.close();
+            st.executeUpdate();
         } catch (Exception e) {
-            result = "Hemos encontrado un error:\n" + e.getMessage();
         }
 
-        return result;
     }
 
-    //---------------------Actualizar Artista-------------------------------
-    public String ActualizarArtista(DArtista ar) {
-        String result = "";
+//--------------------------Eliminar Artista------------------------------------
+    public void ActualizarArtista(DArtista ar) {
         consulta = "UPDATE `artista` SET `Tipo_artista`= ?,`Fecha_Inicio`= ?,`fk_generMusical`= ?,"
                 + "`Fotografia`= ?,`Biografia`= ?,`Nombre_BandaArtistico`= ? WHERE `fk_usuario`= ?";
         try {
@@ -87,60 +70,57 @@ public class LArtistas extends HttpServlet {
             st.setString(6, ar.getNombreBanda());
             st.setInt(7, ar.getFkUsuario());
 
-            int num = st.executeUpdate();
-            if (num != 0) {
-                result = "Registro ingresado correctamente";
-            }
-            st.close();
-            con.close();
+            st.executeUpdate();
         } catch (Exception e) {
-            result = "Hemos encontrado un error:\n" + e.getMessage();
         }
-
-        return result;
     }
 
-    //---------------------Actualizar Artista-------------------------------
-    public String EliminarArtista(DArtista ar) {
-        String result = "";
-        consulta = "DELETE FROM `artista` WHERE `fk_usuario`= ?";
+//--------------------------Eliminar Artista------------------------------------
+    public String EliminarArtista(int ar) {
+        String result = null;
+        consulta = "DELETE FROM `artista` WHERE `fk_usuario`= ? ";
         try {
             PreparedStatement st = con.prepareStatement(consulta);
+            st.setInt(1, ar);
+            st.executeUpdate();
 
-            st.setInt(1, ar.getFkUsuario());
-
-            int num = st.executeUpdate();
-            if (num != 0) {
-                result = "Registro ingresado correctamente";
-            }
-            st.close();
-            con.close();
         } catch (Exception e) {
-            result = "Hemos encontrado un error:\n" + e.getMessage();
         }
-
         return result;
     }
-    
-   
+//--------------------------doPost-doGet------------------------------------
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String accion = request.getParameter("Accion");
-        int id = Integer.parseInt(request.getParameter("idUsuario"));
 
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        int id = Integer.parseInt(request.getParameter("idUsuario"));
         String accion = request.getParameter("Accion");
 
-        if (accion.equals("IngresarArtista")) {
+        switch (accion) {
 
+            case "IngresarArtista":
+                IngresarArtista(request, response);
+                break;
+
+            case "ActualizarArtista":
+                ActualizarArtista(request, response);
+                break;
+
+            case "EliminarArtista":
+                EliminarArtista(request, response);
+                break;
+
+        }
+    }//Fin doPost
+
+    protected void IngresarArtista(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int id = Integer.parseInt(request.getParameter("idUsuario"));
             DArtista d = new DArtista();
             d.setFkUsuario(id);
             d.setBiografia(request.getParameter("biografia"));
@@ -153,15 +133,16 @@ public class LArtistas extends HttpServlet {
             IngresarNuevoArtista(d);
             request.setAttribute("saludo", "RegistroCompletado");
             request.getRequestDispatcher("/PaginaInicio.jsp").forward(request, response);
+        } catch (ServletException ex) {
 
-            /*try (PrintWriter out = response.getWriter()) {
-                out.println("value  " + IngresarNuevoArtista(d));
-            } catch (Exception e) {
-            }*/
-        }//Fin ingresar
+        } catch (IOException ex) {
 
-        if (accion.equals("ActualizarArtista")) {
+        }
+    }//Fin Ingresar Artista
 
+    protected void ActualizarArtista(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int id = Integer.parseInt(request.getParameter("idUsuario"));
             DArtista d = new DArtista();
             d.setFkUsuario(id);
             d.setBiografia(request.getParameter("biografia"));
@@ -173,29 +154,25 @@ public class LArtistas extends HttpServlet {
 
             ActualizarArtista(d);
             request.setAttribute("id", id);
-            request.getRequestDispatcher("/???.jsp").forward(request, response);
-
-            /*try (PrintWriter out = response.getWriter()) {
-                out.println("value  " + IngresarNuevoArtista(d));
-            } catch (Exception e) {
-            }*/
-        }//Fin Actualizar EliminarArtista
-
-        if (accion.equals("EliminarArtista")) {
-
-            DArtista d = new DArtista();
-            d.setFkUsuario(id);
-
-            EliminarArtista(d);
-            request.setAttribute("id", id);
-            request.setAttribute("saludo", "Eliminado");
             request.getRequestDispatcher("/PaginaInicio.jsp").forward(request, response);
+        } catch (ServletException ex) {
 
-            /*try (PrintWriter out = response.getWriter()) {
-                out.println("value  " + IngresarNuevoArtista(d));
-            } catch (Exception e) {
-            }*/
-        }//Fin EliminarArtista
-    }//Fin doPost
+        } catch (IOException ex) {
 
+        }
+    }//Fin Actualizar Artista
+
+    protected void EliminarArtista(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int id = Integer.parseInt(request.getParameter("idUsuario"));
+            EliminarArtista(id);
+            LUsuarios u = new LUsuarios();
+            request.setAttribute("idUsuario", id);
+            u.Eliminar(request, response);
+
+            request.getRequestDispatcher("/PaginaInicio.jsp").forward(request, response);
+        } catch (ServletException ex) {
+        } catch (IOException ex) {
+        }
+    }//Fin Eliminar
 }//Fin LArtistas

@@ -13,51 +13,45 @@
         <title>Registro Experto</title>
     </head>
     <body>
-    <h1> Usted a escogido tipo de usuario experto </h1>
+        <h1> Usted a escogido tipo de usuario experto </h1>
 
-    <h2>Ya casi termina con el registro, solo llene unos cuantos datos más</h2>
+        <h2>Ya casi termina con el registro, solo llene unos cuantos datos más</h2>
 
-    <form action = "LExpertos" method="post">  
-        <input type="hidden" name="Accion" value="Ingresar">
-        <input type="hidden" name="idUsuario" value="${id}">
-       
-        Fecha de inicio
-        <br/> 
-        <input type="date" name="fecha" required>
-        <br/>
-        <br/>
+        <form action = "LExpertos" method="post">  
+            <input type="hidden" name="Accion" value="IngresarExperto">
+            <input type="hidden" name="idUsuario" value="${id}">
 
-        Género musical
-        <br/> 
-        <select name="generoM" id="generoM" required>
-            
-            <%
-                int a = 1;
-                List<String> lista = (List<String>) request.getAttribute("lista");
-                for (String g : lista) {
-                   
-            %>
-            <option value="<%=a++%>"><%=g%></option>
+            Fecha de inicio
+            <br/> 
+            <input type="date" name="fecha" required>
+            <br/>
+            <br/>
 
-            <%
-                }
-            %>
-        </select>
-        <br/>
-        <br/>
+            Género musical
+            <br/> 
+            <select name="generoM" id="generoM" required>
+                <%int a = 0;%>
+                <c:forEach var="tempGeneros" items="${Generos }">
+                    <option value="${tempGeneros.getIdGenero_musical()}">
+                        ${tempGeneros.getNombre()}
+                    </option>
+                </c:forEach>
+            </select>
+            <br/>
+            <br/>
 
-        Descripción
-        <br/> 
-        <textarea name="descripcion" rows="4" cols="20" required>
-        </textarea>
-        <br/>
-        <br/>
+            Descripción
+            <br/> 
+            <textarea name="descripcion" rows="4" cols="20" required>
+            </textarea>
+            <br/>
+            <br/>
 
-        <input type="submit" name = "button" id="button" value="Enviar" required>
+            <input type="submit" name = "button" id="button" value="Enviar" required>
 
-    </form>
+        </form>
 
 
-</body>
+    </body>
 
 </html>

@@ -41,7 +41,6 @@
             Género musical
             <br/> 
             <select name="generoM" id="generoM" required>
-                <%int a = 0;%>
                 <c:forEach var="tempGeneros" items="${Generos }">
                     <option value="${tempGeneros.getIdGenero_musical()}">
                         ${tempGeneros.getNombre()}

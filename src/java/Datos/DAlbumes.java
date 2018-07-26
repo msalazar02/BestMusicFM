@@ -21,6 +21,12 @@ public class DAlbumes {
     public DAlbumes() {
     }
 
+//Obtener datos para combobox
+    public DAlbumes(int _idAlbum, String _Nombre) {
+        this._idAlbum = _idAlbum;
+        this._Nombre = _Nombre;
+    }
+
 //Obtener todos los albumes
     public DAlbumes(int _idAlbum, String _Nombre, String _Descripcion, String _fechaLancimiento, String _nombreArtista, String _sello, String _nombreGenero) {
         this._idAlbum = _idAlbum;
@@ -50,6 +56,7 @@ public class DAlbumes {
         this._idGenero = _idGenero;
     }
 
+//-----------------------Setters y Getters---------------------------//
     public String getSello() {
         return _sello;
     }

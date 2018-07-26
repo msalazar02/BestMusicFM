@@ -1,7 +1,6 @@
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -11,18 +10,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-        <title>EditorGeneros</title>
-
-
-
+        <title>Reseñas</title>
     </head>
-
     <body>
 
-        <h1> Bienvenido al editor de generos </h1> 
-        <h3 id="botones" hidden>${botones}</h3>
-        <h3 id="aviso" hidden>${aviso}</h3>
-        <h3>Lista de generos actuales</h3> 
+        <h3>Reseñas</h3> 
+
 
         <div id="Error" class="col-md-11 alert alert-danger alert-dismissible" role="alert">
             La petición no fue completada con exito:
@@ -35,43 +28,44 @@
         <div class="col-md-8">
             <table class="table table-hover ">
 
-
                 <thead class="thead-dark">
 
                     <tr class="thead-dark success">
-                        <th class="cabecera"> Código</th>
-                        <th class="cabecera">Nombre</th>
+                        <th class="cabecera">Artista</th>
+                        <th class="cabecera">Album</th>
                         <th class="cabecera">Descripción</th>
+                        <th class="cabecera">Calificación</th>
+                        <th class="cabecera">Fecha</th>  
                         <th class="cabecera">Acciones</th>
 
                     </tr>
                 </thead>
 
-                <c:forEach var="tempGeneros" items="${Generos }">
+                <c:forEach var="tempReseñas" items="${Reseña}">
 
                     <%-- Link actualizador para cada genero utilizando el campo clave --%>
-                    <c:url var="linkCargar" value="LGenero">
+                    <c:url var="linkCargar" value="LReseñas">
                         <c:param name="Accion" value="Cargar"></c:param>
                         <c:param name="idUsuario" value="${id}"></c:param>
-                        
-                        <c:param name="Codigo" value="${tempGeneros.getIdGenero_musical()}"></c:param>
+                        <c:param name="Codigo" value="${tempReseñas.getIdReseña() }"></c:param>
 
                     </c:url>
 
                     <%-- Link para eliminar cada genero utilizando el campo clave --%>
 
-                    <c:url var="linkEliminar" value="LGenero">
+                    <c:url var="linkEliminar" value="LReseñas">
                         <c:param name="idUsuario" value="${id}"></c:param>
-                        
                         <c:param name="Accion" value="Eliminar"></c:param>
-                        <c:param name="Codigo" value="${tempGeneros.getIdGenero_musical()}"></c:param>
+                        <c:param name="Codigo" value="${tempReseñas.getIdReseña() }"></c:param>
 
                     </c:url>
 
                     <tr>
-                        <td class="filas"> ${tempGeneros.getIdGenero_musical() } </td>
-                        <td class="filas"> ${tempGeneros.getNombre() } </td>
-                        <td class="filas"> ${tempGeneros.getDescripcion() } </td>
+                        <td class="filas"> ${tempReseñas.getNombreArtista() } </td>
+                        <td class="filas"> ${tempReseñas.getNombreAlbum()} </td>
+                        <td class="filas"> ${tempReseñas.getDescripcion() } </td>
+                        <td class="filas"> ${tempReseñas.getCalificacion() } </td>
+                        <td class="filas"> ${tempReseñas.getFecha() } </td>
                         <td class="filas">  
                             <a href="${linkCargar}"><img src="Imagenes/icons8-actualizar-15.png" width="15" height="15" alt="icons8-actualizar-15"/></a>
                             &nbsp;
@@ -84,23 +78,42 @@
             </table>
         </div>
 
+
         <div class="container" class ="col-md-3">
             <div id="Registrar" class ="col-md-3">
 
-                <form action = "LGenero" method="post" >
+                <form action = "LReseñas" method="post" >
                     <input type="hidden" name="idUsuario" value="${id}">
                     <input type="hidden" name="Accion" value="Insertar">
 
-
                     <div class="form-group">
-                        <label for="nombre">Nombre</label>
-                        <input type="text" class="form-control" name="nombre" required="">
+                        <label for="nombre">Artista/Banda</label>
+
+                        <select name="Artista_Banda" class="form-control" >
+                            <c:forEach var="tempArtista" items="${CbxArtista}">
+                                <option value="${tempArtista.getFkUsuario()}">${tempArtista.getNombreBanda()}</option>  
+                            </c:forEach>
+                        </select>   
+
                     </div> 
 
+                    <div class="form-group">
+                        <label for="nombre">Album</label>
+                        <select name="Album" class="form-control">
+                            <c:forEach var="tempAlbum" items="${CbxAlbum}">
+                                <option value="${tempAlbum.getIdAlbum()}"> ${tempAlbum.getNombre()}</option>       
+                            </c:forEach>
+                        </select>                     
+                    </div> 
 
                     <div class="form-group">
                         <label for="nombre">Descripción</label>
-                        <input type="text" class="form-control" name="descripcion" required="">
+                        <input type="text" class="form-control" name="desc" required="">
+                    </div> 
+
+                    <div class="form-group">
+                        <label for="nombre">Calificación</label>
+                        <input type="text" class="form-control" name="calificacion" required="">
                     </div> 
 
 
@@ -112,23 +125,36 @@
             </div>
             <div id="Actualizar" class ="col-md-3">
 
-                <form action = "LGenero" method="post" >
+                <form action = "LReseñas" method="post" >
                     <input type="hidden" name="idUsuario" value="${id}">
-                    <input type="hidden" name="CodigoGenero" value="${GeneroActualizar.getIdGenero_musical()}">
+                    <input type="hidden" name="CodigoGenero" value="${ReseñasActualizar.getIdGenero_musical()}">
                     <input type="hidden" name="Accion" value="Actualizar">
 
 
                     <div class="form-group">
-                        <label for="nombre">Nombre</label>
-                        <input type="text" class="form-control" value="${GeneroActualizar.getNombre()}" name="nombre" required="">
+                        <label for="nombre">Artista/Banda</label>
+                        <select name="Artista_Banda" class="form-control">
+                            <option value=""> Artista 1</option>       
+                        </select>                     
                     </div> 
 
 
                     <div class="form-group">
-                        <label for="nombre">Descripción</label>
-                        <input type="text" class="form-control" value="${GeneroActualizar.getDescripcion()}" name="descripcion" required="">
+                        <label for="nombre">Album</label>
+                        <select name="Album" class="form-control">
+                            <option value=""> Album 1</option>       
+                        </select>                     
                     </div> 
 
+                    <div class="form-group">
+                        <label for="nombre">Descripción</label>
+                        <input type="text" class="form-control" value="${GeneroActualizar.getNombre()}" name="desc" required="">
+                    </div> 
+
+                    <div class="form-group">
+                        <label for="nombre">Calificación</label>
+                        <input type="text" class="form-control" value="${GeneroActualizar.getNombre()}" name="calificacion" required="">
+                    </div> 
 
 
                     <input type="submit" class=" btn btn-success" value="Actualizar" >
@@ -137,22 +163,9 @@
                 </form>
 
             </div>
-        </div>
-        <div class="col-md-12">
-            <c:url var="linkRegresar" value="LGenero">
-                <c:param name="idUsuario" value="${id}"></c:param>
-                <c:param name="Accion" value="irPrincipal"></c:param>
-            </c:url>
 
-            <a href="${linkRegresar}" class="btn btn-primary btn-block" ><img src="Imagenes/icons8-izquierda-2-30.png" width="20" height="20"/></a>
+
         </div>
-        <div class="col-md-12">
-            <form action="LCanciones" method="post">
-                <input type="hidden" name="idUsuario" value="${id}">
-                <input type="hidden" name="idAlbum" value="5">
-                <input type="hidden" name="Accion" value="Mostrar">
-                <input type="submit" class="bnt btn-primary" >
-            </form>
-        </div>
+
     </body>
 </html>

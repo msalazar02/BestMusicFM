@@ -260,7 +260,7 @@ public class LCanciones extends HttpServlet {
                 request.setAttribute("aviso", "error");
             }
 
-            request.getRequestDispatcher("/EditorCancione.jsp").forward(request, response);
+            request.getRequestDispatcher("/EditorCanciones.jsp").forward(request, response);
         } catch (Exception ex) {
 
         }
