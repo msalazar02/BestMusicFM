@@ -16,6 +16,7 @@
         <!--<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1 ">-->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet"  href="css/PaginaInicio.css">
+       
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="js/main.js" type="text/javascript"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -27,10 +28,7 @@
         <h1 class="h1s">Login</h1>
 
         <h3 id="registroCompleto" hidden>${saludo}</h3>
-
-
-
-
+       
         <div class="container">
             <div id="Registro" class="alert alert-success alert-dismissible" role="alert">
                 Registro Completo!
@@ -58,11 +56,11 @@
                 <input type="hidden" name="Accion" value="Verificar">
                 <input type="hidden" name="idUsuario" value="0">
 
-                <label>Usuario:  </label><br>
+                <label id="label">Usuario:  </label><br>
                 <input type="text" class="campo" name="txtUsuario" placeholder="Ingrese su usuario" required>
                 <br>
                 <br>
-                <label>Contraseña: </label><br>
+                <label id="label">Contraseña: </label><br>
                 <input type="password" class="campo" name="txtPass" placeholder="Ingrese su contraseña" required>
                 <br>
                 <div id="sub">
@@ -70,13 +68,11 @@
                     <input type="submit" class="boton" name="btnTipo" value="Ingresar">  
                 </div>
                 <br>
-                <br>
-                <input type="text" class="error" value="${Er}" readonly="" disabled="">
-                <div id="">
-                    No posees una cuenta? <a href= "FormularioRegistro.jsp" onclick="">Registrate aquí</a>
-                </div>
+                <label id="n">No posees una cuenta?</label> <a id="a" href= "FormularioRegistro.jsp" onclick="">Registrate aquí</a>
+
             </form>
-        </div><!-- fomulario -->
+        </div>
+
 
 
 

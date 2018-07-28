@@ -10,44 +10,61 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="css/Auxiliar.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <title>Pagina Administrador</title>
     </head>
     <body>
-        
-        <ul class="nav nav-tabs" id="formtabs">
-            <!-- Tab nav -->
-            <li class="active"><a href=""  data-toggle="tab">Inicio</a>Registro</li>
-            <li class=""><a href="#radioscheckboxes" data-toggle="tab">Usuario</a></li>
-            <li class=""><a href="#select" data-toggle="tab">Géneros</a></li>        
-        </ul>
-        <form action = "LUsuarios" method="post">
-            <input type="hidden" name="idUsuario" value="${id}">
-            <input type="hidden" name="Accion" value="CapturarDatos">
-
-            <input type="submit" value="Actualizar perfil">
-
-        </form>
-        <br>
-        <br>
-        <form action = "LUsuarios" method="post">
-            <input type="hidden" name="idUsuario" value="${id}">
-            <input type="hidden" name="Accion" value="EliminarArtista">
-            <input type="submit" value="Eliminar cuenta">
 
 
+        <%-- ----------------------------------COLUMNA DERECHA---------------------------------- --%>
 
-        </form>
+        <div class="col-md-2">
 
-        <form action = "LGenero" method="post">  
-            <input type="hidden" name="Accion" value="Mostrar">
-            <input type="hidden" name="idUsuario" value="${id}">
-            <h2> Bienvenido  </h2>
+        </div>
+        <div id="espacio" class="col-md-2" > 
+            <br>
+            <div class="form-group">
+                <form action = "LUsuarios" method="post">
+                    <input type="hidden" name="idUsuario" value="${id}">
+                    <input type="hidden" name="Accion" value="CapturarDatos">
 
-            Ingresar al mantenimiento de géneros
-            <br> <br>
-            <input type="submit" name = "btnMantenimiento" value="Mantenimiento"/>
+                    <input type="submit" class=" btn btn-primary" value="Actualizar perfil">
 
-        </form>
+                </form>
+            </div>
+
+            <div class="form-group">
+                <form action = "LAdministradores" method="post">
+                    <input type="hidden" name="idUsuario" value="${id}">
+                    <input type="hidden" name="Accion" value="Eliminar">
+                    <input type="submit" class=" btn btn-primary" value="Eliminar cuenta">
+
+                </form>
+            </div>
+        </div>
+
+        <div  class="col-md-10" >  
+            <div id="" class="col-md-11" > 
+                <h1> Bienvenido ${nombre}</h1>
+                <h3>¿Qué deseas hacer hoy?</h3>
+            </div> 
+
+
+
+
+
+            <form action = "LGenero" method="post">  
+                <input type="hidden" name="Accion" value="Mostrar">
+                <input type="hidden" name="idUsuario" value="${id}">
+
+
+
+                <br> <br>
+                <input type="submit" class=" btn btn-primary" name = "btnMantenimiento" value="Ver generos"/>
+
+            </form>
+        </div>          
+
     </body>
 </html>

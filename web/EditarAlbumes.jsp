@@ -11,18 +11,47 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-        <title>EditorGeneros</title>
+        <title>EditorAlbumes</title>
 
 
 
     </head>
 
     <body>
+        <%-- -----------------------------------LINKS------------------------------------- --%>
+
+        <c:url var="linkEditar" value="LAlbum">
+            <c:param name="Accion" value="Mostrar"></c:param>
+            <c:param name="idUsuario" value="${id}"></c:param>
+        </c:url>
+        <c:url var="irArtista" value="LUsuarios">
+            <c:param name="Accion" value="SaberNombre"></c:param>
+            <c:param name="idUsuario" value="${id}"></c:param>
+        </c:url>
+        <c:url var="linkVisualizar" value="LNoticias">
+            <c:param name="Accion" value="Visualizar"></c:param>
+            <c:param name="idUsuario" value="${id}"></c:param>
+        </c:url>  
+        <c:url var="salir" value="PaginaInicio.jsp">
+
+        </c:url>
+
+        <%-- -----------------------------------NAVBAR------------------------------------- --%>
+
+        <ul class="nav nav-tabs navbar-inverse" id="formtabs">
+            <!-- Tab nav -->
+            <li class=""><a href="${irArtista}"  data-toggle="tab">Inicio</a></li>
+            <li class="active"><a href="${linkEditar}" data-toggle="tab">Albumes</a></li>
+            <li class=""><a href="${linkVisualizar}" data-toggle="tab">Noticias</a></li> 
+            <li class=""><a href="${salir}" data-toggle="tab">Logout</a></li> 
+        </ul>
+        <%-- -----------------------------------TEXTO------------------------------------- --%>
 
         <h1> Bienvenido al editor de Albumes </h1> 
         <h3 id="botones" hidden>${botones}</h3>
         <h3 id="aviso" hidden>${aviso}</h3>
         <h3>Lista de albumes actuales</h3> 
+        <%-- -----------------------------------AVISO------------------------------------- --%>
 
         <div id="Error" class="col-md-11 alert alert-danger alert-dismissible" role="alert">
             En este momento no hay albumes registrados para este usuario
@@ -30,6 +59,8 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
+        <%-- -----------------------------------TABLA------------------------------------- --%>
+
         <div class="col-md-8">
             <table class="table table-hover ">
 
@@ -59,7 +90,7 @@
 
                     </c:url>
 
-                    <%-- Link para eliminar cada álbum utilizando el campo clave --%>
+                    <%-- Link para eliminar cada dato utilizando el campo clave --%>
 
                     <c:url var="linkEliminar" value="LAlbum">
                         <c:param name="idUsuario" value="${id}"></c:param>
@@ -95,6 +126,7 @@
 
             </table>
         </div>
+        <%-- -----------------------------------REGISTRAR------------------------------------- --%>
 
         <div class="container" class ="col-md-3">
             <div id="Registrar" class ="col-md-3">
@@ -139,6 +171,7 @@
 
                 </form>
             </div><!--Fin registrar -->
+            <%-- -----------------------------------ACTUALIZAR------------------------------------- --%>
 
             <div id="Actualizar" class ="col-md-3">
 
@@ -185,13 +218,5 @@
 
             </div><!--Fin actualizar -->
         </div>
-        <div class="col-md-12">
-            <c:url var="linkRegresar" value="LAlbum">
-                <c:param name="idUsuario" value="${id}"></c:param>
-                <c:param name="Accion" value="irArtista"></c:param>
-            </c:url>
 
-            <a href="${linkRegresar}" class="btn btn-primary btn-block" ><img src="Imagenes/icons8-izquierda-2-30.png" width="20" height="20"/></a>
-        </div>
-    </body>
 </html>

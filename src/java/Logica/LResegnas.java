@@ -46,7 +46,7 @@ public class LResegnas extends HttpServlet {
             String artista = rs.getString("Nombre_BandaArtistico");
             String album = rs.getString("Nombre");
             String descripcion = rs.getString("Descripcion");
-            Double calificacion = rs.getDouble("Calificacion");
+            double calificacion = rs.getDouble("Calificacion");
             String fecha = rs.getString("Fecha");
             String nombreExperto = rs.getString("NombreExperto");
 
@@ -144,7 +144,7 @@ public class LResegnas extends HttpServlet {
 
             st.setString(1, a.getDescripcion());
             st.setDouble(2, a.getCalificacion());
-            st.setDouble(2, a.getIdResegna());
+            st.setDouble(3, a.getIdResegna());
 
             st.execute();
 
@@ -164,7 +164,7 @@ public class LResegnas extends HttpServlet {
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 int id = rs.getInt("idReseña");
-                double calificacion = rs.getInt("Calificacion");
+                double calificacion = rs.getDouble("Calificacion");
                 String descripcion = rs.getString("Descripcion");
                 obj = new DResegnas(id, descripcion, calificacion);
             } else {
@@ -181,7 +181,12 @@ public class LResegnas extends HttpServlet {
             throws ServletException, IOException {
 
         String accion = request.getParameter("Accion");
+        /*try (PrintWriter out = response.getWriter()) {
 
+            out.println("verificado " + accion);
+        } catch (Exception e) {
+            out.println(e.getMessage());
+        }*/
         if (accion.equals(null)) {
             accion = "Mostrar";
         }
@@ -315,11 +320,17 @@ public class LResegnas extends HttpServlet {
             List<DAlbumes> TablaAlbumes;
             TablaAlbumes = CargarComboAlbumes(idArtista);
             request.setAttribute("Album", TablaAlbumes);
-            request.setAttribute("id", id);
-            request.setAttribute("idA", idArtista);
-            request.setAttribute("botones", "Registrar");
-            MostrarResegnas(request, response);
+            if (TablaAlbumes.isEmpty()) {
+                request.setAttribute("id", id);
+                request.setAttribute("aviso", "error");
+                MostrarResegnas(request, response);
 
+            } else {
+                request.setAttribute("id", id);
+                request.setAttribute("idA", idArtista);
+                request.setAttribute("botones", "Registrar");
+                MostrarResegnas(request, response);
+            }
         } catch (Exception ex) {
 
         }

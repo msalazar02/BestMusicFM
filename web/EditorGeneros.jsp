@@ -53,7 +53,7 @@
                     <c:url var="linkCargar" value="LGenero">
                         <c:param name="Accion" value="Cargar"></c:param>
                         <c:param name="idUsuario" value="${id}"></c:param>
-                        
+
                         <c:param name="Codigo" value="${tempGeneros.getIdGenero_musical()}"></c:param>
 
                     </c:url>
@@ -62,7 +62,7 @@
 
                     <c:url var="linkEliminar" value="LGenero">
                         <c:param name="idUsuario" value="${id}"></c:param>
-                        
+
                         <c:param name="Accion" value="Eliminar"></c:param>
                         <c:param name="Codigo" value="${tempGeneros.getIdGenero_musical()}"></c:param>
 
@@ -139,9 +139,9 @@
             </div>
         </div>
         <div class="col-md-12">
-            <c:url var="linkRegresar" value="LGenero">
+            <c:url var="linkRegresar" value="LUsuarios">
                 <c:param name="idUsuario" value="${id}"></c:param>
-                <c:param name="Accion" value="irPrincipal"></c:param>
+                <c:param name="Accion" value="SaberNombreA"></c:param>
             </c:url>
 
             <a href="${linkRegresar}" class="btn btn-primary btn-block" ><img src="Imagenes/icons8-izquierda-2-30.png" width="20" height="20"/></a>

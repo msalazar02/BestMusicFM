@@ -131,7 +131,7 @@ public class LAlbumes extends HttpServlet {
     public void ActualizarAlbum(DAlbumes AlbumActualizado) throws Exception {
 
         consulta = "UPDATE `album` SET `Nombre`=?,`Descripcion`=?,"
-                + "`fecha_lanzamiento`=?, `Fk_genero`=? WHERE idAlbum = ?";
+                + "`fecha_lanzamiento`=?, `Fk_genero`=?, SelloDiscografico = ? WHERE idAlbum = ?";
 
         try {
             PreparedStatement st = con.prepareStatement(consulta);
@@ -140,7 +140,8 @@ public class LAlbumes extends HttpServlet {
             st.setString(2, AlbumActualizado.getDescripcion());
             st.setString(3, AlbumActualizado.getFechaLancimiento());
             st.setInt(4, AlbumActualizado.getIdGenero());
-            st.setInt(5, AlbumActualizado.getIdAlbum());
+            st.setString(5, AlbumActualizado.getSello());
+            st.setInt(6, AlbumActualizado.getIdAlbum());
 
             st.execute();
 
@@ -150,6 +151,12 @@ public class LAlbumes extends HttpServlet {
 
     }
 
+    /*try (PrintWriter out = response.getWriter()) {
+
+            out.println(accion);
+        } catch (Exception e) {
+            out.println(e.getMessage());
+        }*/
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

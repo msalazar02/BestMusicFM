@@ -54,7 +54,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="contrasena">ContraseÃ±a</label>
+                    <label for="contrasena">Contraseña</label>
                     <input type="password" name="contrasena" class="form-control"  value="${Contrasena}" required="">
                 </div>
 
@@ -72,7 +72,7 @@
 
 
                 <div class="form-group">
-                    <label for="pais">PaÃ­s de nacimiento </label>
+                    <label for="pais">País de nacimiento </label>
                     <select name="pais" class="form-control">
                         <option>Costa Rica</option>
                         <option>México</option>
@@ -91,11 +91,6 @@
             </form>
         </div>
 
-        <div class="col-md-7">
-            <form action="TipoUsuario.jsp">
-                <input type="submit" class="btn btn-success" value="Actualizar tipo de usuario">
-            </form>
-        </div>
     </body>
 
 </html>

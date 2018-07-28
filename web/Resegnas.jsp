@@ -14,13 +14,15 @@
     </head>
     <body>
 
+
+        <%-- -----------------------------------CUERPO------------------------------------- --%>
+
         <h3>Reseñas</h3> 
         <h3 id="botones" hidden>${botones}</h3>
         <h3 id="aviso" hidden>${aviso}</h3>
 
         <div id="Error" class="col-md-11 alert alert-danger alert-dismissible" role="alert">
-            La petición no fue completada con exito:
-            El género selecionado se encuentra relacionado con almenos una cuenta existente
+           No existen albumes para este artista
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -134,7 +136,7 @@
 
                     <div class="form-group">
                         <label for="calificacion">Calificación</label>
-                        <input type="text" class="form-control" name="calificacion" required="">
+                        <input type="number" step="0.1" class="form-control" name="calificacion" required="">
                     </div> 
 
 
@@ -167,7 +169,7 @@
 
                     <div class="form-group">
                         <label for="nombre">Calificación</label>
-                        <input type="text" class="form-control" value="${ResegnasA.getCalificacion()}" name="calificacion" required="">
+                        <input type="number" step="0.1" class="form-control" value="${ResegnasA.getCalificacion()}" name="calificacion" required="">
                     </div> 
 
                     <input type="submit" class=" btn btn-success" value="Actualizar" >
@@ -182,8 +184,13 @@
                 </form>
 
             </div>
-
-
+            <div>         
+                <form action="LUsuarios" method="POST" class="form-group">
+                    <input type="hidden" name="idUsuario" value="${id}">
+                    <input type="hidden" name="Accion" value="SaberNombreE">
+                    <input type="submit" class=" btn btn-success " value="Ir al inicio" >
+                </form>
+            </div>
         </div>
 
     </body>

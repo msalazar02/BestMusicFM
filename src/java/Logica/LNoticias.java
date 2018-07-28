@@ -178,28 +178,6 @@ public class LNoticias extends HttpServlet {
                 break;
 
         }
-        if (accion.equals("Visualizar")) {
-            try {
-
-                List<DNoticias> TablaGeneros;
-
-                TablaGeneros = MostrarDatos(id);
-
-                request.setAttribute("Publicaciones", TablaGeneros);
-
-                request.setAttribute("id", id);
-
-                request.getRequestDispatcher("/VisualizarNoticia.jsp").forward(request, response);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-
-            }
-        }
-
-        if (accion.equals("Cargar")) {
-
-        }
 
     }
 
@@ -280,6 +258,7 @@ public class LNoticias extends HttpServlet {
     private void ir(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("idUsuario");
         try {
+            request.setAttribute("id", id);
             request.getRequestDispatcher("/Noticias.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -291,10 +270,10 @@ public class LNoticias extends HttpServlet {
         try {
             String id = request.getParameter("idUsuario");
 
-            /*try (PrintWriter out = response.getWriter()) {
-            out.println(id + request.getParameter("contenido") + request.getParameter("titulo"));
+            /* try (PrintWriter out = response.getWriter()) {
+                out.println(id + request.getParameter("contenido") + request.getParameter("titulo"));
             } catch (Exception e) {
-            out.println(e.getMessage());
+                out.println(e.getMessage());
             }*/
             Date now = new Date(System.currentTimeMillis());
             SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
@@ -309,10 +288,9 @@ public class LNoticias extends HttpServlet {
 
             request.setAttribute("id", id);
 
-            request.getRequestDispatcher("/PaginaPrincipalArtista.jsp").forward(request, response);
-        } catch (ServletException ex) {
-
-        } catch (IOException ex) {
+            //request.getRequestDispatcher("/PaginaPrincipalArtista.jsp").forward(request, response);
+            Visualizar(request, response);
+        } catch (Exception ex) {
 
         }
     }
@@ -329,7 +307,8 @@ public class LNoticias extends HttpServlet {
             ActualizarNoticia(NoticiaActualizada);
 
             request.setAttribute("id", id);
-            request.getRequestDispatcher("/PaginaPrincipal.jsp").forward(request, response);
+            //request.getRequestDispatcher("/PaginaPrincipal.jsp").forward(request, response);
+            Visualizar(request, response);
         } catch (Exception ex) {
             Logger.getLogger(LGenero.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -1,0 +1,28 @@
+
+/*div#barra-lateral-derecha{
+    position: absolute;
+    height:100%;
+    background-color:#2f3030;
+    overflow:hidden;
+    width: 20px;
+
+}
+#barra-lateral-izquierda{
+    position: absolute;
+    height:100%;
+    background-color:#2f3030;
+    overflow:hidden;
+
+}
+*/
+
+
+#espacio {
+    float: left;
+    position: fixed;
+    height: 100%;
+    background-color:#2f3030;
+    margin-left: 0px;
+}
+
+

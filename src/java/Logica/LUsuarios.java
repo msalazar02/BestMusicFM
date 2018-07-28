@@ -26,6 +26,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.jasper.tagplugins.jstl.core.Catch;
 
 /**
  *
@@ -202,6 +203,28 @@ public class LUsuarios extends HttpServlet {
         return result;
     }
 
+    ///-----------------Saber tipo de usuario------------listo----------------------
+    public String SaberNombre(int us) {
+        String result = "";
+        consulta = "SELECT * FROM `usuario` where idUsuario = ?";
+
+        try {
+            PreparedStatement st = con.prepareStatement(consulta);
+            st.setInt(1, us);
+
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                result = rs.getString("Nombre_usuario");
+            }
+
+        } catch (Exception e) {
+            result = "Error:\n " + e.getMessage();
+        }
+
+        return result;
+    }
+
     ///-----------------Captura los datos del usuario----------------listo------------------
     public String[] CapturarDatos(DUsuario user) {
         String datos[] = new String[12];
@@ -262,7 +285,36 @@ public class LUsuarios extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try {
+            String accion = request.getParameter("Accion");
+            switch (accion) {
 
+                case "Actualizar":
+                    ActualizarUsuario(request, response);
+                    break;
+
+                case "Eliminar":
+                    Eliminar(request, response);
+                    break;
+
+                case "CapturarDatos":
+                    CargarDatos(request, response);
+                    break;
+
+                case "Verificar":
+                    Verificar(request, response);
+                    break;
+                case "SaberNombreArtistas":
+                    SaberNombreArtistas(request, response);
+                    break;
+                case "SaberNombreA":
+                    SaberNombreA(request, response);
+                    break;
+
+            }
+        } catch (Exception e) {
+            out.print(e.getMessage());
+        }
     }
 
     @Override
@@ -292,9 +344,16 @@ public class LUsuarios extends HttpServlet {
                 Verificar(request, response);
                 break;
 
+            case "SaberNombreArtistas":
+                SaberNombreArtistas(request, response);
+                break;
+
+            case "SaberNombreE":
+                SaberNombreE(request, response);
+                break;
         }
 
-        if (accion.equals("Verificar")) {
+        /*if (accion.equals("Verificar")) {
 
             String us = request.getParameter("txtUsuario");
             String pass = Encriptar(request.getParameter("txtPass"));
@@ -315,9 +374,7 @@ public class LUsuarios extends HttpServlet {
             if (ids != 0) {
 
                 request.getRequestDispatcher("/PaginaPrincipal" + tipo + ".jsp").forward(request, response);
-                //} else {
-                // request.getRequestDispatcher("/PaginaPrincipal.jsp").forward(request, response);
-                //}
+                
             } else {
                 request.setAttribute("saludo", "login");
                 request.getRequestDispatcher("/PaginaInicio.jsp").forward(request, response);
@@ -330,7 +387,7 @@ public class LUsuarios extends HttpServlet {
             } catch (Exception e) {
                 out.println(e.getMessage());
             }*/
-        }//Fin verificar
+        //  }//Fin verificar
     }
 
     private void IngresarUsuario(HttpServletRequest request, HttpServletResponse response) {
@@ -495,6 +552,7 @@ public class LUsuarios extends HttpServlet {
     }
 
     private void Verificar(HttpServletRequest request, HttpServletResponse response) {
+
         String us = request.getParameter("txtUsuario");
         String pass = Encriptar(request.getParameter("txtPass"));
         DUsuario user = new DUsuario();
@@ -503,7 +561,7 @@ public class LUsuarios extends HttpServlet {
         user.setPass(pass);
 
         int ids = ExisteUsuarioYContra(user);
-
+        request.setAttribute("nombre", us);
         request.setAttribute("id", ids);
 
         String tipo = null;
@@ -514,6 +572,8 @@ public class LUsuarios extends HttpServlet {
         if (ids != 0) {
 
             try {
+                request.setAttribute("nombre", us);
+
                 request.getRequestDispatcher("/PaginaPrincipal" + tipo + ".jsp").forward(request, response);
                 //} else {
                 // request.getRequestDispatcher("/PaginaPrincipal.jsp").forward(request, response);
@@ -524,23 +584,64 @@ public class LUsuarios extends HttpServlet {
 
             }
         } else {
+            request.setAttribute("saludo", "login");
             try {
-                request.setAttribute("saludo", "login");
                 request.getRequestDispatcher("/PaginaInicio.jsp").forward(request, response);
             } catch (ServletException ex) {
-
+                Logger.getLogger(LUsuarios.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-
+                Logger.getLogger(LUsuarios.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
 
         /*try (PrintWriter out = response.getWriter()) {
-                
-                out.println("verificado "+id +" "+ us +" "+ pass);
+            
+            out.println("verificado "+id +" "+ us +" "+ pass);
             } catch (Exception e) {
-                out.println(e.getMessage());
+            out.println(e.getMessage());
             }*/
-    }//Fin verificar
+    }
+
+    private void SaberNombreArtistas(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int id = Integer.parseInt(request.getParameter("idUsuario"));
+            request.setAttribute("nombre", SaberNombre(id));
+            request.setAttribute("id", id);
+            request.getRequestDispatcher("/PaginaPrincipalArtista.jsp").forward(request, response);
+
+        } catch (ServletException ex) {
+
+        } catch (IOException ex) {
+
+        }
+    }
+
+    private void SaberNombreE(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int id = Integer.parseInt(request.getParameter("idUsuario"));
+            request.setAttribute("nombre", SaberNombre(id));
+            request.setAttribute("id", id);
+            request.getRequestDispatcher("/PaginaPrincipalExperto.jsp").forward(request, response);
+
+        } catch (ServletException ex) {
+
+        } catch (IOException ex) {
+
+        }
+    }
+
+    private void SaberNombreA(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int id = Integer.parseInt(request.getParameter("idUsuario"));
+            request.setAttribute("nombre", SaberNombre(id));
+            request.setAttribute("id", id);
+            request.getRequestDispatcher("/PaginaPrincipalAdministrador.jsp").forward(request, response);
+
+        } catch (ServletException ex) {
+
+        } catch (IOException ex) {
+
+        }
+    }
 
 }

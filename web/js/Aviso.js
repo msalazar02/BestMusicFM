@@ -9,9 +9,9 @@ $(document).ready(function () {
 
 
     var botones = $("#aviso").text();
-    console.log(botones)
+    console.log(botones);
 
-    if (botones == "error") {
+    if (botones === "error") {
         $("#Error").show();
 
 

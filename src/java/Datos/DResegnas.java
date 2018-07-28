@@ -7,7 +7,7 @@ public class DResegnas {
     private int _fk_artista;
     private int _fk_album;
     private String _Descripcion;
-    private Double _Calificacion;
+    private double _Calificacion;
     private String _Fecha;
     private String _NombreArtista;
     private String _NombreAlbum;

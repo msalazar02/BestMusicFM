@@ -13,6 +13,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -50,7 +52,7 @@ public class LAdministradores extends HttpServlet {
     }
 
     ///-----------------Eliminar-----------------------listo-----------
-    public String EliminarAdmin(DAdministradores ad) {
+    public String EliminarAdmin(int ad) {
         String result = "";
 
         consulta = "Delete from administradores where fk_usuario=?";
@@ -58,7 +60,7 @@ public class LAdministradores extends HttpServlet {
         try {
             PreparedStatement pst = con.prepareStatement(consulta);
 
-            pst.setInt(1, ad.getPkIdUsuario());
+            pst.setInt(1, ad);
             int n = pst.executeUpdate();
 
             if (n != 0) {
@@ -80,12 +82,21 @@ public class LAdministradores extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        int id = Integer.parseInt(request.getParameter("idUsuario"));
         String accion = request.getParameter("Accion");
+        switch (accion) {
+            case "Ingresar Admin":
+                IngresarAdmin(request, response);
+                break;
+            case "Eliminar":
+                Eliminar(request, response);
+                break;
+        }
 
-        if (accion.equals("Ingresar Admin")) {
+    }
 
+    private void IngresarAdmin(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int id = Integer.parseInt(request.getParameter("idUsuario"));
             DAdministradores ad = new DAdministradores();
 
             String fecha = request.getParameter("fecha");
@@ -96,19 +107,27 @@ public class LAdministradores extends HttpServlet {
             IngresarNuevoAdmin(ad);
             request.setAttribute("saludo", "RegistroCompletado");
             request.getRequestDispatcher("/PaginaInicio.jsp").forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(LAdministradores.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(LAdministradores.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        if (accion.equals("Eliminar")) {
+    }
 
-            DAdministradores ad = new DAdministradores();
+    private void Eliminar(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int id = Integer.parseInt(request.getParameter("idUsuario"));
+            EliminarAdmin(id);
+            LUsuarios u = new LUsuarios();
+            request.setAttribute("idUsuario", id);
+            
+            u.Eliminar(request, response);
 
-            ad.setPkIdUsuario(id);
-
-            EliminarAdmin(ad);
-
-            request.getRequestDispatcher("/PaginaPrincipal.jsp").forward(request, response);
+            request.getRequestDispatcher("/PaginaInicio.jsp").forward(request, response);
+        } catch (ServletException ex) {
+        } catch (IOException ex) {
         }
-
     }
 
 }

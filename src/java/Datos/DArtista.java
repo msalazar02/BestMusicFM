@@ -12,6 +12,8 @@ public class DArtista {
     private String _biografia;
     private String _nombreBanda;
 
+    
+       
     //----------------Contructores----------------------------------------
     public DArtista(int _fkUsuario, int _genero, String _tipoArtista, String _fechaIncio, int _imagen, String _biografia, String _nombreBanda) {
         this._fkUsuario = _fkUsuario;
