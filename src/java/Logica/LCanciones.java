@@ -109,6 +109,26 @@ public class LCanciones extends HttpServlet {
         return canciones;
     }
 
+    //------------------------Promedio de las canciones-------------------------
+    public double Promedio(int id) throws Exception {
+        double avg = 0;
+
+        consulta = "select AVG(Calificacion) as Promedio from reseña where fk_album = ?";
+
+        PreparedStatement st = con.prepareStatement(consulta);
+        st.setInt(1, id);
+        ResultSet rs = st.executeQuery();
+
+        while (rs.next()) {
+
+            double Promedio = rs.getDouble("Promedio");
+
+            avg = Promedio;
+        }
+
+        return avg;
+    }
+
 //------------------------Muestra una canción por el id-------------------------
     public DCanciones ObtenerCancion(int idCancion) throws Exception {
         DCanciones obj = null;
@@ -253,6 +273,10 @@ public class LCanciones extends HttpServlet {
             List<DCanciones> TablaCanciones;
 
             TablaCanciones = MostrarCanciones(idA);
+
+            double promedio = Promedio(idA);
+            request.setAttribute("Promedio", promedio);
+
             request.setAttribute("Canciones", TablaCanciones);
             request.setAttribute("id", id);
             request.setAttribute("idA", idA);

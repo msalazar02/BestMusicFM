@@ -80,6 +80,11 @@
 
                 </c:forEach>
 
+                <%-- Promedio album --%>
+                <div class="form-group">
+                    <label for="promedio">Promedio del album</label>&nbsp;<label for="mensaje">${Promedio}</label>
+
+                </div> 
             </table>
         </div>
 

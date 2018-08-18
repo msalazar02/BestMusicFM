@@ -159,7 +159,7 @@ public class LUsuarios extends HttpServlet {
         return result;
     }
 
-    ///-----------------Si el usuario y contraseña son correctos------------listo----------------------
+//-----------------Si el usuario y contraseña son correctos------------listo----------------------
     public int ExisteUsuarioYContra(DUsuario user) {
         int result = 0;
         consulta = "SELECT * FROM `usuario` where Nombre_usuario = ? and Contrasena =?";
@@ -417,7 +417,7 @@ public class LUsuarios extends HttpServlet {
                         genero, pais, tipo));
                 request.setAttribute("id", num);
 
-                if (tipo.equals("Artista") || tipo.equals("Experto")) {
+                if (tipo.equals("Artista") || tipo.equals("Experto") || tipo.equals("Fan")) {
                     try {
                         LGenero d = new LGenero();
                         List<DGenero> TablaGeneros;
@@ -605,6 +605,7 @@ public class LUsuarios extends HttpServlet {
     private void SaberNombreArtistas(HttpServletRequest request, HttpServletResponse response) {
         try {
             int id = Integer.parseInt(request.getParameter("idUsuario"));
+
             request.setAttribute("nombre", SaberNombre(id));
             request.setAttribute("id", id);
             request.getRequestDispatcher("/PaginaPrincipalArtista.jsp").forward(request, response);

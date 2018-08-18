@@ -8,6 +8,7 @@
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="js/ActivarDesactivarBotones.js" type="text/javascript"></script>
         <script src="js/Aviso.js" type="text/javascript"></script>
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
@@ -22,7 +23,7 @@
         <h1> Bienvenido al editor de generos </h1> 
         <h3 id="botones" hidden>${botones}</h3>
         <h3 id="aviso" hidden>${aviso}</h3>
-        <h3>Lista de generos actuales</h3> 
+        <h3>Lista de géneros actuales</h3> 
 
         <div id="Error" class="col-md-11 alert alert-danger alert-dismissible" role="alert">
             La petición no fue completada con exito:
@@ -39,7 +40,7 @@
                 <thead class="thead-dark">
 
                     <tr class="thead-dark success">
-                        <th class="cabecera"> Código</th>
+                        <th class="cabecera">Código</th>
                         <th class="cabecera">Nombre</th>
                         <th class="cabecera">Descripción</th>
                         <th class="cabecera">Acciones</th>
@@ -146,13 +147,13 @@
 
             <a href="${linkRegresar}" class="btn btn-primary btn-block" ><img src="Imagenes/icons8-izquierda-2-30.png" width="20" height="20"/></a>
         </div>
-        <div class="col-md-12">
-            <form action="LCanciones" method="post">
-                <input type="hidden" name="idUsuario" value="${id}">
-                <input type="hidden" name="idAlbum" value="5">
-                <input type="hidden" name="Accion" value="Mostrar">
-                <input type="submit" class="bnt btn-primary" >
-            </form>
-        </div>
+        <%-- <div class="col-md-12">
+        <form action="LCanciones" method="post">
+            <input type="hidden" name="idUsuario" value="${id}">
+            <input type="hidden" name="idAlbum" value="5">
+            <input type="hidden" name="Accion" value="Mostrar">
+            <input type="submit" class="bnt btn-primary" >
+        </form>
+</div>--%>
     </body>
 </html>

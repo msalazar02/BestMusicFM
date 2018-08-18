@@ -9,6 +9,8 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Registro Experto</title>
     </head>
@@ -21,33 +23,34 @@
             <input type="hidden" name="Accion" value="IngresarExperto">
             <input type="hidden" name="idUsuario" value="${id}">
 
-            Fecha de inicio
-            <br/> 
-            <input type="date" name="fecha" required>
-            <br/>
-            <br/>
+            <div class="form-group col-md-5">
 
-            Género musical
-            <br/> 
-            <select name="generoM" id="generoM" required>
-                <%int a = 0;%>
-                <c:forEach var="tempGeneros" items="${Generos }">
-                    <option value="${tempGeneros.getIdGenero_musical()}">
-                        ${tempGeneros.getNombre()}
-                    </option>
-                </c:forEach>
-            </select>
-            <br/>
-            <br/>
+                <div class="form-group">
+                    <label for="fecha">Fecha de inicio</label>
+                    <input type="date" class="form-control" name="fecha" required="">
+                </div>
 
-            Descripción
-            <br/> 
-            <textarea name="descripcion" rows="4" cols="20" required>
-            </textarea>
-            <br/>
-            <br/>
+                <div class="form-group">
+                    <label for="generoM">Género musical</label>
+                    <select name="generoM" id="generoM" class="form-control" required>
+                        <%int a = 0;%>
+                        <c:forEach var="tempGeneros" items="${Generos }">
+                            <option value="${tempGeneros.getIdGenero_musical()}">
+                                ${tempGeneros.getNombre()}
+                            </option>
+                        </c:forEach>
+                    </select>
 
-            <input type="submit" name = "button" id="button" value="Enviar" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="descripcion">Descripción</label>
+                    <textarea name="descripcion" class="form-control" rows="4" cols="20" required>
+                    </textarea>
+                </div>
+
+                <input type="submit" name ="button" id="button" class="btn btn-primary" value="Enviar" required>
+            </div>
 
         </form>
 

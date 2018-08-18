@@ -12,17 +12,24 @@
         <title>Registro Aministrador</title>
     </head>
     <body>
-        <div id="formulario">
-            <form action="LAdministradores" method="POST">
-                <input type="hidden" name="Accion" value="Ingresar Admin">
-                <input type="hidden" name="idUsuario" value="${id}">
-                <label>Fecha de contratación</label>
-                <br>
-                <input type="date" class="txt" name="fecha">
-                
+
+        <form action="LAdministradores" method="POST">
+
+            <input type="hidden" name="Accion" value="Ingresar Admin">
+            <input type="hidden" name="idUsuario" value="${id}">
+
+            <div class="col-md-5">
+
+                <div class="form-group">
+                    <label for="fecha">Fecha de contratación</label>
+                    <input type="date" class="form-control" name="fecha" required>
+                </div>
+
                 <input type= "submit" class="boton" value="Registrarse como administrador">
-            </form>
-        </div><!--Formulario -->
+
+            </div>
+
+        </form>
 
     </body>
 </html>

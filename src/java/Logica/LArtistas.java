@@ -150,7 +150,7 @@ public class LArtistas extends HttpServlet {
             d.setImagen(1);
             d.setGenero(Integer.parseInt(request.getParameter("generoM")));
             d.setTipoArtista(request.getParameter("TipoArtista"));
-            d.setBiografia(request.getParameter("biografia"));
+            d.setNombreBanda(request.getParameter("nombre"));
 
             ActualizarArtista(d);
             request.setAttribute("id", id);

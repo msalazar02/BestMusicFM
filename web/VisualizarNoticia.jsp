@@ -30,7 +30,7 @@
             <c:param name="idUsuario" value="${id}"></c:param>
         </c:url>
         <c:url var="irArtista" value="LUsuarios">
-            <c:param name="Accion" value="SaberNombre"></c:param>
+            <c:param name="Accion" value="SaberNombreArtistas"></c:param>
             <c:param name="idUsuario" value="${id}"></c:param>
         </c:url>
          <c:url var="linkVisualizar" value="LNoticias">
