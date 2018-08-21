@@ -645,4 +645,17 @@ public class LUsuarios extends HttpServlet {
         }
     }
 
+    private void SaberNombreF(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            int id = Integer.parseInt(request.getParameter("idUsuario"));
+            request.setAttribute("nombre", SaberNombre(id));
+            request.setAttribute("id", id);
+            request.getRequestDispatcher("/PaginaPrincipalFan.jsp").forward(request, response);
+
+        } catch (ServletException ex) {
+
+        } catch (IOException ex) {
+
+        }
+    }
 }

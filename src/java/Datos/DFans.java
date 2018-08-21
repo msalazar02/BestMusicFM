@@ -1,6 +1,6 @@
 package Datos;
 
-public class DGenerosFans {
+public class DFans {
 
 //--------------------------Variables-------------------------------------------
     private int _idFan;
@@ -8,12 +8,12 @@ public class DGenerosFans {
 
 //--------------------------Constructores---------------------------------------
     //insertar
-    public DGenerosFans(int _idFan, int _idGenero) {
+    public DFans(int _idFan, int _idGenero) {
         this._idFan = _idFan;
         this._idGenero = _idGenero;
     }
 
-    public DGenerosFans() {
+    public DFans() {
     }
 
 //--------------------------Getters y Setters-----------------------------------

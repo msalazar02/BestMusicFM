@@ -7,7 +7,9 @@
 <html>
     <head>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <script src="js/main.js" type="text/javascript"></script>
+        <script src="js/fan.js" type="text/javascript"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Registro de artistas</title>
     </head>
@@ -25,7 +27,7 @@
         </div>
 
         <div class="form-group col-md-5">
-            <form action = "LGenerosFans" method="post">  
+            <form action = "LFans" method="post">  
                 <input type="hidden" name="Accion" value="IngresarGeneroFan">
                 <input type="hidden" name="idUsuario" value="${id}">
 
@@ -45,10 +47,9 @@
 
             </form>
             <br>
-            <form action = "LArtistas" method="post">  
-                <input type="hidden" name="Accion" value="FinalizarRegistroFan">
+            <form action = "LFans.jsp">  
+                <input type="hidden" name="Accion" value="FinalizarFan">
                 <input type="hidden" name="idUsuario" value="${id}">
-
                 <input type="submit" name="button" id="button" value="Finalizar registro" class="btn btn-primary" required>
             </form>
         </div>

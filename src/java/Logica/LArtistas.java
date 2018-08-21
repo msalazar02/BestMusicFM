@@ -16,6 +16,8 @@ import java.nio.file.*;
 import java.nio.*;
 import java.sql.*;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.*;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
@@ -87,6 +89,28 @@ public class LArtistas extends HttpServlet {
         } catch (Exception e) {
         }
         return result;
+    }
+
+    public List<DArtista> MostrarDatos() throws Exception {
+
+        List<DArtista> artistas = new ArrayList<>();
+
+        consulta = "SELECT * FROM `artista`";
+
+        PreparedStatement st = con.prepareStatement(consulta);
+
+        ResultSet rs = st.executeQuery();
+
+        while (rs.next()) {
+
+            int codigo = rs.getInt("fk_usuario");
+            String nombre = rs.getString("Nombre_BandaArtistico");
+
+            DArtista ArtistaTemporal = new DArtista(codigo, nombre);
+            artistas.add(ArtistaTemporal);
+        }
+
+        return artistas;
     }
 //--------------------------doPost-doGet------------------------------------
 
