@@ -11,9 +11,8 @@ public class DArtista {
     private String _fechaIncio;
     private String _biografia;
     private String _nombreBanda;
+    private String _nombreGenero;
 
-    
-       
     //----------------Contructores----------------------------------------
     public DArtista(int _fkUsuario, int _genero, String _tipoArtista, String _fechaIncio, int _imagen, String _biografia, String _nombreBanda) {
         this._fkUsuario = _fkUsuario;
@@ -28,6 +27,16 @@ public class DArtista {
     public DArtista(int _fkUsuario, String _nombreBanda) {
         this._fkUsuario = _fkUsuario;
         this._nombreBanda = _nombreBanda;
+    }
+
+    public DArtista(int _fkUsuario, int _imagen, String _tipoArtista, String _fechaIncio, String _biografia, String _nombreBanda, String _nombreGenero) {
+        this._fkUsuario = _fkUsuario;
+        this._imagen = _imagen;
+        this._tipoArtista = _tipoArtista;
+        this._fechaIncio = _fechaIncio;
+        this._biografia = _biografia;
+        this._nombreBanda = _nombreBanda;
+        this._nombreGenero = _nombreGenero;
     }
 
     public DArtista() {
@@ -88,6 +97,14 @@ public class DArtista {
 
     public void setNombreBanda(String _nombreBanda) {
         this._nombreBanda = _nombreBanda;
+    }
+
+    public String getNombreGenero() {
+        return _nombreGenero;
+    }
+
+    public void setNombreGenero(String _nombreGenero) {
+        this._nombreGenero = _nombreGenero;
     }
 
 }

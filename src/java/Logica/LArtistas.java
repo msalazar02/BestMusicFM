@@ -114,27 +114,30 @@ public class LArtistas extends HttpServlet {
     }
 
     public DArtista MostrarDato(int id) throws Exception {
+
         DArtista ArtistaTemporal = null;
-        consulta = "SELECT * FROM `artista` where fk_usuario=?";
+        try {
+            consulta = "SELECT a.Nombre_BandaArtistico, a.fk_usuario, a.Tipo_artista, a.Fecha_Inicio, g.Nombre, a.Biografia FROM artista a, genero_musical g WHERE a.fk_usuario = ? and g.idGenero_musical = a.fk_generMusical";
 
-        PreparedStatement st = con.prepareStatement(consulta);
-        st.setInt(1, id);
-        ResultSet rs = st.executeQuery();
+            PreparedStatement st = con.prepareStatement(consulta);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
 
-        while (rs.next()) {
+            while (rs.next()) {
 
-            int codigo = rs.getInt("fk_usuario");
-            int genero = rs.getInt("fk_generMusical");
-            int Imgen = 0;
-            String tipo = rs.getString("Tipo_artista");
-            String nombre = rs.getString("Nombre_BandaArtistico");
-            String fecha = rs.getString("Fecha_Inicio");
+                int codigo = rs.getInt("fk_usuario");
+                String genero = rs.getString("Nombre");
+                String tipo = rs.getString("Tipo_artista");
+                String nombre = rs.getString("Nombre_BandaArtistico");
+                String fecha = rs.getString("Fecha_Inicio");
+                String bio = rs.getString("Biografia");
 
-//int _fkUsuario, int _genero, String _tipoArtista, String _fechaIncio, int _imagen, String _biografia, String _nombreBanda
-            //ArtistaTemporal = new DArtista(codigo, genero, tipo, nombre);
+                ArtistaTemporal = new DArtista(codigo, 0, tipo, fecha, bio, nombre, genero);
+
+            }
+        } catch (Exception e) {
 
         }
-
         return ArtistaTemporal;
     }
 //--------------------------doPost-doGet------------------------------------

@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="css/BuscarArtista.css">
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
@@ -35,7 +35,7 @@
 
         <c:url var="linkEventos" value="LEventos">
             <c:param name="Accion" value="Visualizar"></c:param>
-            <c:param name="IdUsuario" value="${id}"></c:param>
+            <c:param name="idUsuario" value="${id}"></c:param>
         </c:url>
 
         <c:url var="salir" value="PaginaInicio.jsp"></c:url>

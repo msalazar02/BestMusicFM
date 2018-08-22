@@ -25,7 +25,7 @@
 
         <c:url var="linkEventos" value="LEventos">
             <c:param name="Accion" value="Visualizar"></c:param>
-            <c:param name="IdUsuario" value="${id}"></c:param>
+            <c:param name="idUsuario" value="${id}"></c:param>
         </c:url>
 
         <c:url var="salir" value="PaginaInicio.jsp"></c:url>
