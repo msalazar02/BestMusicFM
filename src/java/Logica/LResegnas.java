@@ -57,6 +57,80 @@ public class LResegnas extends HttpServlet {
         return resegnas;
     }
 
+    public List<DResegnas> ObtenerResegnasPorAlbum(int id) throws Exception {
+        List<DResegnas> resegnas = new ArrayList<>();
+
+        consulta = "select res.idReseña, art.Nombre_BandaArtistico, alb.Nombre, u.Nombre as NombreExperto ,res.Descripcion, res.Calificacion, res.Fecha "
+                + "FROM reseña res, artista art, album alb, expertos ex, usuario u where res.fk_artista = art.fk_usuario and res.fk_album = alb.idAlbum and u.idUsuario = ex.fk_usuario and res.fk_album =?";
+
+//        
+        PreparedStatement st = con.prepareStatement(consulta);
+        st.setInt(1, id);
+        ResultSet rs = st.executeQuery();
+
+        while (rs.next()) {
+
+            int codigo = rs.getInt("idReseña");
+            String artista = rs.getString("Nombre_BandaArtistico");
+            String album = rs.getString("Nombre");
+            String descripcion = rs.getString("Descripcion");
+            double calificacion = rs.getDouble("Calificacion");
+            String fecha = rs.getString("Fecha");
+            String nombreExperto = rs.getString("NombreExperto");
+
+            DResegnas reseñaTemporal = new DResegnas(codigo, artista, album, descripcion, calificacion, fecha, nombreExperto);
+            resegnas.add(reseñaTemporal);
+        }
+
+        return resegnas;
+    }
+    
+            private void MostrarResegnaPorAlbum(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("idUsuario"));
+        int idAlbum = Integer.parseInt(request.getParameter("Codigo"));
+        try {
+
+       
+            List<DResegnas> TablaResegnas;
+            TablaResegnas = ObtenerResegnasPorAlbum(idAlbum);
+           
+            double promedio = Promedio(idAlbum);
+            request.setAttribute("Promedio", promedio);
+            
+            request.setAttribute("Resegna", TablaResegnas);
+            
+            if (TablaResegnas.isEmpty()) {
+                request.setAttribute("aviso", "error");
+            }
+
+            request.setAttribute("id", id);
+
+            request.getRequestDispatcher("/ResegnasPorAlbum.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    public double Promedio(int id) throws Exception {
+        double avg = 0;
+
+        consulta = "select AVG(Calificacion) as Promedio from reseña where fk_album = ?";
+
+        PreparedStatement st = con.prepareStatement(consulta);
+        st.setInt(1, id);
+        ResultSet rs = st.executeQuery();
+
+        while (rs.next()) {
+
+            double Promedio = rs.getDouble("Promedio");
+
+            avg = Promedio;
+        }
+
+        return avg;
+    }
+
 //-------------------------------Insertar reseña--------------------------------
     private void InsertarResegna(DResegnas r) {
 
@@ -202,6 +276,10 @@ public class LResegnas extends HttpServlet {
 
             case "Cargar":
                 CargarResegna(request, response);
+                break;
+
+            case "CargarIdAlbum":
+                MostrarResegnaPorAlbum(request, response);
                 break;
 
         }

@@ -7,6 +7,8 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link rel="stylesheet" href="css/Auxiliar.css">
         <link rel="stylesheet" href="css/NoticiasFans.css">
+
+
         <title>JSP Page</title>
     </head>
     <body>
@@ -15,10 +17,18 @@
             <c:param name="Accion" value="Buscar"></c:param>
             <c:param name="IdUsuario" value="${id}"></c:param>
         </c:url>
-        <c:url var="irFan" value="LFans">
-            <c:param name="Accion" value="Buscar"></c:param>
+
+        <c:url var="irFan" value="LUsuarios">
+            <c:param name="Accion" value="SaberNombreF"></c:param>
             <c:param name="IdUsuario" value="${id}"></c:param>
         </c:url>
+
+        <c:url var="linkEventos" value="LEventos">
+            <c:param name="Accion" value="Visualizar"></c:param>
+            <c:param name="IdUsuario" value="${id}"></c:param>
+        </c:url>
+
+        <c:url var="salir" value="PaginaInicio.jsp"></c:url>
 
         <%-- ----------------------------------NAVBAR---------------------------------- --%>
 
@@ -26,11 +36,11 @@
             <!-- Tab nav -->
             <li class="active"><a href="${irFan}"  data-toggle="tab">Inicio</a></li>
             <li class=""><a href="${linkAmigos}" data-toggle="tab">Buscar artistas</a></li>
-            <li class=""><a href="${linkVisualizar}" data-toggle="tab">Noticias</a></li>   
+            <li class=""><a href="${linkEventos}" data-toggle="tab">Eventos</a></li>   
             <li class=""><a href="${salir}" data-toggle="tab">Logout</a></li> 
         </ul>
 
-        
+
         <%-- ----------------------------------COLUMNA IZQUIERDA---------------------------------- --%>
         <div class="col-md-2">
 
@@ -56,173 +66,34 @@
                 </form>
             </div>
         </div>
-                    
+
         <%-- ----------------------------------COLUMNA CENTRAL---------------------------------- --%>
 
         <div  class="col-md-10" >  
-            <div id="" class="col-md-11" > 
+            <div id="" class="col-md-10" > 
                 <h1> Bienvenido ${nombre}</h1>
                 <h3>Estas son las últimas noticias</h3>
             </div>
-        <div class="col-md-10">
 
-            <div class="c1 col-md-3">
-                <form>
-                    <p>
-                        Título
-                    </p>
-                    <p>
-                        Cuerpo a aaaaaaa aaaaaaaaaaaaa aaaaaaa aaaaaa aaaaaa aaaaaaaaaaa aaaaaaaaaaaa
-                        aaaaaaaaaaaaa aaaaaaaa aaaaaaaaaaaaa aaaaa
-                    </p>
-                </form>
-            </div>
 
-            <div class="c2 col-md-3">
-                <form>
-                    <p>
-                        Título
-                    </p>
-                    <p>
-                        Cuerpo a aaaaaaa aaaaaaaaaaaaa aaaaaaa aaaaaa aaaaaa aaaaaaaaaaa aaaaaaaaaaaa
-                        aaaaaaaaaaaaa aaaaaaaa aaaaaaaaaaaaa aaaaa
-                    </p>
-                </form>
-            </div>
 
-            <div class=" c1 col-md-3">
-                <form>
-                    <p>
-                        Título
-                    </p>
-                    <p>
-                        Cuerpo a aaaaaaa aaaaaaaaaaaaa aaaaaaa aaaaaa aaaaaa aaaaaaaaaaa aaaaaaaaaaaa
-                        aaaaaaaaaaaaa aaaaaaaa aaaaaaaaaaaaa aaaaa
-                    </p>
-                </form>
-            </div>
+            <c:forEach var="tempNoticias" items="${Noticias}">
 
-            <div class=" c2 col-md-3">
-                <form>
-                    <p>
-                        Título
-                    </p>
-                    <p>
-                        Cuerpo a aaaaaaa aaaaaaaaaaaaa aaaaaaa aaaaaa aaaaaa aaaaaaaaaaa aaaaaaaaaaaa
-                        aaaaaaaaaaaaa aaaaaaaa aaaaaaaaaaaaa aaaaa
-                    </p>
-                </form>
-            </div>
+                <div class="c1 col-md-3">
 
-            <div class=" c2 col-md-3">
-                <form>
-                    <p>
-                        Título
-                    </p>
-                    <p>
-                        Cuerpo a aaaaaaa aaaaaaaaaaaaa aaaaaaa aaaaaa aaaaaa aaaaaaaaaaa aaaaaaaaaaaa
-                        aaaaaaaaaaaaa aaaaaaaa aaaaaaaaaaaaa aaaaa
-                    </p>
-                </form>
-            </div>
-
-            <div class=" c1 col-md-3">
-                <form>
-                    <p>
-                        Título
-                    </p>
-                    <p>
-                        Cuerpo a aaaaaaa aaaaaaaaaaaaa aaaaaaa aaaaaa aaaaaa aaaaaaaaaaa aaaaaaaaaaaa
-                        aaaaaaaaaaaaa aaaaaaaa aaaaaaaaaaaaa aaaaa 
-                    </p>
-                </form>
-            </div>
-            <div class=" c2 col-md-3">
-                <form>
-                    <p>
-                        Título
-                    </p>
-                    <p>
-                        Cuerpo a aaaaaaa aaaaaaaaaaaaa aaaaaaa aaaaaa aaaaaa aaaaaaaaaaa aaaaaaaaaaaa
-                        aaaaaaaaaaaaa aaaaaaaa aaaaaaaaaaaaa aaaaa 
-                    </p>
-                </form>
-            </div>
-            <div class=" c1 col-md-3">
-                <form>
-                    <p>
-                        Título
-                    </p>
-                    <p>
-                        Cuerpo a aaaaaaa aaaaaaaaaaaaa aaaaaaa aaaaaa aaaaaa aaaaaaaaaaa aaaaaaaaaaaa
-                        aaaaaaaaaaaaa aaaaaaaa aaaaaaaaaaaaa aaaaa 
-                    </p>
-                </form>
-            </div>
-            <div class=" c1 col-md-3">
-                <form>
-                    <p>
-                        Título
-                    </p>
-                    <p>
-                        Cuerpo a aaaaaaa aaaaaaaaaaaaa aaaaaaa aaaaaa aaaaaa aaaaaaaaaaa aaaaaaaaaaaa
-                        aaaaaaaaaaaaa aaaaaaaa aaaaaaaaaaaaa aaaaa 
-                    </p>
-                </form>
-            </div>
-            <div class=" c2 col-md-3">
-                <form>
-                    <p>
-                        Título
-                    </p>
-                    <p>
-                        Cuerpo a aaaaaaa aaaaaaaaaaaaa aaaaaaa aaaaaa aaaaaa aaaaaaaaaaa aaaaaaaaaaaa
-                        aaaaaaaaaaaaa aaaaaaaa aaaaaaaaaaaaa aaaaa 
-                    </p>
-                </form>
-            </div>
-            <div class=" c1 col-md-3">
-                <form>
-                    <p>
-                        Título
-                    </p>
-                    <p>
-                        Cuerpo a aaaaaaa aaaaaaaaaaaaa aaaaaaa aaaaaa aaaaaa aaaaaaaaaaa aaaaaaaaaaaa
-                        aaaaaaaaaaaaa aaaaaaaa aaaaaaaaaaaaa aaaaa 
-                    </p>
-                </form>
-            </div>
-            <div class=" c2 col-md-3">
-                <form>
-                    <p>
-                        Título
-                    </p>
-                    <p>
-                        Cuerpo a aaaaaaa aaaaaaaaaaaaa aaaaaaa aaaaaa aaaaaa aaaaaaaaaaa aaaaaaaaaaaa
-                        aaaaaaaaaaaaa aaaaaaaa aaaaaaaaaaaaa aaaaa 
-                    </p>
-                </form>
-            </div>
-        </div>
-
-        <%--<%int n = 1;%>
-
-         <c:forEach var="tempNoticias" items="${Noticias}">
-            <%
-
-                String color = "c";
-                color = color + n;
-                n++;
-                if (n == 6) {
-                    n = 1;
-                }
-            %>
-            <div class="<%=color%> col-md-1">
-                <form>
-
-                </form>
-            </div>
-        </c:forEach>    --%>
+                    <form action="LFans" method="post">
+                        <input type="hidden" name="idUsuario" value="${id}">
+                        <input type="hidden" name="idNoticia" value="${tempNoticias.getIdNoticias()}">
+                        <p>
+                            <span>tempNoticias.getTitulo()</span>
+                        </p>
+                        <p>
+                            <span>tempNoticias.getContenido()</span>
+                        </p>
+                        <input type="submit" value="Ver Noticia" name="Accion">
+                    </form>
+                </div
+            </c:forEach>   
 
 
 

@@ -24,9 +24,8 @@
             <c:param name="Accion" value="Visualizar"></c:param>
             <c:param name="idUsuario" value="${id}"></c:param>
         </c:url>
-        <c:url var="salir" value="PaginaInicio.jsp">
-
-        </c:url>
+        <c:url var="salir" value="PaginaInicio.jsp"></c:url>
+        
         <c:url var="irArtista" value="LUsuarios">
             <c:param name="Accion" value="SaberNombre"></c:param>
             <c:param name="idUsuario" value="${id}"></c:param>

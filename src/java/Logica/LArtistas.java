@@ -112,6 +112,31 @@ public class LArtistas extends HttpServlet {
 
         return artistas;
     }
+
+    public DArtista MostrarDato(int id) throws Exception {
+        DArtista ArtistaTemporal = null;
+        consulta = "SELECT * FROM `artista` where fk_usuario=?";
+
+        PreparedStatement st = con.prepareStatement(consulta);
+        st.setInt(1, id);
+        ResultSet rs = st.executeQuery();
+
+        while (rs.next()) {
+
+            int codigo = rs.getInt("fk_usuario");
+            int genero = rs.getInt("fk_generMusical");
+            int Imgen = 0;
+            String tipo = rs.getString("Tipo_artista");
+            String nombre = rs.getString("Nombre_BandaArtistico");
+            String fecha = rs.getString("Fecha_Inicio");
+
+//int _fkUsuario, int _genero, String _tipoArtista, String _fechaIncio, int _imagen, String _biografia, String _nombreBanda
+            //ArtistaTemporal = new DArtista(codigo, genero, tipo, nombre);
+
+        }
+
+        return ArtistaTemporal;
+    }
 //--------------------------doPost-doGet------------------------------------
 
     @Override

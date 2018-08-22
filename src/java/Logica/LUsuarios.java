@@ -310,6 +310,9 @@ public class LUsuarios extends HttpServlet {
                 case "SaberNombreA":
                     SaberNombreA(request, response);
                     break;
+                case "SaberNombreF":
+                    SaberNombreF(request, response);
+                    break;
 
             }
         } catch (Exception e) {
@@ -353,41 +356,6 @@ public class LUsuarios extends HttpServlet {
                 break;
         }
 
-        /*if (accion.equals("Verificar")) {
-
-            String us = request.getParameter("txtUsuario");
-            String pass = Encriptar(request.getParameter("txtPass"));
-            DUsuario user = new DUsuario();
-
-            user.setUser(us);
-            user.setPass(pass);
-
-            int ids = ExisteUsuarioYContra(user);
-
-            request.setAttribute("id", ids);
-
-            String tipo = null;
-
-            DUsuario u = new DUsuario();
-            u.setIdUsuario(ids);
-            tipo = TipoUser(u);
-            if (ids != 0) {
-
-                request.getRequestDispatcher("/PaginaPrincipal" + tipo + ".jsp").forward(request, response);
-                
-            } else {
-                request.setAttribute("saludo", "login");
-                request.getRequestDispatcher("/PaginaInicio.jsp").forward(request, response);
-
-            }
-
-            /*try (PrintWriter out = response.getWriter()) {
-                
-                out.println("verificado "+id +" "+ us +" "+ pass);
-            } catch (Exception e) {
-                out.println(e.getMessage());
-            }*/
-        //  }//Fin verificar
     }
 
     private void IngresarUsuario(HttpServletRequest request, HttpServletResponse response) {
@@ -647,9 +615,10 @@ public class LUsuarios extends HttpServlet {
 
     private void SaberNombreF(HttpServletRequest request, HttpServletResponse response) {
         try {
-            int id = Integer.parseInt(request.getParameter("idUsuario"));
+            int id = Integer.parseInt(request.getParameter("IdUsuario"));
             request.setAttribute("nombre", SaberNombre(id));
             request.setAttribute("id", id);
+
             request.getRequestDispatcher("/PaginaPrincipalFan.jsp").forward(request, response);
 
         } catch (ServletException ex) {
