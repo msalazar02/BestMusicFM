@@ -59,7 +59,7 @@
 
             <div class="form-group">
                 <form action = "LFans" method="post">
-                    <input type="hidden" name="idUsuario" value="${id}">
+                    <input type="hidden" name="IdUsuario" value="${id}">
                     <input type="hidden" name="Accion" value="EliminarFan">
                     <input type="submit" class=" btn btn-primary" value="Eliminar cuenta">
 
@@ -76,25 +76,32 @@
             </div>
 
 
+            <div class="col-md-10">
+                <c:forEach var="tempNoticias" items="${Noticias}">
 
-            <c:forEach var="tempNoticias" items="${Noticias}">
+                    <div class="c1 col-md-4">
 
-                <div class="c1 col-md-3">
+                        <form action="LFans" method="post">
+                            <input type="hidden" name="idUsuario" value="${id}">
+                            <input type="hidden" name="idNoticia" value="${tempNoticias.getIdNoticias()}">
+                            <input type="hidden" name="Accion" value="VerNoticias">
+                            <p>
+                                <span>Noticia de: ${tempNoticias.getFk_usuario()}</span>
+                            </p>
+                            <p>
+                                <span>${tempNoticias.getTitulo()}</span>
+                            </p>
+                            <p>
+                                <span>${tempNoticias.getContenido()}</span>
+                            </p>
+                            <p>
+                                <span>${tempNoticias.getFecha()}</span>
+                            </p>
 
-                    <form action="LFans" method="post">
-                        <input type="hidden" name="idUsuario" value="${id}">
-                        <input type="hidden" name="idNoticia" value="${tempNoticias.getIdNoticias()}">
-                        <p>
-                            <span>tempNoticias.getTitulo()</span>
-                        </p>
-                        <p>
-                            <span>tempNoticias.getContenido()</span>
-                        </p>
-                        <input type="submit" value="Ver Noticia" name="Accion">
-                    </form>
-                </div
-            </c:forEach>   
-
+                        </form>
+                    </div>
+                </c:forEach>   
+            </div>
 
 
     </body>

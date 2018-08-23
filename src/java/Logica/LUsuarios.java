@@ -7,6 +7,7 @@ package Logica;
 
 import Logica.LGenero;
 import Datos.DGenero;
+import Datos.DNoticias;
 import Datos.DUsuario;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -354,6 +355,12 @@ public class LUsuarios extends HttpServlet {
             case "SaberNombreE":
                 SaberNombreE(request, response);
                 break;
+            case "SaberNombreA":
+                SaberNombreA(request, response);
+                break;
+            case "SaberNombreF":
+                SaberNombreF(request, response);
+                break;
         }
 
     }
@@ -541,14 +548,25 @@ public class LUsuarios extends HttpServlet {
 
             try {
                 request.setAttribute("nombre", us);
+                if (tipo.equals("Fan")) {
 
+                    LNoticias n = new LNoticias();
+                    List<DNoticias> TablaGeneros;
+
+                    TablaGeneros = n.MostrarDatosFan(ids);
+                    /*try (PrintWriter out = response.getWriter()) {
+
+                        out.println("verificado " + TablaGeneros.get(0).getContenido());
+                    } catch (Exception e) {
+                        out.println(e.getMessage());
+                    }*/
+                    request.setAttribute("Noticias", TablaGeneros);
+                }
                 request.getRequestDispatcher("/PaginaPrincipal" + tipo + ".jsp").forward(request, response);
                 //} else {
                 // request.getRequestDispatcher("/PaginaPrincipal.jsp").forward(request, response);
                 //}
-            } catch (ServletException ex) {
-
-            } catch (IOException ex) {
+            } catch (Exception ex) {
 
             }
         } else {
@@ -618,12 +636,13 @@ public class LUsuarios extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("IdUsuario"));
             request.setAttribute("nombre", SaberNombre(id));
             request.setAttribute("id", id);
-
+            LNoticias n = new LNoticias();
+            List<DNoticias> TablaGeneros;
+            TablaGeneros = n.MostrarDatosFan(id);
+            request.setAttribute("Noticias", TablaGeneros);
             request.getRequestDispatcher("/PaginaPrincipalFan.jsp").forward(request, response);
 
-        } catch (ServletException ex) {
-
-        } catch (IOException ex) {
+        } catch (Exception ex) {
 
         }
     }

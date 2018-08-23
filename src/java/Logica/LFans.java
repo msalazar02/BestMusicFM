@@ -5,6 +5,7 @@ import Datos.DArtista;
 import Datos.DCanciones;
 import Datos.DGenero;
 import Datos.DFans;
+import Datos.DNoticias;
 import Datos.DResegnas;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,14 +60,29 @@ public class LFans extends HttpServlet {
     }
 
 //-------------------------------Eliminar un fan--------------------------------    
-    public void EliminarFan(int id) {
+    public String EliminarFan(int ar) {
+        String result = null;
         consulta = "DELETE FROM `generoxusuario` WHERE Fk_idUsuario = ?";
         try {
             PreparedStatement st = con.prepareStatement(consulta);
-            st.setInt(1, id);
-            st.execute();
+            st.setInt(1, ar);
+
+            st.executeUpdate();
+
         } catch (Exception e) {
+            result = e.getMessage();
         }
+        String consulta2 = "DELETE FROM `fans` WHERE  Pk_idFan = ?";
+        try {
+            PreparedStatement st = con.prepareStatement(consulta2);
+            st.setInt(1, ar);
+
+            st.executeUpdate();
+
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        return result;
     }
 
     public boolean seguidorExiste(int a, int b) {
@@ -215,6 +233,16 @@ public class LFans extends HttpServlet {
             case "VerResegnasE":
                 VerResegnasE(request, response);
                 break;
+
+            case "IngresarResegna":
+                //  IngresarResegna(request, response);
+                break;
+            case "VerResegnasF":
+                VerResegnasF(request, response);
+                break;
+            case "VerNoticias":
+                VerNoticiasFans(request, response);
+                break;
         }
     }
 
@@ -256,6 +284,7 @@ public class LFans extends HttpServlet {
     private void EliminarFan(HttpServletRequest request, HttpServletResponse response) {
         try {
             String id = request.getParameter("IdUsuario");
+
             EliminarFan(Integer.parseInt(id));
             LUsuarios u = new LUsuarios();
             u.EliminarUsuario(Integer.parseInt(id));
@@ -382,4 +411,56 @@ public class LFans extends HttpServlet {
         }
     }
 
+    private void VerResegnasF(HttpServletRequest request, HttpServletResponse response) {
+        int idArtista = Integer.parseInt(request.getParameter("idArtista"));
+        int id = Integer.parseInt(request.getParameter("IdUsuario"));
+        int idAlbum = Integer.parseInt(request.getParameter("idAlbum"));
+        try {
+
+            LResegnas re = new LResegnas();
+            List<DArtista> ComboArtistas;
+            ComboArtistas = re.CargarComboArtista();
+            request.setAttribute("Artitas", ComboArtistas);
+
+            List<DResegnas> TablaResegnas;
+            TablaResegnas = re.ObtenerResegnas(id);
+            request.setAttribute("Resegna", TablaResegnas);
+            if (TablaResegnas.isEmpty()) {
+                request.setAttribute("aviso", "error");
+            }
+
+            request.setAttribute("id", id);
+            request.setAttribute("idA", idAlbum);
+            request.setAttribute("idAlbum", idArtista);
+
+            request.getRequestDispatcher("/FansResegnas.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    private void Cancelar(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("IdUsuario"));
+        request.setAttribute("id", id);
+        VerResegnasF(request, response);
+
+    }
+
+    void VerNoticiasFans(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("IdUsuario"));
+        try {
+
+            LNoticias n = new LNoticias();
+            List<DNoticias> TablaGeneros;
+            TablaGeneros = n.MostrarDatosFan(id);
+            request.setAttribute("Noticias", TablaGeneros);
+
+            request.setAttribute("id", id);
+
+        } catch (Exception e) {
+
+        }
+
+    }
 }

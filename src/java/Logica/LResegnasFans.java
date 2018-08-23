@@ -1,29 +1,35 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Logica;
 
-import Datos.*;
-import Logica.Conexion;
+import Datos.DAlbumes;
+import Datos.DArtista;
+import Datos.DResegnas;
 import java.io.IOException;
 import java.io.PrintWriter;
-import static java.lang.System.out;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "LResegnas", urlPatterns = {"/LResegnas"})
-public class LResegnas extends HttpServlet {
+/**
+ *
+ * @author Rodrigo Moreno S
+ */
+@WebServlet(name = "LResegnasFans", urlPatterns = {"/LResegnasFans"})
+public class LResegnasFans extends HttpServlet {
 
     private Conexion mysql = new Conexion();
     private Connection con = mysql.Conectar();
@@ -153,16 +159,17 @@ public class LResegnas extends HttpServlet {
     }
 
 //-------------------------------Capturar artistas--------------------------------
-    public List<DArtista> CargarComboArtista() throws Exception {
+    public List<DArtista> CargarComboArtista(int id) throws Exception {
         List<DArtista> artistas = new ArrayList<>();
 
-        consulta = "SELECT fk_usuario, Nombre_BandaArtistico FROM artista ";
+        consulta = "SELECT se.Fk_idSeguido, a.Nombre_BandaArtistico FROM artista a, seguidores se where se.Fk_idSeguido=a.fk_usuario and se.Pk_idSeguidor = ?";
 
         PreparedStatement st = con.prepareStatement(consulta);
+        st.setInt(1, id);
         ResultSet rs = st.executeQuery();
         while (rs.next()) {
 
-            int codigo = rs.getInt("fk_usuario");
+            int codigo = rs.getInt("Fk_idSeguido");
             String artista = rs.getString("Nombre_BandaArtistico");
 
             DArtista resegnaTemporal = new DArtista(codigo, artista);
@@ -263,6 +270,7 @@ public class LResegnas extends HttpServlet {
         if (accion.equals(null)) {
             accion = "Mostrar";
         }
+
         switch (accion) {
 
             case "Mostrar":
@@ -288,7 +296,10 @@ public class LResegnas extends HttpServlet {
 
         try {
             int idResegna = Integer.parseInt(request.getParameter("idResegna"));
-            int id = Integer.parseInt(request.getParameter("idUsuario"));
+
+            int idU = Integer.parseInt(request.getParameter("idUsuario"));
+            int id = Integer.parseInt(request.getParameter("IdUsuario"));
+            int idA = Integer.parseInt(request.getParameter("idA"));
             DResegnas resegnas = ObtenerResegna(idResegna);
 
             request.setAttribute("ResegnasA", resegnas);
@@ -318,6 +329,7 @@ public class LResegnas extends HttpServlet {
         if (accion.equals(null)) {
             accion = "Mostrar";
         }
+
         switch (accion) {
 
             case "Mostrar":
@@ -345,11 +357,18 @@ public class LResegnas extends HttpServlet {
     }
 
     private void MostrarResegnas(HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("idUsuario"));
+
+        int idU = Integer.parseInt(request.getParameter("idUsuario"));
+        int id = Integer.parseInt(request.getParameter("IdUsuario"));
+        int idA = Integer.parseInt(request.getParameter("idA"));
+        /*try (PrintWriter out = response.getWriter()) {
+            out.println("nombre-->" + id);
+        } catch (Exception e) {
+        }*/
         try {
 
             List<DArtista> ComboArtistas;
-            ComboArtistas = CargarComboArtista();
+            ComboArtistas = CargarComboArtista(id);
             request.setAttribute("Artitas", ComboArtistas);
 
             List<DResegnas> TablaResegnas;
@@ -360,8 +379,10 @@ public class LResegnas extends HttpServlet {
             }
 
             request.setAttribute("id", id);
+            request.setAttribute("idU", idU);
+            request.setAttribute("idA", idA);
 
-            request.getRequestDispatcher("/Resegnas.jsp").forward(request, response);
+            request.getRequestDispatcher("/FansResegnas.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -369,9 +390,9 @@ public class LResegnas extends HttpServlet {
     }
 
     private void InsertarResegna(HttpServletRequest request, HttpServletResponse response) {
-        int idArtista = Integer.parseInt(request.getParameter("idArtista"));
-        int id = Integer.parseInt(request.getParameter("idUsuario"));
-        int idAlbum = Integer.parseInt(request.getParameter("Albumes"));
+        int idArtista = Integer.parseInt(request.getParameter("idUsuario"));
+        int id = Integer.parseInt(request.getParameter("IdUsuario"));
+        int idAlbum = Integer.parseInt(request.getParameter("idA"));
 
         Date now = new Date(System.currentTimeMillis());
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
@@ -390,9 +411,13 @@ public class LResegnas extends HttpServlet {
     }
 
     private void ArtistaElegido(HttpServletRequest request, HttpServletResponse response) {
+        int idArtista = Integer.parseInt(request.getParameter("idUsuario"));
+        int id = Integer.parseInt(request.getParameter("IdUsuario"));
+        /* try (PrintWriter out = response.getWriter()) {
+            out.println("nombre-->" + idArtista);
+        } catch (Exception e) {
+        }*/
         try {
-            int idArtista = Integer.parseInt(request.getParameter("idArtista"));
-            int id = Integer.parseInt(request.getParameter("idUsuario"));
 
             List<DAlbumes> TablaAlbumes;
             TablaAlbumes = CargarComboAlbumes(idArtista);
@@ -414,14 +439,15 @@ public class LResegnas extends HttpServlet {
     }//Fin Artista Elegido
 
     private void Cancelar(HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("idUsuario"));
-        request.setAttribute("id", id);
+
         MostrarResegnas(request, response);
 
     }
 
     private void ActualizarResegna(HttpServletRequest request, HttpServletResponse response) {
-        int id = Integer.parseInt(request.getParameter("idUsuario"));
+        int idU = Integer.parseInt(request.getParameter("idUsuario"));
+        int id = Integer.parseInt(request.getParameter("IdUsuario"));
+        int idA = Integer.parseInt(request.getParameter("idA"));
         try {
             DResegnas a = new DResegnas();
             a.setDescripcion(request.getParameter("desc"));

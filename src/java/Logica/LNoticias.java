@@ -86,7 +86,34 @@ public class LNoticias extends HttpServlet {
         return noticias;
     }
 
-    //-----------------Cargar noticia---------------------//
+    public List<DNoticias> MostrarDatosFan(int id) throws Exception {
+
+        int idUsuario = id;
+
+        List<DNoticias> noticias = new ArrayList<>();
+
+        consulta = "select a.Nombre_BandaArtistico, n.Fecha, n.idNoticias, n.Titulo, n.Contenido from noticias n, artista a, seguidores s where n.fk_usuario=s.Fk_idSeguido and s.Fk_idSeguido= a.fk_usuario and s.Pk_idSeguidor=?";
+
+        PreparedStatement st = con.prepareStatement(consulta);
+        st.setInt(1, idUsuario);
+        ResultSet rs = st.executeQuery();
+
+        while (rs.next()) {
+
+            int codigo = rs.getInt("idNoticias");
+            String titulo = rs.getString("Titulo");
+            String descripcion = rs.getString("Contenido");
+            String banda = rs.getString("Nombre_BandaArtistico");
+            String fecha = rs.getString("Fecha");
+
+            DNoticias generoTemporal = new DNoticias(codigo, titulo, descripcion, fecha, banda);
+            noticias.add(generoTemporal);
+        }
+
+        return noticias;
+    }
+
+    //-----------------Cargar noticia por fan---------------------//
     public DNoticias ObtenerDatos(String idGenero) throws Exception {
         DNoticias obj = null;
         int codigo = Integer.parseInt(idGenero);

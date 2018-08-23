@@ -43,33 +43,33 @@
         </div>
 
         <br>
-        <div id="no" class="col-md-5">
+        <div id="no" class="col-md-10">
             <form action="LFans" method="POST">
                 <input type="hidden" name="idArtista" value="${artista.getFkUsuario()}">
                 <input type="hidden" name="IdUsuario" value="${id}">
                 <input class="btn btn-primary" type="submit" value="Dejar de seguir" name="Accion">
             </form>
-
+            <br>
         </div>
 
-        <div id="si" class="si col-md-5">
+        <div id="si" class="si col-md-10">
             <form action="LFans" method="POST">
                 <input type="hidden" name="idArtista" value="${artista.getFkUsuario()}">
                 <input type="hidden" name="IdUsuario" value="${id}">
                 <input type="submit" name="Accion" value="Seguir" class="btn btn-primary">
 
             </form>
-
+            <br>
         </div>
-        <br>
-        <div class="col-md-5">
+
+        <div class="col-md-10">
             <form action="LFans" method="POST">
                 <input type="hidden" name="IdUsuario" value="${id}">
                 <input type="hidden" name="Accion" value="Buscar">
                 <input type="submit" name="" value="Buscar" class="btn btn-primary">
 
             </form>
-
+            <br>
         </div>
         <div class="col-md-5">
             <form action="LFans" method="POST">
@@ -79,7 +79,7 @@
                 <input type="submit" name="" value="Ver discografía" class="btn btn-primary">
 
             </form>
-
+            <br>
         </div>
     </body>
 </html>

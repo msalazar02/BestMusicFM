@@ -87,6 +87,7 @@
             <input type="hidden" name="Accion" value="Ver">
             <input type="submit" class="btn btn-primary" value="Regresar">
         </form>
+        <br>
     </div>
 
     <div class="col-md-5">
@@ -96,6 +97,6 @@
             <input type="submit" name="" value="Buscar artista" class="btn btn-primary">
 
         </form>
-
+        <br>
     </div>
 </html>

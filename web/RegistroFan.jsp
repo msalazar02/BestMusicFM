@@ -47,9 +47,9 @@
 
             </form>
             <br>
-            <form action = "LFans.jsp">  
+            <form action = "LFans" method="post">  
                 <input type="hidden" name="Accion" value="FinalizarFan">
-                <input type="hidden" name="idUsuario" value="${id}">
+                <input type="hidden" name="IdUsuario" value="${id}">
                 <input type="submit" name="button" id="button" value="Finalizar registro" class="btn btn-primary" required>
             </form>
         </div>

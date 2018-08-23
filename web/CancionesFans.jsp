@@ -74,15 +74,18 @@
                 <input type="hidden" name="Accion" value="VerDiscografia">
                 <input type="submit" class="btn btn-primary" value="Regresar">
             </form>
+            <br>
+
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-10">
             <form action="LFans" method="POST">
                 <input type="hidden" name="IdUsuario" value="${id}">
                 <input type="hidden" name="Accion" value="Buscar">
                 <input type="submit" name="" value="Buscar artista" class="btn btn-primary">
 
             </form>
+            <br>
 
         </div>
 
@@ -94,5 +97,19 @@
                 <input type="hidden" name="Accion" value="VerResegnasE">
                 <input type="submit" class="btn btn-primary" value="Ver reseñas de expertos">
             </form>
+            <br>
+
+        </div>
+
+        <div class="col-md-10">
+            <form action="LResegnasFans" method="POST">
+                <input type="hidden" name="IdUsuario" value="${id}">
+                <input type="hidden" name="idUsuario" value="${idArtista}">
+                <input type="hidden" name="idA" value="${idA}">
+                <input type="hidden" name="Accion" value="Mostrar">
+                <input type="submit" class="btn btn-primary" value="Ver mis reseñas">
+            </form>
+            <br>
+
         </div>
 </html>
